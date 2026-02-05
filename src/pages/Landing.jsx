@@ -8,6 +8,7 @@ import About from '../components/About';
 import Footer from '../components/Footer';
 import LegalModal from '../components/LegalModal';
 import ContactModal from '../components/ContactModal';
+import Seo from '../components/Seo';
 
 const Landing = () => {
     const [legalOpen, setLegalOpen] = React.useState(false);
@@ -21,6 +22,7 @@ const Landing = () => {
 
     return (
         <div className="bg-surface-muted min-h-screen">
+            <Seo />
             <Navbar />
             <main>
                 <Hero />

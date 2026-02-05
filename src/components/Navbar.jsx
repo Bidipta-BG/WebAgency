@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, Calculator } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import mainLogo from '../assets/images/mainLogo.png';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -34,12 +35,11 @@ const Navbar = () => {
             <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
                 {/* Logo */}
                 <a href="#" className="flex items-center gap-2 group">
-                    <div className="w-10 h-10 bg-accent-gradient rounded-xl flex items-center justify-center text-white font-bold text-xl group-hover:scale-105 transition-transform shadow-lg shadow-accent/20">
-                        N
-                    </div>
-                    <span className="text-2xl font-bold tracking-tight text-white">
-                        NovaTech
-                    </span>
+                    <img
+                        src={mainLogo}
+                        alt="AxomITLab Logo"
+                        className="h-16 w-auto object-contain transition-transform group-hover:scale-105"
+                    />
                 </a>
 
                 {/* Desktop Nav */}

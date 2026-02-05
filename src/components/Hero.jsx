@@ -31,8 +31,8 @@ const Hero = () => {
 
                     <p className="text-lg text-slate-400 mb-8 max-w-xl leading-relaxed">
                         We transform your ideas into world-class software with our flexible
-                        <span className="font-semibold text-white"> EMI Payment Mode</span>.
-                        Get enterprise-grade development without the upfront capital strain.
+                        <span className="font-semibold text-white"> Monthly Subscription Model</span>.
+                        Get enterprise-grade development without the massive initial investment.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4">
@@ -40,7 +40,7 @@ const Hero = () => {
                             href="#calculator"
                             className="inline-flex items-center justify-center gap-2 bg-accent text-white px-8 py-4 rounded-xl font-semibold hover:bg-accent-bright transition-all shadow-lg shadow-accent/25"
                         >
-                            Calculate Your EMI
+                            See Monthly Plans
                             <ArrowRight className="w-5 h-5" />
                         </a>
                         <a
@@ -86,7 +86,7 @@ const Hero = () => {
                             <div className="flex-1 flex gap-6 p-6">
                                 {/* Sidebar Mockup */}
                                 <div className="w-16 h-full bg-surface-highlight/30 rounded-xl hidden sm:flex flex-col items-center py-4 gap-4 border border-white/5">
-                                    <div className="w-8 h-8 rounded-full bg-accent text-[10px] grid place-items-center font-bold text-white mb-2">N</div>
+                                    <div className="w-8 h-8 rounded-full bg-accent text-[10px] grid place-items-center font-bold text-white mb-2">A</div>
                                     {[1, 2, 3, 4].map(i => (
                                         <div key={i} className={`w-8 h-8 rounded-lg ${i === 1 ? 'bg-white/10 text-white' : 'text-slate-500'} grid place-items-center`}>
                                             <div className="w-4 h-4 bg-current rounded-sm opacity-50" />
@@ -100,13 +100,13 @@ const Hero = () => {
                                     <div className="flex gap-4">
                                         <div className="flex-1 p-4 rounded-xl bg-surface-highlight/40 border border-white/5 relative overflow-hidden">
                                             <div className="absolute top-0 right-0 p-3 opacity-20"><div className="w-12 h-12 bg-accent rounded-full blur-xl"></div></div>
-                                            <p className="text-xs text-slate-400 mb-1">Total Revenue</p>
-                                            <p className="text-xl font-bold text-white">₹42,500 <span className="text-xs font-normal text-emerald-400">+12%</span></p>
+                                            <p className="text-xs text-slate-400 mb-1">Fastest Delivery Time</p>
+                                            <p className="text-xl font-bold text-white">3 Weeks <span className="text-xs font-normal text-emerald-400">Idea to Live</span></p>
                                         </div>
                                         <div className="flex-1 p-4 rounded-xl bg-surface-highlight/40 border border-white/5 relative overflow-hidden">
                                             <div className="absolute top-0 right-0 p-3 opacity-20"><div className="w-12 h-12 bg-purple-500 rounded-full blur-xl"></div></div>
-                                            <p className="text-xs text-slate-400 mb-1">Active Users</p>
-                                            <p className="text-xl font-bold text-white">1,240 <span className="text-xs font-normal text-emerald-400">+5%</span></p>
+                                            <p className="text-xs text-slate-400 mb-1">Projects Delivered</p>
+                                            <p className="text-xl font-bold text-white">50+ <span className="text-xs font-normal text-emerald-400">Success</span></p>
                                         </div>
                                     </div>
 
@@ -152,8 +152,8 @@ const Hero = () => {
                                         <span className="font-bold text-lg">₹</span>
                                     </div>
                                     <div>
-                                        <p className="text-xs text-slate-400">Estimated EMI</p>
-                                        <p className="font-bold text-white">₹24,999<span className="text-xs font-normal text-slate-500">/mo</span></p>
+                                        <p className="text-xs text-slate-400">Starting from</p>
+                                        <p className="font-bold text-white">₹399<span className="text-xs font-normal text-slate-500">/mo</span></p>
                                     </div>
                                 </div>
                                 <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
@@ -163,8 +163,8 @@ const Hero = () => {
                         </div>
                     </div>
                 </motion.div>
-            </div>
-        </section>
+            </div >
+        </section >
     );
 };
 

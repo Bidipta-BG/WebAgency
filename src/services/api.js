@@ -4,6 +4,12 @@
 // Mock Pricing Data (Move this to your Database later)
 const PRICING_CONFIG = {
     basePrice: 150000,
+    labels: {
+        totalProject: "Total Project Value",
+        agreement: "Setup Fee",
+        emi: "Monthly Subscription",
+        amc: "Support & Maintenance"
+    },
     projectTypes: {
         mobile: { multiplier: 1.5, weeks: 4 },
         both: { multiplier: 2.2, weeks: 8 },
@@ -89,17 +95,22 @@ const PRICING_CONFIG = {
 
 // --- API Methods ---
 
+// Live API Endpoint
+const API_BASE_URL = 'https://api.thevibecoderagency.online/api';
+
 /**
  * Fetch Pricing Configuration
- * Replace this return with: return await axios.get('/api/pricing-config');
  */
 export const fetchPricingConfig = async () => {
-    // Simulate network delay
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(PRICING_CONFIG);
-        }, 500);
-    });
+    try {
+        // Restoring the original endpoint structure: /api/axomitlab/config
+        const response = await fetch(`${API_BASE_URL}/axomitlab/config`);
+        const json = await response.json();
+        return json.success ? json.data : PRICING_CONFIG;
+    } catch (error) {
+        console.warn("Using fallback pricing config due to API error:", error);
+        return PRICING_CONFIG;
+    }
 };
 
 /**
@@ -107,23 +118,81 @@ export const fetchPricingConfig = async () => {
  * Replace with: await axios.post('/api/leads/estimate', data);
  */
 export const submitEstimate = async (data) => {
-    console.log("Submitting Estimate to Backend:", data);
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({ success: true, message: "Estimate sent successfully" });
-        }, 1000);
-    });
+    try {
+        const response = await fetch(`${API_BASE_URL}/axomitlab/leads`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                formType: 'estimate',
+                leadInfo: data.leadInfo,
+                selection: {
+                    projectType: data.projectType,
+                    complexity: data.complexity,
+                    addons: data.addons,
+                    deliveryMode: data.deliveryMode,
+                    tenureYears: data.tenureYears,
+                    payUpfront: data.payUpfront
+                },
+                quotation: {
+                    currency: "INR",
+                    totalProjectValue: data.quotation.totalProjectValue,
+                    upfrontFee: data.quotation.upfrontFee,
+                    monthlySubscription: data.quotation.monthlySubscription,
+                    subscriptionDuration: data.quotation.subscriptionDuration,
+                    deliveryTime: data.quotation.deliveryTime,
+                    includesMaintenance: true,
+                    maintenanceCost: data.quotation.maintenanceCost
+                }
+            }),
+        });
+        return await response.json();
+    } catch (error) {
+        console.error("Error submitting estimate:", error);
+        throw error;
+    }
 };
 
-/**
- * Submit General Contact Form
- * Replace with: await axios.post('/api/leads/contact', data);
- */
 export const submitContactForm = async (data) => {
-    console.log("Submitting Contact Form to Backend:", data);
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({ success: true, message: "Contact request received" });
-        }, 1000);
-    });
+    try {
+        const response = await fetch(`${API_BASE_URL}/axomitlab/leads`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                formType: 'contact',
+                leadInfo: data
+            }),
+        });
+        return await response.json();
+    } catch (error) {
+        console.error("Error submitting contact form:", error);
+        throw error;
+    }
+};
+
+export const getLeads = async () => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/axomitlab/leads`);
+        if (!response.ok) throw new Error('Failed to fetch leads');
+        const json = await response.json();
+        // The API returns { success: true, count: N, data: [...] }
+        return json.data || [];
+    } catch (error) {
+        console.error("Error fetching leads:", error);
+        throw error;
+    }
+};
+
+export const updateLead = async (id, updates) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/axomitlab/leads/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updates),
+        });
+        if (!response.ok) throw new Error('Failed to update lead');
+        return await response.json();
+    } catch (error) {
+        console.error("Error updating lead:", error);
+        throw error;
+    }
 };

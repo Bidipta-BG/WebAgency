@@ -1,38 +1,20 @@
-import React, { useState } from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Services from './components/Services';
-import Process from './components/Process';
-import CostCalculator from './components/CostCalculator';
-import About from './components/About';
-import Footer from './components/Footer';
-import LegalModal from './components/LegalModal';
-import ContactModal from './components/ContactModal';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Landing from './pages/Landing';
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
-  const [legalOpen, setLegalOpen] = useState(false);
-  const [contactOpen, setContactOpen] = useState(false);
-  const [legalTab, setLegalTab] = useState('privacy'); // 'privacy' | 'terms'
-
-  const openLegal = (tab) => {
-    setLegalTab(tab);
-    setLegalOpen(true);
-  };
-
   return (
-    <div className="bg-surface-muted min-h-screen">
-      <Navbar />
-      <main>
-        <Hero />
-        <Services />
-        <About />
-        <Process />
-        <CostCalculator />
-      </main>
-      <Footer onOpenLegal={openLegal} onContact={() => setContactOpen(true)} />
-      <LegalModal isOpen={legalOpen} onClose={() => setLegalOpen(false)} activeTab={legalTab} />
-      <ContactModal isOpen={contactOpen} onClose={() => setContactOpen(false)} />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/leads/admin/login" element={<AdminLogin />} />
+        <Route path="/leads/dashboard" element={<AdminDashboard />} />
+        {/* Redirect unknown routes to home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

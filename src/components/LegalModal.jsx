@@ -51,7 +51,7 @@ const LegalModal = ({ isOpen, onClose, activeTab }) => {
                         {activeTab === 'privacy' ? (
                             <>
                                 <p><strong>Last Updated: January 2026</strong></p>
-                                <p>At NovaTech, we take your privacy seriously. This policy outlines how we collect, use, and protect your personal information.</p>
+                                <p>At AxomITLab, we take your privacy seriously. This policy outlines how we collect, use, and protect your personal information.</p>
 
                                 <h3 className="text-lg font-bold text-primary pt-4">1. Information We Collect</h3>
                                 <p>We collect information you provide directly to us, such as when you fill out our cost estimator form, request a consultation, or communicate with us via email. This may include your name, email address, phone number, and project details.</p>
@@ -68,24 +68,24 @@ const LegalModal = ({ isOpen, onClose, activeTab }) => {
                                 <p>We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction.</p>
 
                                 <h3 className="text-lg font-bold text-primary pt-4">4. Contact Us</h3>
-                                <p>If you have any questions about this Privacy Policy, please contact us at <strong>privacy@novatech.agency</strong>.</p>
+                                <p>If you have any questions about this Privacy Policy, please contact us at <strong>privacy@axomitlab.com</strong>.</p>
                             </>
                         ) : (
                             <>
                                 <p><strong>Last Updated: January 2026</strong></p>
-                                <p>Welcome to NovaTech. By accessing or using our websites and services, you agree to be bound by these Terms of Service.</p>
+                                <p>Welcome to AxomITLab. By accessing or using our websites and services, you agree to be bound by these Terms of Service.</p>
 
                                 <h3 className="text-lg font-bold text-primary pt-4">1. Scope of Services</h3>
-                                <p>NovaTech provides software development, UI/UX design, and consulting services. The specific scope of work will be defined in individual project agreements.</p>
+                                <p>AxomITLab provides software development, UI/UX design, and consulting services. The specific scope of work will be defined in individual project agreements.</p>
 
                                 <h3 className="text-lg font-bold text-primary pt-4">2. Payments & EMI</h3>
                                 <p>We offer flexible payment terms, including EMI options. Failure to make payments on time may result in the suspension of services or project handover delays. Code ownership is transferred only upon full payment or completion of the agreed tenure.</p>
 
                                 <h3 className="text-lg font-bold text-primary pt-4">3. Intellectual Property</h3>
-                                <p>Unless otherwise agreed, NovaTech retains ownership of the underlying code frameworks until the final handover. Clients are granted a license to use the software during the development and maintenance period.</p>
+                                <p>Unless otherwise agreed, AxomITLab retains ownership of the underlying code frameworks until the final handover. Clients are granted a license to use the software during the development and maintenance period.</p>
 
                                 <h3 className="text-lg font-bold text-primary pt-4">4. Limitation of Liability</h3>
-                                <p>NovaTech shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your access to or use of our services.</p>
+                                <p>AxomITLab shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your access to or use of our services.</p>
                             </>
                         )}
                     </div>

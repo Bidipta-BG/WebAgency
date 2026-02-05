@@ -19,12 +19,12 @@ const About = () => {
                         </h2>
 
                         <p className="text-slate-400 text-lg leading-relaxed mb-6">
-                            At NovaTech, we believe that financial constraints shouldn't kill great ideas.
+                            At AxomITLab, we believe that financial constraints shouldn't kill great ideas.
                             Inspired by total transparency, we founded this agency to bridge the gap between
                             startups and enterprise-grade technology.
                         </p>
                         <p className="text-slate-400 text-lg leading-relaxed mb-8">
-                            Our unique <strong>EMI-based model</strong> ensures you can scale sustainably, while our
+                            Our unique <strong>EMI-based model</strong> ensures you can scale sustainably, while our{" "}
                             <strong>Lifetime Support</strong> guarantee means we never leave your side after launch.
                         </p>
 

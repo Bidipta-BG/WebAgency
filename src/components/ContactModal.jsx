@@ -8,6 +8,8 @@ const ContactModal = ({ isOpen, onClose }) => {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const [errors, setErrors] = useState({});
+
     // Prevent background scroll when open
     useEffect(() => {
         if (isOpen) {
@@ -17,8 +19,34 @@ const ContactModal = ({ isOpen, onClose }) => {
         }
     }, [isOpen]);
 
+    const validate = () => {
+        const newErrors = {};
+        if (!formData.name.trim()) newErrors.name = "Name is required";
+
+        if (!formData.email.trim()) {
+            newErrors.email = "Email is required";
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            newErrors.email = "Please enter a valid email address";
+        }
+
+        if (!formData.phone.trim()) {
+            newErrors.phone = "Phone number is required";
+        } else if (formData.phone.length < 10) {
+            newErrors.phone = "Phone number must be at least 10 digits";
+        }
+
+        return newErrors;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const validationErrors = validate();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+        setErrors({});
         setIsSubmitting(true);
 
         try {
@@ -28,9 +56,11 @@ const ContactModal = ({ isOpen, onClose }) => {
                 onClose();
                 setIsSubmitted(false);
                 setFormData({ name: '', email: '', phone: '' });
+                setErrors({});
             }, 2000);
         } catch (error) {
             console.error("Submission failed", error);
+            // Optionally set a general error here
         } finally {
             setIsSubmitting(false);
         }
@@ -84,43 +114,62 @@ const ContactModal = ({ isOpen, onClose }) => {
                                 <div>
                                     <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wide">Name</label>
                                     <input
-                                        required
                                         type="text"
-                                        className="w-full px-4 py-3 rounded-xl border border-white/10 bg-surface-muted text-white text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder:text-slate-600"
+                                        className={`w-full px-4 py-3 rounded-xl border bg-surface-muted text-white text-sm focus:outline-none focus:ring-1 transition-all placeholder:text-slate-600 ${errors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-white/10 focus:border-accent focus:ring-accent'}`}
                                         placeholder="John Doe"
                                         value={formData.name}
-                                        onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                        onChange={e => {
+                                            setFormData({ ...formData, name: e.target.value });
+                                            if (errors.name) setErrors({ ...errors, name: null });
+                                        }}
                                     />
+                                    {errors.name && <p className="text-red-400 text-xs mt-1 ml-1">{errors.name}</p>}
                                 </div>
                                 <div>
                                     <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wide">Email</label>
                                     <input
-                                        required
                                         type="email"
-                                        className="w-full px-4 py-3 rounded-xl border border-white/10 bg-surface-muted text-white text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder:text-slate-600"
+                                        className={`w-full px-4 py-3 rounded-xl border bg-surface-muted text-white text-sm focus:outline-none focus:ring-1 transition-all placeholder:text-slate-600 ${errors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-white/10 focus:border-accent focus:ring-accent'}`}
                                         placeholder="john@example.com"
                                         value={formData.email}
-                                        onChange={e => setFormData({ ...formData, email: e.target.value })}
+                                        onChange={e => {
+                                            setFormData({ ...formData, email: e.target.value });
+                                            if (errors.email) setErrors({ ...errors, email: null });
+                                        }}
                                     />
+                                    {errors.email && <p className="text-red-400 text-xs mt-1 ml-1">{errors.email}</p>}
                                 </div>
                                 <div>
                                     <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wide">Phone</label>
                                     <input
-                                        required
                                         type="tel"
-                                        className="w-full px-4 py-3 rounded-xl border border-white/10 bg-surface-muted text-white text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder:text-slate-600"
+                                        className={`w-full px-4 py-3 rounded-xl border bg-surface-muted text-white text-sm focus:outline-none focus:ring-1 transition-all placeholder:text-slate-600 ${errors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-white/10 focus:border-accent focus:ring-accent'}`}
                                         placeholder="+91 98765 43210"
                                         value={formData.phone}
-                                        onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                                        onChange={e => {
+                                            setFormData({ ...formData, phone: e.target.value });
+                                            if (errors.phone) setErrors({ ...errors, phone: null });
+                                        }}
                                     />
+                                    {errors.phone && <p className="text-red-400 text-xs mt-1 ml-1">{errors.phone}</p>}
                                 </div>
 
                                 <button
                                     type="submit"
-                                    className="w-full bg-accent hover:bg-accent-bright text-white font-bold py-3.5 rounded-xl shadow-lg shadow-accent/20 hover:shadow-accent/40 transition-all flex items-center justify-center gap-2 mt-4 group"
+                                    disabled={isSubmitting}
+                                    className="w-full bg-accent hover:bg-accent-bright text-white font-bold py-3.5 rounded-xl shadow-lg shadow-accent/20 hover:shadow-accent/40 transition-all flex items-center justify-center gap-2 mt-4 group disabled:opacity-70 disabled:cursor-not-allowed"
                                 >
-                                    <span>Send Request</span>
-                                    <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                    {isSubmitting ? (
+                                        <>
+                                            <Loader2 className="w-4 h-4 animate-spin" />
+                                            <span>Sending...</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span>Send Request</span>
+                                            <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                        </>
+                                    )}
                                 </button>
                             </form>
                         )}

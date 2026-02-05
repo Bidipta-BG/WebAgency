@@ -4,13 +4,16 @@ import { Check, ChevronRight, Calculator, Send, Info, AlertCircle, Clock, Zap, C
 import { cn } from '../lib/utils';
 import { fetchPricingConfig, submitEstimate } from '../services/api';
 
-const CostCalculator = () => {
+const CostCalculator = ({ onContact }) => {
     const [step, setStep] = useState(1);
     const [projectType, setProjectType] = useState('');
     const [complexity, setComplexity] = useState('');
 
-    // Pricing Config State (Loaded from API)
+    // Pricing Config State
+    const [config, setConfig] = useState(null);
     const [isLoadingConfig, setIsLoadingConfig] = useState(true);
+
+    // Derived state from config
     const [powerUps, setPowerUps] = useState([]);
     const [basePrice, setBasePrice] = useState(0);
 
@@ -32,9 +35,10 @@ const CostCalculator = () => {
     useEffect(() => {
         const loadConfig = async () => {
             try {
-                const config = await fetchPricingConfig();
-                setPowerUps(config.powerUps);
-                setBasePrice(config.basePrice);
+                const data = await fetchPricingConfig();
+                setConfig(data);
+                setPowerUps(data.powerUps || []);
+                setBasePrice(data.basePrice || 0);
             } catch (error) {
                 console.error("Failed to load pricing config", error);
             } finally {
@@ -44,20 +48,24 @@ const CostCalculator = () => {
         loadConfig();
     }, []);
 
-    // Duration Logic (Weeks)
+    // Calculation Helpers
     const getBaseDurationWeeks = () => {
-        let weeks = 4; // Base
-        if (projectType === 'mobile') weeks += 4;
-        if (projectType === 'both') weeks += 8;
+        if (!config) return 4;
 
-        if (complexity === 'standard') weeks += 6;
-        if (complexity === 'enterprise') weeks += 16;
+        let weeks = 4; // Default base
+
+        // Dynamic Project Type Duration
+        const pType = config.projectTypes.find(p => p.id === projectType);
+        if (pType) weeks = pType.weeks;
+
+        // Dynamic Complexity Duration
+        const cType = config.complexities.find(c => c.id === complexity);
+        if (cType) weeks += cType.weeks;
 
         // Addons impact loop
         powerUps.forEach(p => {
             if (addons.includes(p.id)) {
                 weeks += p.baseTime;
-                // Add sub-feature times
                 p.subs.forEach(sub => {
                     if (addons.includes(sub.id)) weeks += sub.time;
                 });
@@ -68,38 +76,47 @@ const CostCalculator = () => {
     };
 
     const getMultiplier = () => {
-        let mult = 1;
-        if (projectType === 'mobile') mult *= 1.5;
-        if (projectType === 'both') mult *= 2.2;
+        if (!config) return 1;
 
-        if (complexity === 'standard') mult *= 1.5;
-        if (complexity === 'enterprise') mult *= 2.5;
+        let mult = 1;
+
+        // Dynamic Project Type Multiplier
+        const pType = config.projectTypes.find(p => p.id === projectType);
+        if (pType) mult *= pType.multiplier;
+
+        // Dynamic Complexity Multiplier
+        const cType = config.complexities.find(c => c.id === complexity);
+        if (cType) mult *= cType.multiplier;
 
         return mult;
     };
 
     const calculateTotal = () => {
+        if (!config) return 0;
+
         let total = basePrice * getMultiplier();
 
         // Addons cost loop
         powerUps.forEach(p => {
             if (addons.includes(p.id)) {
                 total += p.baseCost;
-                // Add sub-feature costs
                 p.subs.forEach(sub => {
                     if (addons.includes(sub.id)) total += sub.cost;
                 });
             }
         });
 
-        // Delivery Speed Impact
-        if (deliveryMode === 'express') {
-            total *= 1.20;
-        } else if (deliveryMode === 'custom' && customMonths) {
+        // Dynamic Delivery Speed Impact
+        const expressMode = config.deliveryModes.find(m => m.id === 'express');
+        const customMode = config.deliveryModes.find(m => m.id === 'custom');
+
+        if (deliveryMode === 'express' && expressMode) {
+            total *= expressMode.multiplier;
+        } else if (deliveryMode === 'custom' && customMonths && customMode) {
             const standardWeeks = getBaseDurationWeeks();
             const customWeeks = customMonths * 4;
             if (customWeeks < standardWeeks) {
-                total *= 1.15;
+                total *= customMode.multiplier;
             }
         }
 
@@ -109,29 +126,37 @@ const CostCalculator = () => {
     const rawTotal = calculateTotal();
     const baseDurationWeeks = Math.ceil(getBaseDurationWeeks());
 
-    // Custom Min Duration (cannot be unreasonably fast) 
-    // Let's say min duration is 60% of base
-    const minDurationWeeks = Math.max(4, Math.ceil(baseDurationWeeks * 0.6));
-
     // Final Duration Display
     let finalDurationDisplay = `${baseDurationWeeks} Weeks`;
-    if (deliveryMode === 'express') {
-        finalDurationDisplay = `${Math.ceil(baseDurationWeeks * 0.7)} Weeks`;
-    } else if (deliveryMode === 'custom' && customMonths) {
-        finalDurationDisplay = `${customMonths} Months`;
+
+    if (config) {
+        const expressMode = config.deliveryModes.find(m => m.id === 'express');
+
+        if (deliveryMode === 'express' && expressMode) {
+            // Use factor from config (e.g. 0.7)
+            const factor = config.deliveryExpressTimeFactor || 0.7;
+            finalDurationDisplay = `${Math.ceil(baseDurationWeeks * factor)} Weeks`;
+        } else if (deliveryMode === 'custom' && customMonths) {
+            finalDurationDisplay = `${customMonths} Months`;
+        }
     }
 
-    const finalTotal = payUpfront ? Math.round(rawTotal * 0.9) : rawTotal;
+    // Dynamic Upfront Discount
+    const upfrontDiscount = config?.upfrontDiscount || 0.10;
+    const finalTotal = payUpfront ? Math.round(rawTotal * (1 - upfrontDiscount)) : rawTotal;
 
-    // Range Calculation (+20% Buffer for estimations)
+    // Range Calculation (+Buffer from config)
+    const buffer = config?.estimationBuffer || 0.20;
     const minTotal = finalTotal;
-    const maxTotal = Math.round(finalTotal * 1.2);
+    const maxTotal = Math.round(finalTotal * (1 + buffer));
 
-    const agreementCharge = Math.round(minTotal * 0.10); // Based on minimum estimate
+    // Dynamic Agreement Charge
+    const agreementPct = config?.upfrontAgreementPercentage || 0.10;
+    const agreementCharge = Math.round(minTotal * agreementPct);
     const amountForEMI = minTotal - agreementCharge;
 
-    // Max Values for Display (User Requested Upper Limit)
-    const maxAgreementCharge = Math.round(maxTotal * 0.10);
+    // Max Values for Display
+    const maxAgreementCharge = Math.round(maxTotal * agreementPct);
     const maxAmountForEMI = maxTotal - maxAgreementCharge;
 
     // EMI Ranges
@@ -139,10 +164,34 @@ const CostCalculator = () => {
     const maxEMI = payUpfront ? 0 : (tenureYears > 0 ? Math.round((maxTotal - agreementCharge) / (tenureYears * 12)) : 0);
 
     // Maintenance Ranges
-    const minAMC = Math.round(rawTotal * 0.15);
-    const maxAMC = Math.round(minAMC * 1.2);
+    const amcPct = config?.maintenancePercentage || 0.15;
+    const minAMC = Math.round(rawTotal * amcPct);
+    const maxAMC = Math.round(minAMC * (1 + buffer));
 
+    const [errors, setErrors] = useState({});
+
+    // Formatting Helpers
     const fmt = (num) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(num);
+
+    const validate = () => {
+        const newErrors = {};
+        if (!leadInfo.name.trim()) newErrors.name = "Name is required";
+
+        if (!leadInfo.email.trim()) {
+            newErrors.email = "Email is required";
+        } else if (!/\S+@\S+\.\S+/.test(leadInfo.email)) {
+            newErrors.email = "Invalid email address";
+        }
+
+        if (!leadInfo.phone.trim()) {
+            newErrors.phone = "Phone number is required";
+        } else if (!/^\d{10}$/.test(leadInfo.phone.replace(/\D/g, ''))) {
+            // Checks for exactly 10 digits after stripping non-digits
+            newErrors.phone = "Phone number must be at least 10 digits";
+        }
+
+        return newErrors;
+    };
 
     const handleParentToggle = (id) => {
         if (addons.includes(id)) {
@@ -164,8 +213,58 @@ const CostCalculator = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validation
+        const validationErrors = validate();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+        setErrors({}); // Clear errors
+
         setIsSubmitting(true);
-        const estimateData = { leadInfo, projectType, complexity, addons, finalTotal, tenureYears, payUpfront, deliveryMode, finalDurationDisplay };
+
+        // Prepare Detailed Quotation Data
+        // Helper calculation variables already exist in scope (calculated in render)
+        // But we need to grab them *cleanly* for the payload.
+        // We re-calculate purely to ensure we have the exact numbers at submit time.
+
+        const rawT = calculateTotal();
+        // Dynamic Upfront Discount
+        const uDiscount = config?.upfrontDiscount || 0.10;
+        const fTotal = payUpfront ? Math.round(rawT * (1 - uDiscount)) : rawT;
+
+        // Agreement Charge / Upfront Fee
+        const agreePct = config?.upfrontAgreementPercentage || 0.10;
+        const upfrontFeeVal = Math.round(fTotal * agreePct);
+
+        // Monthly Subscription
+        const amtForEMI = fTotal - upfrontFeeVal;
+        const monthlySubVal = payUpfront ? 0 : (tenureYears > 0 ? Math.round(amtForEMI / (tenureYears * 12)) : 0);
+
+        // Maintenance
+        const amcPercentage = config?.maintenancePercentage || 0.15;
+        const maintCostVal = Math.round(rawT * amcPercentage);
+
+        const estimateData = {
+            leadInfo,
+            projectType,
+            complexity,
+            addons,
+            deliveryMode,
+            tenureYears,
+            payUpfront,
+            finalTotal: fTotal, // Legacy support if needed
+            finalDurationDisplay,
+            quotation: {
+                totalProjectValue: fTotal,
+                upfrontFee: upfrontFeeVal,
+                monthlySubscription: monthlySubVal,
+                subscriptionDuration: payUpfront ? 0 : tenureYears * 12,
+                deliveryTime: finalDurationDisplay,
+                maintenanceCost: maintCostVal
+            }
+        };
 
         try {
             await submitEstimate(estimateData);
@@ -177,16 +276,19 @@ const CostCalculator = () => {
         }
     };
 
-    // Determine available tenures based on total cost
-    // Determine available tenures based on total cost
-    const show18Month = rawTotal > 300000;
-    const show2Year = rawTotal > 500000;
-    const show3Year = rawTotal > 1000000;
-    const show5Year = rawTotal > 2000000;
+    // Determine available tenures based on total cost from config thresholds
+    const getAvailableTenures = () => {
+        if (!config || !config.paymentTenures) return [];
+        return config.paymentTenures.filter(t => rawTotal > t.threshold);
+    };
+    const availableTenures = getAvailableTenures();
 
     // Custom Delivery Options Generator
     const getCustomOptions = () => {
+        const minFactor = config?.minDurationFactor || 0.6;
+        const minDurationWeeks = Math.max(4, Math.ceil(baseDurationWeeks * minFactor));
         const minMonths = Math.ceil(minDurationWeeks / 4);
+
         const options = [];
         for (let i = 1; i <= 14; i++) {
             if (i >= minMonths) {
@@ -250,11 +352,7 @@ const CostCalculator = () => {
                                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
                                         <h3 className="text-xl font-bold text-primary mb-6">What would you like to build?</h3>
                                         <div className="grid md:grid-cols-2 gap-4">
-                                            {[
-                                                { id: 'web', label: 'Website / Web App', desc: 'SaaS, Dashboard, or Info site' },
-                                                { id: 'mobile', label: 'Mobile App', desc: 'iOS & Android Native App' },
-                                                { id: 'both', label: 'Full Platform', desc: 'Web + Mobile App Sync' },
-                                            ].map((opt) => (
+                                            {config?.projectTypes.map((opt) => (
                                                 <button
                                                     key={opt.id}
                                                     onClick={() => setProjectType(opt.id)}
@@ -278,11 +376,7 @@ const CostCalculator = () => {
                                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
                                         <h3 className="text-xl font-bold text-primary mb-6">Scale & Complexity</h3>
                                         <div className="space-y-3">
-                                            {[
-                                                { id: 'mvp', label: 'Fast Launch (MVP)', desc: 'Core features only. Ideal for testing ideas quickly.' },
-                                                { id: 'standard', label: 'Professional Business', desc: 'Fully featured product with refined UI/UX and standard security.' },
-                                                { id: 'enterprise', label: 'Full-Scale Organization', desc: 'Complex workflows, high security, multi-role access, and high scalability.' },
-                                            ].map((opt) => (
+                                            {config?.complexities.map((opt) => (
                                                 <button
                                                     key={opt.id}
                                                     onClick={() => setComplexity(opt.id)}
@@ -390,58 +484,35 @@ const CostCalculator = () => {
                                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
                                         <h3 className="text-xl font-bold text-primary mb-6">Delivery Timeline</h3>
                                         <div className="grid md:grid-cols-3 gap-4">
-                                            {/* Standard */}
-                                            <button
-                                                onClick={() => setDeliveryMode('standard')}
-                                                className={cn(
-                                                    "p-4 rounded-xl border text-left transition-all relative overflow-hidden",
-                                                    deliveryMode === 'standard'
-                                                        ? "border-primary bg-primary/5 ring-1 ring-primary"
-                                                        : "border-slate-200 hover:border-slate-300"
-                                                )}
-                                            >
-                                                <div className="flex items-center gap-2 mb-2">
-                                                    <Clock className="w-5 h-5 text-primary" />
-                                                    <span className="font-bold text-primary">Standard</span>
-                                                </div>
-                                                <div className="text-sm text-slate-500 mb-1">~{Math.ceil(baseDurationWeeks)} Weeks</div>
-                                            </button>
+                                            {config?.deliveryModes.map((mode) => (
+                                                <button
+                                                    key={mode.id}
+                                                    onClick={() => setDeliveryMode(mode.id)}
+                                                    className={cn(
+                                                        "p-4 rounded-xl border text-left transition-all relative overflow-hidden",
+                                                        deliveryMode === mode.id
+                                                            ? (mode.id === 'express'
+                                                                ? "border-amber-500 bg-amber-50 ring-1 ring-amber-500"
+                                                                : "border-accent bg-accent/5 ring-1 ring-accent")
+                                                            : "border-slate-200 hover:border-accent"
+                                                    )}
+                                                >
+                                                    {mode.id === 'express' && <div className="absolute top-0 right-0 bg-amber-100 text-amber-700 text-[9px] px-2 py-0.5 rounded-bl font-bold">{mode.tag}</div>}
 
-                                            {/* Express */}
-                                            <button
-                                                onClick={() => setDeliveryMode('express')}
-                                                className={cn(
-                                                    "p-4 rounded-xl border text-left transition-all relative overflow-hidden",
-                                                    deliveryMode === 'express'
-                                                        ? "border-amber-500 bg-amber-50 ring-1 ring-amber-500"
-                                                        : "border-slate-200 hover:border-amber-200"
-                                                )}
-                                            >
-                                                <div className="absolute top-0 right-0 bg-amber-100 text-amber-700 text-[9px] px-2 py-0.5 rounded-bl font-bold">FAST</div>
-                                                <div className="flex items-center gap-2 mb-2">
-                                                    <Zap className="w-5 h-5 text-amber-500 fill-current" />
-                                                    <span className="font-bold text-primary">Express</span>
-                                                </div>
-                                                <div className="text-sm text-slate-500 mb-1">~{Math.ceil(baseDurationWeeks * 0.7)} Weeks</div>
-                                                <div className="text-xs text-amber-600 font-medium">+20% Cost</div>
-                                            </button>
+                                                    <div className="flex items-center gap-2 mb-2">
+                                                        {mode.id === 'standard' && <Clock className="w-5 h-5 text-primary" />}
+                                                        {mode.id === 'express' && <Zap className="w-5 h-5 text-amber-500 fill-current" />}
+                                                        {mode.id === 'custom' && <Calendar className="w-5 h-5 text-accent" />}
+                                                        <span className="font-bold text-primary">{mode.label}</span>
+                                                    </div>
 
-                                            {/* Custom */}
-                                            <button
-                                                onClick={() => setDeliveryMode('custom')}
-                                                className={cn(
-                                                    "p-4 rounded-xl border text-left transition-all relative overflow-hidden",
-                                                    deliveryMode === 'custom'
-                                                        ? "border-accent bg-accent/5 ring-1 ring-accent"
-                                                        : "border-slate-200 hover:border-accent"
-                                                )}
-                                            >
-                                                <div className="flex items-center gap-2 mb-2">
-                                                    <Calendar className="w-5 h-5 text-accent" />
-                                                    <span className="font-bold text-primary">Custom</span>
-                                                </div>
-                                                <div className="text-sm text-slate-500 mb-1">Select Date</div>
-                                            </button>
+                                                    {mode.id === 'standard' && <div className="text-sm text-slate-500 mb-1">~{Math.ceil(baseDurationWeeks)} Weeks</div>}
+                                                    {mode.id === 'express' && <div className="text-sm text-slate-500 mb-1">~{Math.ceil(baseDurationWeeks * (config.deliveryExpressTimeFactor || 0.7))} Weeks</div>}
+                                                    {mode.id === 'custom' && <div className="text-sm text-slate-500 mb-1">Select Date</div>}
+
+                                                    {mode.multiplier > 1 && <div className="text-xs text-amber-600 font-medium">+{parseFloat(((mode.multiplier - 1) * 100).toFixed(2))}% Cost</div>}
+                                                </button>
+                                            ))}
                                         </div>
 
                                         {/* Custom options selector */}
@@ -483,26 +554,22 @@ const CostCalculator = () => {
                                         {/* Tenure Selection */}
                                         {!payUpfront && (
                                             <div className="mb-8">
-                                                <h4 className="font-bold text-white mb-3">Select Payment Tenure</h4>
+                                                <h4 className="font-bold text-white mb-3">Choose Plan Duration</h4>
                                                 <div className="flex flex-wrap gap-2">
-                                                    {[1, 1.5, 2, 3, 5].map((yr) => {
-                                                        const isLocked = (yr === 1.5 && !show18Month) || (yr === 2 && !show2Year) || (yr === 3 && !show3Year) || (yr === 5 && !show5Year);
-                                                        if (isLocked && yr !== 1) return null;
-                                                        return (
-                                                            <button
-                                                                key={yr}
-                                                                onClick={() => setTenureYears(yr)}
-                                                                className={cn(
-                                                                    "px-4 py-2 rounded-lg border text-sm font-medium transition-all",
-                                                                    tenureYears === yr
-                                                                        ? "bg-accent text-white border-accent shadow-md"
-                                                                        : "bg-surface-muted text-white border-surface-highlight hover:bg-surface-highlight"
-                                                                )}
-                                                            >
-                                                                {yr === 1.5 ? '18 Months' : `${yr} Year${yr > 1 ? 's' : ''}`}
-                                                            </button>
-                                                        )
-                                                    })}
+                                                    {availableTenures.map((t) => (
+                                                        <button
+                                                            key={t.id}
+                                                            onClick={() => setTenureYears(t.value)}
+                                                            className={cn(
+                                                                "px-4 py-2 rounded-lg border text-sm font-medium transition-all",
+                                                                tenureYears === t.value
+                                                                    ? "bg-accent text-white border-accent shadow-md"
+                                                                    : "bg-surface-muted text-white border-surface-highlight hover:bg-surface-highlight"
+                                                            )}
+                                                        >
+                                                            {t.label}
+                                                        </button>
+                                                    ))}
                                                 </div>
                                             </div>
                                         )}
@@ -510,8 +577,8 @@ const CostCalculator = () => {
                                         {/* Upfront Toggle */}
                                         <div className="mb-8 p-4 bg-green-900/20 border border-green-900/40 rounded-xl flex items-center justify-between">
                                             <div>
-                                                <h4 className="font-bold text-green-400 text-sm">Pay Upfront & Save 10%?</h4>
-                                                <p className="text-green-500 text-xs">No EMI. Full payment in milestones.</p>
+                                                <h4 className="font-bold text-green-400 text-sm">Pay Upfront & Save {config ? (config.upfrontDiscount * 100) : 10}%?</h4>
+                                                <p className="text-green-500 text-xs">No Monthly Fees. Full payment in milestones.</p>
                                             </div>
                                             <button
                                                 onClick={() => setPayUpfront(!payUpfront)}
@@ -545,30 +612,45 @@ const CostCalculator = () => {
                                             <form onSubmit={handleSubmit}>
                                                 <h3 className="text-lg font-bold text-white mb-4">Your Details</h3>
                                                 <div className="space-y-3">
-                                                    <input
-                                                        required
-                                                        type="text"
-                                                        className="w-full px-4 py-3 rounded-lg border border-surface-highlight bg-surface-muted text-white text-sm focus:outline-none focus:border-accent placeholder:text-slate-500"
-                                                        placeholder="Your Name"
-                                                        value={leadInfo.name}
-                                                        onChange={e => setLeadInfo({ ...leadInfo, name: e.target.value })}
-                                                    />
-                                                    <input
-                                                        required
-                                                        type="email"
-                                                        className="w-full px-4 py-3 rounded-lg border border-surface-highlight bg-surface-muted text-white text-sm focus:outline-none focus:border-accent placeholder:text-slate-500"
-                                                        placeholder="Work Email"
-                                                        value={leadInfo.email}
-                                                        onChange={e => setLeadInfo({ ...leadInfo, email: e.target.value })}
-                                                    />
-                                                    <input
-                                                        required
-                                                        type="tel"
-                                                        className="w-full px-4 py-3 rounded-lg border border-surface-highlight bg-surface-muted text-white text-sm focus:outline-none focus:border-accent placeholder:text-slate-500"
-                                                        placeholder="Phone Number"
-                                                        value={leadInfo.phone}
-                                                        onChange={e => setLeadInfo({ ...leadInfo, phone: e.target.value })}
-                                                    />
+                                                    <div>
+                                                        <input
+                                                            type="text"
+                                                            className={`w-full px-4 py-3 rounded-lg border bg-surface-muted text-white text-sm focus:outline-none focus:ring-1 transition-all placeholder:text-slate-500 ${errors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-surface-highlight focus:border-accent focus:ring-accent'}`}
+                                                            placeholder="Your Name"
+                                                            value={leadInfo.name}
+                                                            onChange={e => {
+                                                                setLeadInfo({ ...leadInfo, name: e.target.value });
+                                                                if (errors.name) setErrors({ ...errors, name: null });
+                                                            }}
+                                                        />
+                                                        {errors.name && <p className="text-red-400 text-xs mt-1 ml-1">{errors.name}</p>}
+                                                    </div>
+                                                    <div>
+                                                        <input
+                                                            type="email"
+                                                            className={`w-full px-4 py-3 rounded-lg border bg-surface-muted text-white text-sm focus:outline-none focus:ring-1 transition-all placeholder:text-slate-500 ${errors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-surface-highlight focus:border-accent focus:ring-accent'}`}
+                                                            placeholder="Work Email"
+                                                            value={leadInfo.email}
+                                                            onChange={e => {
+                                                                setLeadInfo({ ...leadInfo, email: e.target.value });
+                                                                if (errors.email) setErrors({ ...errors, email: null });
+                                                            }}
+                                                        />
+                                                        {errors.email && <p className="text-red-400 text-xs mt-1 ml-1">{errors.email}</p>}
+                                                    </div>
+                                                    <div>
+                                                        <input
+                                                            type="tel"
+                                                            className={`w-full px-4 py-3 rounded-lg border bg-surface-muted text-white text-sm focus:outline-none focus:ring-1 transition-all placeholder:text-slate-500 ${errors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-surface-highlight focus:border-accent focus:ring-accent'}`}
+                                                            placeholder="Phone Number"
+                                                            value={leadInfo.phone}
+                                                            onChange={e => {
+                                                                setLeadInfo({ ...leadInfo, phone: e.target.value });
+                                                                if (errors.phone) setErrors({ ...errors, phone: null });
+                                                            }}
+                                                        />
+                                                        {errors.phone && <p className="text-red-400 text-xs mt-1 ml-1">{errors.phone}</p>}
+                                                    </div>
                                                 </div>
                                             </form>
                                         )}
@@ -641,7 +723,7 @@ const CostCalculator = () => {
                                         exit={{ opacity: 0, height: 0 }}
                                         className="bg-green-500/10 border border-green-500/20 rounded-lg p-3 mb-6"
                                     >
-                                        <p className="text-green-400 text-xs font-semibold">10% Discount Applied!</p>
+                                        <p className="text-green-400 text-xs font-semibold">{config ? (config.upfrontDiscount * 100) : 10}% Discount Applied!</p>
                                         <p className="text-slate-300 text-xs strike-through line-through">{fmt(rawTotal)}</p>
                                     </motion.div>
                                 )}
@@ -664,7 +746,7 @@ const CostCalculator = () => {
                                 {/* 1. Total Project Value */}
                                 <div>
                                     <div className="flex justify-between items-end mb-1">
-                                        <p className="text-slate-400 text-sm">Total Project Value</p>
+                                        <p className="text-slate-400 text-sm">{config?.labels?.totalProject || 'Total Project Value'}</p>
                                         <p className="text-2xl font-bold tracking-tight">{fmt(minTotal)} - {fmt(maxTotal)}</p>
                                     </div>
                                     <div className="w-full bg-slate-700 h-1 rounded-full overflow-hidden">
@@ -678,7 +760,7 @@ const CostCalculator = () => {
                                     <div className="flex justify-between items-center text-sm">
                                         <div className="flex items-center gap-2">
                                             <div className="w-2 h-2 rounded-full bg-orange-400"></div>
-                                            <span className="text-slate-200">Upfront Agreement (10%)</span>
+                                            <span className="text-slate-200">{config?.labels?.agreement || 'Setup Fee'} ({Math.round((config?.upfrontAgreementPercentage || 0.1) * 100)}%)</span>
                                         </div>
                                         <span className="font-semibold text-white">≤ {fmt(maxAgreementCharge)}</span>
                                     </div>
@@ -690,13 +772,13 @@ const CostCalculator = () => {
                                             <div className="flex justify-between items-center text-sm">
                                                 <div className="flex items-center gap-2">
                                                     <div className="w-2 h-2 rounded-full bg-accent"></div>
-                                                    <span className="text-slate-200">Balance via EMI</span>
+                                                    <span className="text-slate-200">{config?.labels?.emi || 'Monthly Subscription'}</span>
                                                 </div>
                                                 <span className="font-semibold text-white">≤ {fmt(maxAmountForEMI)}</span>
                                             </div>
                                             <div className="mt-4 pt-4 bg-white/5 rounded-lg p-3 text-center">
                                                 <p className="text-accent-bright font-semibold text-xs uppercase mb-1">
-                                                    Your Monthly Payment ({tenureYears * 12} Months)
+                                                    Your Monthly Fee ({tenureYears * 12} Months)
                                                 </p>
                                                 <p className="text-3xl font-bold text-white tracking-tight">{fmt(minEMI)} - {fmt(maxEMI)}<span className="text-sm font-normal text-slate-400 block lg:inline-block lg:ml-1">/mo</span></p>
                                             </div>
@@ -728,7 +810,7 @@ const CostCalculator = () => {
                                                             className="absolute bottom-full left-0 mb-3 w-64 bg-slate-900 text-slate-200 text-xs p-3 rounded-xl shadow-2xl border border-slate-700 z-50"
                                                         >
                                                             <p className="leading-relaxed">
-                                                                After your <span className="text-white font-semibold">Tenure</span> ends, we hand over <span className="text-accent">100% ownership</span> (Code + Credentials). You can navigate it yourself or continue our service.
+                                                                After your <span className="text-white font-semibold">Subscription</span> ends, we hand over <span className="text-accent">100% ownership</span> (Code + Credentials). You can navigate it yourself or continue our service.
                                                             </p>
                                                             <div className="absolute -bottom-1.5 left-1 w-3 h-3 bg-slate-900 rotate-45 border-r border-b border-slate-700"></div>
                                                         </motion.div>
@@ -737,7 +819,7 @@ const CostCalculator = () => {
                                             </div>
                                             <div>
                                                 <div className="flex items-center gap-2">
-                                                    <p className="text-slate-400 text-xs font-semibold">Yearly Maintenance (AMC)</p>
+                                                    <p className="text-slate-400 text-xs font-semibold">{config?.labels?.amc || 'Yearly Maintenance (AMC)'}</p>
                                                     <span className="bg-white/10 text-[10px] px-1.5 py-0.5 rounded text-white border border-white/5">Optional</span>
                                                 </div>
                                                 <p className="text-[10px] text-slate-500 mt-1 max-w-[150px] leading-tight">
@@ -748,14 +830,17 @@ const CostCalculator = () => {
                                         <div className="text-right">
                                             <p className="text-sm font-semibold text-slate-300">{fmt(minAMC)} - {fmt(maxAMC)}/yr</p>
                                             <p className="text-[9px] text-slate-500">Est. Range</p>
-                                            <p className="text-[9px] text-accent mt-0.5 font-medium">EMI Available</p>
+                                            <p className="text-9px text-accent mt-0.5 font-medium">Monthly Plan Available</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="mt-8 pt-6 border-t border-white/10">
-                                <button className="w-full py-3 rounded-xl bg-accent hover:bg-accent-bright text-white font-bold transition-colors shadow-lg shadow-accent/20">
+                                <button
+                                    onClick={onContact}
+                                    className="w-full py-3 rounded-xl bg-accent hover:bg-accent-bright text-white font-bold transition-colors shadow-lg shadow-accent/20"
+                                >
                                     Book Free Consultation
                                 </button>
                             </div>

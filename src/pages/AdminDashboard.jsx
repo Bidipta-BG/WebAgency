@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Users, Calculator, TrendingUp, Search, Calendar, Phone, CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import { LogOut, Users, Calculator, TrendingUp, Search, Calendar, Phone, CheckCircle, Clock, AlertCircle, Eye } from 'lucide-react';
 import { getLeads, updateLead } from '../services/api';
+import LeadDetailsModal from '../components/LeadDetailsModal';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
     const [leads, setLeads] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedLead, setSelectedLead] = useState(null); // For editing status
+    const [selectedLead, setSelectedLead] = useState(null); // For detailed view modal management
 
     useEffect(() => {
         const isAuth = localStorage.getItem('axom_admin_auth');
@@ -23,7 +24,6 @@ const AdminDashboard = () => {
         setIsLoading(true);
         try {
             const data = await getLeads();
-            // Ensure data is an array
             setLeads(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error("Failed to load leads");
@@ -42,7 +42,6 @@ const AdminDashboard = () => {
             await updateLead(id, { followupStatus: status });
             // Optimistic update
             setLeads(leads.map(l => l._id === id ? { ...l, followupStatus: status } : l));
-            setSelectedLead(null);
         } catch (error) {
             alert("Failed to update status");
         }
@@ -171,9 +170,9 @@ const AdminDashboard = () => {
                                                 )}
                                             </td>
                                             <td className="px-6 py-4 font-mono text-slate-300">
-                                                {lead.quotation?.finalTotal
-                                                    ? `₹${lead.quotation.finalTotal.toLocaleString()}`
-                                                    : '-'
+                                                {lead.quotation?.totalProjectValue
+                                                    ? `₹${lead.quotation.totalProjectValue.toLocaleString()}`
+                                                    : (lead.quotation?.finalTotal ? `₹${lead.quotation.finalTotal.toLocaleString()}` : '-')
                                                 }
                                             </td>
                                             <td className="px-6 py-4 text-slate-400">
@@ -181,31 +180,38 @@ const AdminDashboard = () => {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className={`inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-medium border ${lead.followupStatus === 'Contacted' ? 'bg-green-500/10 text-green-400 border-green-500/20' :
-                                                        lead.followupStatus === 'Lost' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
-                                                            lead.followupStatus === 'Pending' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : // Added condition for Pending
-                                                                'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                                                    lead.followupStatus === 'Lost' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
+                                                        lead.followupStatus === 'Pending' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
+                                                            'bg-amber-500/10 text-amber-400 border-amber-500/20'
                                                     }`}>
                                                     {lead.followupStatus === 'Contacted' ? <CheckCircle className="w-3 h-3" /> :
                                                         lead.followupStatus === 'Lost' ? <AlertCircle className="w-3 h-3" /> :
-                                                            lead.followupStatus === 'Pending' ? <Clock className="w-3 h-3" /> : // Added icon for Pending
+                                                            lead.followupStatus === 'Pending' ? <Clock className="w-3 h-3" /> :
                                                                 <Clock className="w-3 h-3" />}
                                                     {lead.followupStatus || 'Pending'}
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 text-right">
-                                                <div className="flex justify-end gap-2">
+                                                <div className="flex justify-end gap-2 items-center">
                                                     <select
                                                         className="bg-slate-950 border border-slate-700 text-slate-300 text-xs rounded px-2 py-1 focus:outline-none focus:border-accent"
                                                         value={lead.followupStatus || ''}
                                                         onChange={(e) => handleStatusUpdate(lead._id, e.target.value)}
                                                     >
-                                                        <option value="">Set Status</option>
+                                                        <option value="">Status</option>
                                                         <option value="Pending">Pending</option>
                                                         <option value="Contacted">Contacted</option>
                                                         <option value="In Progress">In Progress</option>
                                                         <option value="Converted">Converted</option>
                                                         <option value="Lost">Lost</option>
                                                     </select>
+                                                    <button
+                                                        onClick={() => setSelectedLead(lead)}
+                                                        className="p-1.5 rounded-md bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition"
+                                                        title="View Details"
+                                                    >
+                                                        <Eye className="w-4 h-4" />
+                                                    </button>
                                                 </div>
                                                 {lead.isCustomerConnected && (
                                                     <div className="mt-1 text-[10px] text-emerald-500 flex items-center justify-end gap-1">
@@ -220,6 +226,12 @@ const AdminDashboard = () => {
                         </table>
                     </div>
                 </div>
+
+                <LeadDetailsModal
+                    isOpen={!!selectedLead}
+                    onClose={() => setSelectedLead(null)}
+                    lead={selectedLead}
+                />
             </main>
         </div>
     );

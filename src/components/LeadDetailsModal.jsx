@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, CheckCircle, Package, Layers, DollarSign, User, Mail, Phone, CreditCard, Clock } from 'lucide-react';

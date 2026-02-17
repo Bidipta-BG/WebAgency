@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import { Target, PenTool, Code2, Rocket, Headset } from 'lucide-react';
 

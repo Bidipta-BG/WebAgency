@@ -1,5 +1,4 @@
 import React from 'react';
-import mainLogo from '../assets/images/mainLogo.png';
 
 const Footer = ({ onOpenLegal, onContact }) => {
     return (
@@ -7,7 +6,7 @@ const Footer = ({ onOpenLegal, onContact }) => {
             <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="flex items-center gap-2">
                     <img
-                        src={mainLogo}
+                        src="/assets/images/mainLogo.png"
                         alt="AxomITLab Logo"
                         className="h-16 w-auto object-contain"
                     />

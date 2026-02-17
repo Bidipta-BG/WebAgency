@@ -1,24 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { LogOut, Users, Calculator, TrendingUp, Search, Calendar, Phone, CheckCircle, Clock, AlertCircle, Eye } from 'lucide-react';
-import { getLeads, updateLead } from '../services/api';
-import LeadDetailsModal from '../components/LeadDetailsModal';
+"use client";
 
-const AdminDashboard = () => {
-    const navigate = useNavigate();
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { LogOut, Users, Calculator, TrendingUp, Search, Calendar, Phone, CheckCircle, Clock, AlertCircle, Eye } from 'lucide-react';
+import { getLeads, updateLead } from '../../../services/api';
+import LeadDetailsModal from '../../../components/LeadDetailsModal';
+
+export default function AdminDashboard() {
+    const router = useRouter();
     const [leads, setLeads] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedLead, setSelectedLead] = useState(null); // For detailed view modal management
 
     useEffect(() => {
-        const isAuth = localStorage.getItem('axom_admin_auth');
+        const isAuth = sessionStorage.getItem('axom_admin_auth');
         if (!isAuth) {
-            navigate('/leads/admin/login');
+            router.push('/leads/admin/login');
         } else {
             loadLeads();
         }
-    }, [navigate]);
+    }, [router]);
 
     const loadLeads = async () => {
         setIsLoading(true);
@@ -33,8 +35,8 @@ const AdminDashboard = () => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('axom_admin_auth');
-        navigate('/leads/admin/login');
+        sessionStorage.removeItem('axom_admin_auth');
+        router.push('/leads/admin/login');
     };
 
     const handleStatusUpdate = async (id, status) => {
@@ -53,13 +55,27 @@ const AdminDashboard = () => {
     const connectedLeads = leads.filter(l => l.isCustomerConnected).length;
     const conversionRate = totalLeads > 0 ? Math.round((connectedLeads / totalLeads) * 100) : 0;
 
+    const normalizePhone = (phone) => phone?.toString().replace(/\D/g, '') || '';
+
+    const getDuplicateCount = (value, type) => {
+        if (!value) return 0;
+        const target = type === 'phone' ? normalizePhone(value) : value.toLowerCase();
+
+        return leads.filter(l => {
+            const current = type === 'phone'
+                ? normalizePhone(l.leadInfo?.phone || '')
+                : (l.leadInfo?.email || '').toLowerCase();
+            return current === target;
+        }).length;
+    };
+
     const filteredLeads = leads.filter(lead =>
         lead.leadInfo?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         lead.leadInfo?.email?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
-        <div className="min-h-screen bg-slate-950 text-white">
+        <div className="min-h-screen bg-slate-950 text-white font-sans">
             {/* Navbar */}
             <nav className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -100,21 +116,21 @@ const AdminDashboard = () => {
 
                 {/* Stats Grid */}
                 <div className="grid md:grid-cols-3 gap-6 mb-8">
-                    <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                    <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-lg shadow-accent/5">
                         <div className="flex items-center gap-3 text-emerald-400 mb-2">
                             <Users className="w-5 h-5" />
                             <span className="font-semibold">Total Leads</span>
                         </div>
                         <p className="text-3xl font-bold">{totalLeads}</p>
                     </div>
-                    <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                    <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-lg shadow-accent/5">
                         <div className="flex items-center gap-3 text-accent mb-2">
                             <Calculator className="w-5 h-5" />
                             <span className="font-semibold">Estimates</span>
                         </div>
                         <p className="text-3xl font-bold">{totalEstimates}</p>
                     </div>
-                    <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                    <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-lg shadow-accent/5">
                         <div className="flex items-center gap-3 text-purple-400 mb-2">
                             <TrendingUp className="w-5 h-5" />
                             <span className="font-semibold">Connected</span>
@@ -124,7 +140,7 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* Leads Table */}
-                <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+                <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl shadow-black/50">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left text-sm">
                             <thead className="bg-slate-950 text-slate-400 uppercase text-xs font-semibold">
@@ -141,7 +157,10 @@ const AdminDashboard = () => {
                                 {isLoading ? (
                                     <tr>
                                         <td colSpan="6" className="px-6 py-12 text-center text-slate-500">
-                                            Loading leads...
+                                            <div className="flex items-center justify-center gap-2">
+                                                <div className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+                                                Loading leads...
+                                            </div>
                                         </td>
                                     </tr>
                                 ) : filteredLeads.length === 0 ? (
@@ -155,8 +174,24 @@ const AdminDashboard = () => {
                                         <tr key={lead._id} className="hover:bg-slate-800/50 transition-colors">
                                             <td className="px-6 py-4">
                                                 <div className="font-medium text-white">{lead.leadInfo?.name || 'Unknown'}</div>
-                                                <div className="text-slate-500 text-xs">{lead.leadInfo?.email}</div>
-                                                <div className="text-slate-500 text-xs">{lead.leadInfo?.phone}</div>
+                                                <div className="flex flex-col gap-0.5">
+                                                    <div className="flex items-center gap-1.5">
+                                                        <span className="text-slate-500 text-xs">{lead.leadInfo?.email}</span>
+                                                        {getDuplicateCount(lead.leadInfo?.email, 'email') > 1 && (
+                                                            <span className="text-[10px] text-red-400 bg-red-400/10 px-1.5 py-0.5 rounded border border-red-400/20 font-bold">
+                                                                {getDuplicateCount(lead.leadInfo?.email, 'email')} Duplicates
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    <div className="flex items-center gap-1.5">
+                                                        <span className="text-slate-500 text-xs">{lead.leadInfo?.phone}</span>
+                                                        {getDuplicateCount(lead.leadInfo?.phone, 'phone') > 1 && (
+                                                            <span className="text-[10px] text-orange-400 bg-orange-400/10 px-1.5 py-0.5 rounded border border-orange-400/20 font-bold">
+                                                                {getDuplicateCount(lead.leadInfo?.phone, 'phone')} Shared Number
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td className="px-6 py-4">
                                                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${lead.formType === 'estimate'
@@ -186,8 +221,7 @@ const AdminDashboard = () => {
                                                     }`}>
                                                     {lead.followupStatus === 'Contacted' ? <CheckCircle className="w-3 h-3" /> :
                                                         lead.followupStatus === 'Lost' ? <AlertCircle className="w-3 h-3" /> :
-                                                            lead.followupStatus === 'Pending' ? <Clock className="w-3 h-3" /> :
-                                                                <Clock className="w-3 h-3" />}
+                                                            <Clock className="w-3 h-3" />}
                                                     {lead.followupStatus || 'Pending'}
                                                 </div>
                                             </td>
@@ -235,6 +269,4 @@ const AdminDashboard = () => {
             </main>
         </div>
     );
-};
-
-export default AdminDashboard;
+}

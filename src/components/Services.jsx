@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import { Smartphone, Monitor, Palette, Server } from 'lucide-react';
 

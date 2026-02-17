@@ -1,12 +1,14 @@
+"use client";
+
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { Lock, ArrowRight, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const AdminLogin = () => {
+export default function AdminLogin() {
     const [passcode, setPasscode] = useState('');
     const [error, setError] = useState(false);
-    const navigate = useNavigate();
+    const router = useRouter();
 
     // HARDCODED SECRET for Client-Side Protection
     const SECRET_KEY = "AxomAdmin2026";
@@ -14,8 +16,8 @@ const AdminLogin = () => {
     const handleLogin = (e) => {
         e.preventDefault();
         if (passcode === SECRET_KEY) {
-            localStorage.setItem('axom_admin_auth', 'true');
-            navigate('/leads/dashboard');
+            sessionStorage.setItem('axom_admin_auth', 'true');
+            router.push('/leads/dashboard');
         } else {
             setError(true);
             setTimeout(() => setError(false), 2000);
@@ -78,6 +80,4 @@ const AdminLogin = () => {
             </motion.div>
         </div>
     );
-};
-
-export default AdminLogin;
+}

@@ -1,8 +1,8 @@
+"use client";
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Calculator } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import mainLogo from '../assets/images/mainLogo.png';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -23,6 +23,31 @@ const Navbar = () => {
         { name: 'About', href: '#about' },
     ];
 
+    const scrollToSection = (e, href) => {
+        e.preventDefault();
+        setIsMobileMenuOpen(false);
+
+        if (href === '#') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        const id = href.replace('#', '');
+        const element = document.getElementById(id);
+        if (element) {
+            const offset = 80; // Adjust for sticky header
+            const bodyRect = document.body.getBoundingClientRect().top;
+            const elementRect = element.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+    };
+
     return (
         <nav
             className={cn(
@@ -36,7 +61,7 @@ const Navbar = () => {
                 {/* Logo */}
                 <a href="#" className="flex items-center gap-2 group">
                     <img
-                        src={mainLogo}
+                        src="/assets/images/mainLogo.png"
                         alt="AxomITLab Logo"
                         className="h-16 w-auto object-contain transition-transform group-hover:scale-105"
                     />
@@ -49,6 +74,7 @@ const Navbar = () => {
                             <li key={link.name}>
                                 <a
                                     href={link.href}
+                                    onClick={(e) => scrollToSection(e, link.href)}
                                     className="text-sm font-medium text-slate-300 hover:text-white transition-colors"
                                 >
                                     {link.name}
@@ -58,6 +84,7 @@ const Navbar = () => {
                     </ul>
                     <a
                         href="#calculator"
+                        onClick={(e) => scrollToSection(e, '#calculator')}
                         className="flex items-center gap-2 bg-accent text-white px-5 py-2.5 rounded-full font-medium text-sm hover:bg-accent-bright transition-colors shadow-lg shadow-accent/20"
                     >
                         <Calculator className="w-4 h-4" />
@@ -88,7 +115,7 @@ const Navbar = () => {
                                 <li key={link.name}>
                                     <a
                                         href={link.href}
-                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        onClick={(e) => scrollToSection(e, link.href)}
                                         className="block text-lg font-medium text-slate-300 hover:text-white"
                                     >
                                         {link.name}
@@ -98,7 +125,7 @@ const Navbar = () => {
                             <li>
                                 <a
                                     href="#calculator"
-                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    onClick={(e) => scrollToSection(e, '#calculator')}
                                     className="flex items-center gap-2 text-accent font-bold mt-2"
                                 >
                                     <Calculator className="w-5 h-5" />

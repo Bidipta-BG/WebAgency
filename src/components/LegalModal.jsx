@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Shield, FileText } from 'lucide-react';
@@ -68,7 +69,7 @@ const LegalModal = ({ isOpen, onClose, activeTab }) => {
                                 <p>We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction.</p>
 
                                 <h3 className="text-lg font-bold text-primary pt-4">4. Contact Us</h3>
-                                <p>If you have any questions about this Privacy Policy, please contact us at <strong>privacy@axomitlab.com</strong>.</p>
+                                <p>If you have any questions about this Privacy Policy, please contact us at <strong>support@axomitlab.com</strong>.</p>
                             </>
                         ) : (
                             <>

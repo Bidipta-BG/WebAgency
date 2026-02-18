@@ -5,6 +5,6 @@ export default function robots() {
             allow: '/',
             disallow: '/private/',
         },
-        sitemap: 'https://thevibecoderagency.online/sitemap.xml',
+        sitemap: 'https://axomitlab.com/sitemap.xml',
     }
 }

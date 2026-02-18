@@ -1,5 +1,5 @@
 export default function sitemap() {
-    const baseUrl = "https://thevibecoderagency.online";
+    const baseUrl = "https://axomitlab.com";
 
     return [
         {

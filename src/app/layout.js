@@ -6,7 +6,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const siteUrl = "https://thevibecoderagency.online";
+const siteUrl = "https://axomitlab.com";
 const siteTitle = "AxomITLab | Premium Web & App Development Agency";
 const siteDescription = "AxomITLab transforms businesses with expert web design, mobile app development, and AI solutions. Get a detailed project estimate and launch your digital presence today.";
 

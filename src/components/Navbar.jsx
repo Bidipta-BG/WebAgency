@@ -1,5 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, X, Calculator, ChevronDown, Smartphone, ExternalLink } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -8,6 +10,7 @@ const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isProductDropdownOpen, setIsProductDropdownOpen] = useState(false);
+    const pathname = usePathname();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -18,11 +21,10 @@ const Navbar = () => {
     }, []);
 
     const navLinks = [
-        { name: 'Home', href: '#' },
-        { name: 'Services', href: '#services' },
+        { name: 'Home', href: '/' },
         {
             name: 'Our Products',
-            href: '#',
+            href: '/portfolio',
             dropdown: [
                 {
                     name: 'TemplatePro',
@@ -33,36 +35,13 @@ const Navbar = () => {
                 }
             ]
         },
-        { name: 'Process', href: '#process' },
-        { name: 'About', href: '#about' },
+        { name: 'Services', href: '/services' },
+        // { name: 'Portfolio', href: '/portfolio' },
+        { name: 'About', href: '/about' },
+        { name: 'Contact', href: '/contact' },
     ];
 
-    const scrollToSection = (e, href) => {
-        if (href.startsWith('http')) return; // Allow external links
-
-        e.preventDefault();
-        setIsMobileMenuOpen(false);
-
-        if (href === '#') {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            return;
-        }
-
-        const id = href.replace('#', '');
-        const element = document.getElementById(id);
-        if (element) {
-            const offset = 80; // Adjust for sticky header
-            const bodyRect = document.body.getBoundingClientRect().top;
-            const elementRect = element.getBoundingClientRect().top;
-            const elementPosition = elementRect - bodyRect;
-            const offsetPosition = elementPosition - offset;
-
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
-        }
-    };
+    const isActive = (path) => pathname === path;
 
     return (
         <nav
@@ -75,13 +54,13 @@ const Navbar = () => {
         >
             <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
                 {/* Logo */}
-                <a href="#" className="flex items-center gap-2 group">
+                <Link href="/" className="flex items-center gap-2 group">
                     <img
                         src="/assets/images/mainLogo.png"
                         alt="Axom IT Lab Logo"
                         className="h-16 w-auto object-contain transition-transform group-hover:scale-105"
                     />
-                </a>
+                </Link>
 
                 {/* Desktop Nav */}
                 <div className="hidden md:flex items-center gap-8">
@@ -95,7 +74,9 @@ const Navbar = () => {
                             >
                                 {link.dropdown ? (
                                     <div className="flex items-center gap-1 cursor-pointer hover:text-white transition-colors py-2 font-medium text-sm">
-                                        <span>{link.name}</span>
+                                        <Link href={link.href} className={cn(isActive(link.href) && "text-accent")}>
+                                            {link.name}
+                                        </Link>
                                         <ChevronDown className={cn("w-4 h-4 transition-transform", isProductDropdownOpen && "rotate-180")} />
 
                                         {/* Dropdown Menu */}
@@ -139,25 +120,26 @@ const Navbar = () => {
                                         </AnimatePresence>
                                     </div>
                                 ) : (
-                                    <a
+                                    <Link
                                         href={link.href}
-                                        onClick={(e) => scrollToSection(e, link.href)}
-                                        className="text-sm font-medium hover:text-white transition-colors"
+                                        className={cn(
+                                            "text-sm font-medium hover:text-white transition-colors",
+                                            isActive(link.href) && "text-accent"
+                                        )}
                                     >
                                         {link.name}
-                                    </a>
+                                    </Link>
                                 )}
                             </li>
                         ))}
                     </ul>
-                    <a
-                        href="#calculator"
-                        onClick={(e) => scrollToSection(e, '#calculator')}
+                    <Link
+                        href="/estimate"
                         className="flex items-center gap-2 bg-accent text-white px-5 py-2.5 rounded-full font-medium text-sm hover:bg-accent-bright transition-colors shadow-lg shadow-accent/20"
                     >
                         <Calculator className="w-4 h-4" />
                         <span>Get Estimate</span>
-                    </a>
+                    </Link>
                 </div>
 
                 {/* Mobile Toggle */}
@@ -209,25 +191,28 @@ const Navbar = () => {
                                             </div>
                                         </div>
                                     ) : (
-                                        <a
+                                        <Link
                                             href={link.href}
-                                            onClick={(e) => scrollToSection(e, link.href)}
-                                            className="block text-lg font-medium text-slate-300 hover:text-white"
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                            className={cn(
+                                                "block text-lg font-medium text-slate-300 hover:text-white",
+                                                isActive(link.href) && "text-accent"
+                                            )}
                                         >
                                             {link.name}
-                                        </a>
+                                        </Link>
                                     )}
                                 </li>
                             ))}
                             <li>
-                                <a
-                                    href="#calculator"
-                                    onClick={(e) => scrollToSection(e, '#calculator')}
+                                <Link
+                                    href="/estimate"
+                                    onClick={() => setIsMobileMenuOpen(false)}
                                     className="flex items-center gap-2 text-accent font-bold mt-2 pt-4 border-t border-surface-highlight"
                                 >
                                     <Calculator className="w-5 h-5" />
                                     Get Project Estimate
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </motion.div>

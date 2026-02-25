@@ -110,16 +110,16 @@ const jsonLd = [
     "telephone": "+91-9876543210",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Guwahati",
-      "addressLocality": "Guwahati",
+      "streetAddress": "Sivasagar",
+      "addressLocality": "Sivasagar",
       "addressRegion": "AS",
-      "postalCode": "781001",
+      "postalCode": "785640",
       "addressCountry": "IN"
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": 26.1158,
-      "longitude": 91.7086
+      "latitude": 26.9826,
+      "longitude": 94.6425
     },
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",

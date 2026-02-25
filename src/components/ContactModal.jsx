@@ -32,8 +32,8 @@ const ContactModal = ({ isOpen, onClose }) => {
 
         if (!formData.phone.trim()) {
             newErrors.phone = "Phone number is required";
-        } else if (formData.phone.length < 10) {
-            newErrors.phone = "Phone number must be at least 10 digits";
+        } else if (!/^\d{10}$/.test(formData.phone)) {
+            newErrors.phone = "Enter a valid 10-digit number";
         }
 
         return newErrors;
@@ -145,12 +145,14 @@ const ContactModal = ({ isOpen, onClose }) => {
                                     <input
                                         type="tel"
                                         className={`w-full px-4 py-3 rounded-xl border bg-surface-muted text-white text-sm focus:outline-none focus:ring-1 transition-all placeholder:text-slate-600 ${errors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-white/10 focus:border-accent focus:ring-accent'}`}
-                                        placeholder="+91 98765 43210"
+                                        placeholder="10-digit number"
                                         value={formData.phone}
                                         onChange={e => {
-                                            setFormData({ ...formData, phone: e.target.value });
+                                            const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                                            setFormData({ ...formData, phone: val });
                                             if (errors.phone) setErrors({ ...errors, phone: null });
                                         }}
+                                        maxLength={10}
                                     />
                                     {errors.phone && <p className="text-red-400 text-xs mt-1 ml-1">{errors.phone}</p>}
                                 </div>

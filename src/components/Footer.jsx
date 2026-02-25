@@ -7,13 +7,13 @@ const Footer = ({ onOpenLegal, onContact }) => {
                 <div className="flex items-center gap-2">
                     <img
                         src="/assets/images/mainLogo.png"
-                        alt="AxomITLab Logo"
+                        alt="Axom IT Lab Logo"
                         className="h-16 w-auto object-contain"
                     />
                 </div>
 
                 <p className="text-slate-500 text-sm">
-                    © {new Date().getFullYear()} AxomITLab. All rights reserved.
+                    © {new Date().getFullYear()} Axom IT Lab. All rights reserved.
                 </p>
 
                 <div className="flex gap-6">

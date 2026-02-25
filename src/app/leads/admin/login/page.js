@@ -39,7 +39,7 @@ export default function AdminLogin() {
 
                 <div className="text-center mb-8">
                     <h1 className="text-2xl font-bold text-white mb-2">Restricted Access</h1>
-                    <p className="text-slate-400 text-sm">AxomITLab Internal Dashboard</p>
+                    <p className="text-slate-400 text-sm">Axom IT Lab Internal Dashboard</p>
                 </div>
 
                 <form onSubmit={handleLogin} className="space-y-4">

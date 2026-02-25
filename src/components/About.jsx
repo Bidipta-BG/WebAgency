@@ -20,7 +20,7 @@ const About = () => {
                         </h2>
 
                         <p className="text-slate-400 text-lg leading-relaxed mb-6">
-                            At AxomITLab, we believe that financial constraints shouldn't kill great ideas.
+                            At Axom IT Lab, we believe that financial constraints shouldn't kill great ideas.
                             Inspired by total transparency, we founded this agency to bridge the gap between
                             startups and enterprise-grade technology.
                         </p>

@@ -7,8 +7,8 @@ const inter = Inter({
 });
 
 const siteUrl = "https://axomitlab.com";
-const siteTitle = "AxomITLab | Premium Web & App Development Agency";
-const siteDescription = "AxomITLab transforms businesses with expert web design, mobile app development, and AI solutions. Get a detailed project estimate and launch your digital presence today.";
+const siteTitle = "Axom IT Lab | Premium Web & App Development Agency";
+const siteDescription = "Axom IT Lab transforms businesses with expert web design, mobile app development, and AI solutions. Get a detailed project estimate and launch your digital presence today.";
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
@@ -82,8 +82,8 @@ const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "AxomITLab",
-    "alternateName": ["Axom IT Lab", "Axom Tech Lab"],
+    "name": "Axom IT Lab",
+    "alternateName": ["AxomITLab", "Axom Tech Lab"],
     "url": siteUrl,
     "logo": `${siteUrl}/assets/images/mainLogo.png`,
     "sameAs": [
@@ -103,7 +103,7 @@ const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    "name": "AxomITLab",
+    "name": "Axom IT Lab",
     "image": `${siteUrl}/assets/images/mainLogo.png`,
     "@id": siteUrl,
     "url": siteUrl,

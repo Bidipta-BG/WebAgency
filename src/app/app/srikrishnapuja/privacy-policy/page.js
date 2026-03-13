@@ -21,7 +21,7 @@ const PrivacyPolicyPage = () => {
                 <div className="space-y-8 leading-relaxed">
                     <section>
                         <p>
-                            <strong>The Vibe Coder</strong> ("we", "us", or "our") operates the <strong>Shri Krishna: Daily Puja Aarti</strong> mobile application (the "Service").
+                            <strong>Axom IT Lab</strong> ("we", "us", or "our") operates the <strong>Shri Krishna Puja</strong> mobile application (the "Service").
                         </p>
                         <p className="mt-4">
                             This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data.
@@ -55,7 +55,7 @@ const PrivacyPolicyPage = () => {
                         <h2 className="text-xl font-bold mb-4">3. Third-Party Services</h2>
                         <p>We do not use any third-party services that collect information used to identify you.</p>
                         <ul className="list-disc pl-5 mt-4 space-y-1">
-                            <li>No Advertisements.</li>
+                            {/* <li>No Advertisements.</li> */}
                             <li>No Social Media login integrations.</li>
                             <li>No Payment processors (the app is currently free).</li>
                         </ul>

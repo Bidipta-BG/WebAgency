@@ -1,8 +1,8 @@
 import React from 'react';
 
 export const metadata = {
-    title: 'Privacy Policy | Sri Krishna Puja',
-    description: 'Privacy Policy for Sri Krishna Puja application.',
+    title: 'Privacy Policy | Hanuman Ji Puja',
+    description: 'Privacy Policy for Hanuman Ji Puja application.',
     robots: {
         index: true,
         follow: true,
@@ -14,14 +14,14 @@ const PrivacyPolicyPage = () => {
         <main className="min-h-screen bg-white text-slate-900 py-16 px-6 sm:px-12">
             <div className="max-w-3xl mx-auto">
                 <header className="mb-12 border-b border-slate-200 pb-8">
-                    <h1 className="text-3xl font-bold mb-2">Privacy Policy for Sri Krishna Puja</h1>
+                    <h1 className="text-3xl font-bold mb-2">Privacy Policy for Hanuman Ji Puja</h1>
                     <p className="text-slate-500">Last Updated: February 7, 2026</p>
                 </header>
 
                 <div className="space-y-8 leading-relaxed">
                     <section>
                         <p>
-                            <strong>Axom IT Lab</strong> ("we", "us", or "our") operates the <strong>Sri Krishna Puja</strong> mobile application (the "Service").
+                            <strong>Axom IT Lab</strong> ("we", "us", or "our") operates the <strong>Hanuman Ji Puja</strong> mobile application (the "Service").
                         </p>
                         <p className="mt-4">
                             This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data.

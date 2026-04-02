@@ -41,7 +41,7 @@ const ContactPage = () => {
                                 </div>
                                 <div>
                                     <div className="text-xs text-slate-500 uppercase font-bold tracking-widest mb-1">Location</div>
-                                    <div className="text-xl text-white font-medium">Sivasagar, Assam, India</div>
+                                    <div className="text-xl text-white font-medium">BTM Layout, Bengaluru, Karnataka, India</div>
                                 </div>
                             </div>
                         </div>

@@ -8,7 +8,7 @@ const inter = Inter({
 
 const siteUrl = "https://axomitlab.com";
 const siteTitle = "Axom IT Lab | Premium Web & App Development Agency";
-const siteDescription = "Axom IT Lab transforms businesses with expert web design, mobile app development, and AI solutions. Get a detailed project estimate and launch your digital presence today.";
+const siteDescription = "Axom IT Lab is an AI-powered web and mobile app development agency. We leverage advanced AI models and modern tech to deliver enterprise-grade solutions faster and at a fraction of the cost.";
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
@@ -18,18 +18,18 @@ export const metadata = {
   },
   description: siteDescription,
   keywords: [
-    "web development agency",
+    "AI-powered development agency",
     "mobile app development company",
-    "custom software development india",
-    "Next.js development services",
-    "React Native app developers",
-    "AI solution providers",
-    "UI/UX design agency",
+    "AI software development india",
+    "AI web development",
+    "fast software development with AI",
+    "cost-effective AI development",
+    "AI-driven app development",
     "affordable web design for startups",
     "AxomITLab",
     "Axom IT Lab",
     "enterprise software development",
-    "monthly subscription development model"
+    "reduce development cost with AI"
   ],
   authors: [{ name: "AxomITLab", url: siteUrl }],
   creator: "AxomITLab",

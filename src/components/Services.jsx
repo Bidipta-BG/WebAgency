@@ -5,23 +5,23 @@ import { Smartphone, Monitor, Palette, Server } from 'lucide-react';
 const services = [
     {
         icon: Smartphone,
-        title: 'Mobile App Development',
-        description: 'Native iOS and Android applications built with Flutter or React Native for peak performance.'
+        title: 'App Development',
+        description: 'Native iOS and Android apps built by our experts, using AI-assisted tools to speed up coding and testing.'
     },
     {
         icon: Monitor,
-        title: 'Web Development',
-        description: 'Responsive, high-speed websites and SaaS platforms using React, Next.js, and modern tools.'
+        title: 'Web Platforms',
+        description: 'Responsive websites and SaaS platforms built by our frontend engineers, supercharged by the latest frontend frameworks and AI.'
     },
     {
         icon: Palette,
-        title: 'UI/UX Design',
-        description: 'User-centric interfaces that convert. We design tailored experiences that tell your brand story.'
+        title: 'Intuitive UI/UX',
+        description: 'Creative designs crafted by human empathy, accelerated by generative AI to prototype user interfaces rapidly.'
     },
     {
         icon: Server,
         title: 'Backend & Cloud',
-        description: 'Scalable server-side solutions and API integrations powered by Node.js, Python, and AWS.'
+        description: 'Scalable backend architectures designed by cloud experts, utilizing AI to optimize APIs and minimize configuration time.'
     }
 ];
 
@@ -32,7 +32,7 @@ const Services = () => {
                 <div className="text-center mb-16">
                     <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">Our Expertise</h2>
                     <p className="text-slate-400 max-w-2xl mx-auto">
-                        From comprehensive product strategy to pixel-perfect execution, we deliver quality across all platforms.
+                        Our skilled professionals leverage the latest AI models across all technical works to deliver high-quality, scalable solutions faster and more affordably.
                     </p>
                 </div>
 

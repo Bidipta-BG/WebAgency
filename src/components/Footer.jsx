@@ -15,7 +15,7 @@ const Footer = ({ onOpenLegal = () => { } }) => {
                 </Link>
 
                 <p className="text-slate-500 text-sm">
-                    © 2025 Axom IT Lab. All rights reserved.
+                    © 2026 Axom IT Lab. All rights reserved.
                 </p>
 
                 <div className="flex gap-6">

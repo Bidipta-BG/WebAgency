@@ -3,11 +3,11 @@ import React from 'react';
 import { Target, PenTool, Code2, Rocket, Headset } from 'lucide-react';
 
 const steps = [
-    { icon: Target, title: "Roadmap", desc: "We define clear milestones and timelines." },
-    { icon: PenTool, title: "Wireframing", desc: "Low-fidelity screens to visualize flow." },
-    { icon: Code2, title: "Development", desc: "Scalable coding with agile sprints." },
-    { icon: Rocket, title: "Launch", desc: "Rigorous testing and deployment." },
-    { icon: Headset, title: "Maintenance", desc: "Ongoing support and updates." },
+    { icon: Target, title: "Strategy", desc: "Our strategists use data & AI tools to define optimal architecture." },
+    { icon: PenTool, title: "UX Design", desc: "Our designers use AI-assisted wireframing to rapidly visualize flows." },
+    { icon: Code2, title: "Custom Dev", desc: "Our skilled engineers write scalable code, accelerated by AI assistants." },
+    { icon: Rocket, title: "Rigorous QA", desc: "Human testers utilize AI to ensure robust deployment." },
+    { icon: Headset, title: "Live Support", desc: "Real engineers providing ongoing support and system updates." },
 ];
 
 const Process = () => {

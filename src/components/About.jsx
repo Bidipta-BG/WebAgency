@@ -16,17 +16,17 @@ const About = () => {
                         <span className="text-accent font-semibold tracking-wider text-sm uppercase">Who We Are</span>
                         <h2 className="text-3xl lg:text-5xl font-bold text-white mt-2 mb-6">
                             More Than Code. <br />
-                            We Are Your <span className="text-accent">Growth Partners.</span>
+                            We Are Your <span className="text-accent">Expert Team.</span>
                         </h2>
 
                         <p className="text-slate-400 text-lg leading-relaxed mb-6">
-                            At Axom IT Lab, we believe that financial constraints shouldn't kill great ideas.
-                            Inspired by total transparency, we founded this agency to bridge the gap between
-                            startups and enterprise-grade technology.
+                            At Axom IT Lab, we believe that world-class technology shouldn't be gated by massive budgets. 
+                            We founded this agency to bridge the gap between startups and enterprise-grade tech by equipping 
+                            our incredibly talented human developers with the latest artificial intelligence tools.
                         </p>
                         <p className="text-slate-400 text-lg leading-relaxed mb-8">
-                            Our unique <strong>EMI-based model</strong> ensures you can scale sustainably, while our{" "}
-                            <strong>Lifetime Support</strong> guarantee means we never leave your side after launch.
+                            By integrating modern AI into our daily workflows, our developers, designers, and testers <strong>eliminate boilerplate work</strong>, {" "}
+                            <strong>accelerate delivery</strong>, and <strong>drastically cut development costs</strong>—passing those savings directly to you.
                         </p>
 
                         <div className="grid grid-cols-2 gap-6">
@@ -44,10 +44,10 @@ const About = () => {
                     {/* Right: Values Grid */}
                     <div className="grid sm:grid-cols-2 gap-4">
                         {[
-                            { icon: ShieldCheck, title: "Trusted Quality", desc: "Rigorous testing and code reviews ensure enterprise security." },
-                            { icon: Users, title: "Client First", desc: "We don't speak jargon. We speak your business language." },
-                            { icon: Zap, title: "Fast Delivery", desc: "Agile sprints mean you see progress every single week." },
-                            { icon: HeartHandshake, title: "Long-Term", desc: "We are in it for the long haul. Your success is our success." },
+                            { icon: ShieldCheck, title: "Expert QA Testers", desc: "Our QA engineers use AI tools to catch bugs faster and ensure enterprise security." },
+                            { icon: Users, title: "Real Humans", desc: "We don't speak robot. You will always interface with an empathetic human manager." },
+                            { icon: Zap, title: "Lightning Fast", desc: "Our developers use AI-assisted sprints so you see progress in days, not months." },
+                            { icon: HeartHandshake, title: "Cost Effective", desc: "We are extremely efficient, and we pass those cost savings directly to you." },
                         ].map((item, i) => (
                             <div key={i} className="p-6 rounded-2xl bg-surface-muted shadow-lg shadow-black/20 border border-surface-highlight hover:-translate-y-1 transition-transform">
                                 <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center text-accent mb-4">

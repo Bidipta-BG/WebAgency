@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Zap } from 'lucide-react';
 
 const Hero = () => {
     return (
@@ -22,18 +22,18 @@ const Hero = () => {
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
                         </span>
-                        Accepting New Projects
+                        AI-Powered Agency
                     </div>
 
                     <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1] mb-6">
-                        Build Now, <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent-bright">Pay Monthly.</span>
+                        Build with AI. <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent-bright">Deliver Faster, Cost Less.</span>
                     </h1>
 
                     <p className="text-lg text-slate-400 mb-8 max-w-xl leading-relaxed">
-                        We transform your ideas into world-class software with our flexible
-                        <span className="font-semibold text-white"> Monthly Subscription Model</span>.
-                        Get enterprise-grade development without the massive initial investment.
+                        Our seasoned engineers transform your ideas into world-class software. By equipping our experts with
+                        <span className="font-semibold text-white"> advanced AI tools</span>,
+                        we deliver enterprise-grade development with significantly reduced timelines and costs.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4">
@@ -41,29 +41,29 @@ const Hero = () => {
                             href="#calculator"
                             className="inline-flex items-center justify-center gap-2 bg-accent text-white px-8 py-4 rounded-xl font-semibold hover:bg-accent-bright transition-all shadow-lg shadow-accent/25"
                         >
-                            See Monthly Plans
+                            Get an Estimate
                             <ArrowRight className="w-5 h-5" />
                         </a>
                         <a
                             href="#process"
                             className="inline-flex items-center justify-center gap-2 bg-surface-highlight text-white border border-white/10 px-8 py-4 rounded-xl font-semibold hover:bg-white/10 transition-all"
                         >
-                            How It Works
+                            How AI Works
                         </a>
                     </div>
 
-                    <div className="mt-10 flex gap-6 text-sm text-slate-500">
+                    <div className="mt-10 flex gap-6 text-sm text-slate-500 flex-wrap">
                         <div className="flex items-center gap-2">
                             <CheckCircle2 className="w-5 h-5 text-accent" />
-                            <span>0% Interest</span>
+                            <span>Expert Developers</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <CheckCircle2 className="w-5 h-5 text-accent" />
-                            <span>Cancel Anytime</span>
+                            <span>AI-Driven Cost Savings</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <CheckCircle2 className="w-5 h-5 text-accent" />
-                            <span>Lifetime Support</span>
+                            <span>Advanced Tech Stack</span>
                         </div>
                     </div>
                 </motion.div>
@@ -150,11 +150,11 @@ const Hero = () => {
                             >
                                 <div className="flex items-center gap-3 mb-2">
                                     <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent">
-                                        <span className="font-bold text-lg">₹</span>
+                                        <Zap className="w-5 h-5" />
                                     </div>
                                     <div>
-                                        <p className="text-xs text-slate-400">Starting from</p>
-                                        <p className="font-bold text-white">₹399<span className="text-xs font-normal text-slate-500">/mo</span></p>
+                                        <p className="text-xs text-slate-400">Time Saved with AI</p>
+                                        <p className="font-bold text-white">50%<span className="text-xs font-normal text-slate-500"> Faster</span></p>
                                     </div>
                                 </div>
                                 <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">

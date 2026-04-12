@@ -95,7 +95,7 @@ export default function AppUploadDashboard() {
     useEffect(() => {
         const isAuth = sessionStorage.getItem('axom_admin_auth');
         if (!isAuth) {
-            router.push('/leads/admin/login');
+            router.push('/leads/admin/login?redirect=' + encodeURIComponent(window.location.pathname));
         }
     }, [router]);
 

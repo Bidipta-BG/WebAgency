@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Lock, ArrowRight, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -9,6 +9,7 @@ export default function AdminLogin() {
     const [passcode, setPasscode] = useState('');
     const [error, setError] = useState(false);
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     // HARDCODED SECRET for Client-Side Protection
     const SECRET_KEY = "AxomAdmin2026";
@@ -17,7 +18,12 @@ export default function AdminLogin() {
         e.preventDefault();
         if (passcode === SECRET_KEY) {
             sessionStorage.setItem('axom_admin_auth', 'true');
-            router.push('/leads/dashboard');
+            const redirectParam = searchParams.get('redirect');
+            if (redirectParam) {
+                router.push(redirectParam);
+            } else {
+                router.push('/leads/dashboard');
+            }
         } else {
             setError(true);
             setTimeout(() => setError(false), 2000);

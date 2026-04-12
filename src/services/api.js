@@ -196,3 +196,89 @@ export const updateLead = async (id, updates) => {
         throw error;
     }
 };
+
+/**
+ * Devotional Apps API Methods
+ */
+
+export const getAppGallery = async (appSlug) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/${appSlug}/gallery`);
+        if (!response.ok) throw new Error(`Failed to fetch ${appSlug} gallery`);
+        return await response.json();
+    } catch (error) {
+        console.error(`Error fetching ${appSlug} gallery:`, error);
+        throw error;
+    }
+};
+
+export const createAppCategory = async (appSlug, data) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/${appSlug}/category`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        });
+        return await response.json();
+    } catch (error) {
+        console.error(`Error creating category for ${appSlug}:`, error);
+        throw error;
+    }
+};
+
+export const createAppImage = async (appSlug, data) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/${appSlug}/image`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        });
+        return await response.json();
+    } catch (error) {
+        console.error(`Error creating image for ${appSlug}:`, error);
+        throw error;
+    }
+};
+
+export const createAppHeroSection = async (appSlug, data) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/${appSlug}/hero-section`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        });
+        return await response.json();
+    } catch (error) {
+        console.error(`Error creating hero section for ${appSlug}:`, error);
+        throw error;
+    }
+};
+
+/**
+ * Global File Upload to S3
+ */
+export const uploadFileToS3 = async (file, folder) => {
+    try {
+        const formData = new FormData();
+        formData.append('file', file);
+        if (folder) {
+            formData.append('folder', folder);
+        }
+
+        const response = await fetch(`${API_BASE_URL}/upload/file`, {
+            method: 'POST',
+            body: formData,
+            // Note: Don't set Content-Type header manually when using FormData, browser will set it with boundary
+        });
+        
+        // Handle HTML 404 errors gracefully
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.status} - Ensure the backend endpoint exists.`);
+        }
+        
+        return await response.json();
+    } catch (error) {
+        console.error("Error uploading file:", error);
+        throw error;
+    }
+};

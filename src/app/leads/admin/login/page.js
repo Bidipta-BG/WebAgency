@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Lock, ArrowRight, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export default function AdminLogin() {
+function AdminLoginForm() {
     const [passcode, setPasscode] = useState('');
     const [error, setError] = useState(false);
     const router = useRouter();
@@ -85,5 +85,13 @@ export default function AdminLogin() {
                 </div>
             </motion.div>
         </div>
+    );
+}
+
+export default function AdminLogin() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-slate-950 flex items-center justify-center text-white">Loading...</div>}>
+            <AdminLoginForm />
+        </Suspense>
     );
 }

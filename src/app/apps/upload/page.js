@@ -91,13 +91,7 @@ export default function AppUploadDashboard() {
         imageIds: []
     });
 
-    // Auth Check
-    useEffect(() => {
-        const isAuth = sessionStorage.getItem('axom_admin_auth');
-        if (!isAuth) {
-            router.push('/leads/admin/login?redirect=' + encodeURIComponent(window.location.pathname));
-        }
-    }, [router]);
+    // Auth Check Removed
 
     // Load Gallery Data for dropdowns
     useEffect(() => {

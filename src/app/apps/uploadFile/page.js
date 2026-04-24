@@ -26,13 +26,7 @@ export default function S3UploadDashboard() {
     const [status, setStatus] = useState({ type: '', message: '' });
     const fileInputRef = useRef(null);
 
-    // Auth Check
-    useEffect(() => {
-        const isAuth = sessionStorage.getItem('axom_admin_auth');
-        if (!isAuth) {
-            router.push('/leads/admin/login?redirect=' + encodeURIComponent(window.location.pathname));
-        }
-    }, [router]);
+    // Auth Check Removed
 
     const showStatus = (type, message) => {
         setStatus({ type, message });

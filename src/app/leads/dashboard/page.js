@@ -14,13 +14,8 @@ export default function AdminDashboard() {
     const [selectedLead, setSelectedLead] = useState(null); // For detailed view modal management
 
     useEffect(() => {
-        const isAuth = sessionStorage.getItem('axom_admin_auth');
-        if (!isAuth) {
-            router.push('/leads/admin/login');
-        } else {
-            loadLeads();
-        }
-    }, [router]);
+        loadLeads();
+    }, []);
 
     const loadLeads = async () => {
         setIsLoading(true);
@@ -34,10 +29,7 @@ export default function AdminDashboard() {
         }
     };
 
-    const handleLogout = () => {
-        sessionStorage.removeItem('axom_admin_auth');
-        router.push('/leads/admin/login');
-    };
+    // Removed handleLogout
 
     const handleStatusUpdate = async (id, status) => {
         try {
@@ -91,13 +83,7 @@ export default function AdminDashboard() {
                                 className="bg-slate-900 border border-slate-700 rounded-full pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:border-accent w-64"
                             />
                         </div>
-                        <button
-                            onClick={handleLogout}
-                            className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors"
-                        >
-                            <LogOut className="w-4 h-4" />
-                            Logout
-                        </button>
+                        {/* Removed Logout button */}
                     </div>
                 </div>
             </nav>

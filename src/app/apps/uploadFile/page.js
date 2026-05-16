@@ -17,6 +17,7 @@ import {
 import { uploadFileToS3 } from '../../../services/api';
 
 export default function S3UploadDashboard() {
+
     const router = useRouter();
     const [file, setFile] = useState(null);
     const [folder, setFolder] = useState('');
@@ -131,8 +132,8 @@ export default function S3UploadDashboard() {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
                                 className={`absolute left-0 right-0 p-4 rounded-xl flex items-center gap-3 border shadow-xl ${status.type === 'success'
-                                        ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
-                                        : 'bg-red-500/10 border-red-500/20 text-red-400'
+                                    ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
+                                    : 'bg-red-500/10 border-red-500/20 text-red-400'
                                     }`}
                             >
                                 {status.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
@@ -214,8 +215,8 @@ export default function S3UploadDashboard() {
                                 onClick={handleUpload}
                                 disabled={!file || isLoading}
                                 className={`w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all ${!file || isLoading
-                                        ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
-                                        : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg hover:shadow-emerald-500/20 hover:-translate-y-0.5'
+                                    ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                                    : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg hover:shadow-emerald-500/20 hover:-translate-y-0.5'
                                     }`}
                             >
                                 {isLoading ? (

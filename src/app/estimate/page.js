@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import CostCalculator from '@/components/CostCalculator';
+import PlannerShell from '@/components/planner/PlannerShell';
 import ContactModal from '@/components/ContactModal';
 import LegalModal from '@/components/LegalModal';
 
@@ -21,7 +21,7 @@ export default function EstimatePage() {
             <Navbar />
 
             <div className="pt-20">
-                <CostCalculator onContact={() => setContactOpen(true)} />
+                <PlannerShell />
             </div>
 
             <Footer onOpenLegal={openLegal} onContact={() => setContactOpen(true)} />

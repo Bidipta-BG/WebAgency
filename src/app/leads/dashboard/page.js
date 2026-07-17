@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LogOut, Users, Calculator, TrendingUp, Search, Calendar, Phone, CheckCircle, Clock, AlertCircle, Eye } from 'lucide-react';
+import { LogOut, Users, Calculator, TrendingUp, Search, Calendar, Phone, CheckCircle, Clock, AlertCircle, Eye, FileText } from 'lucide-react';
 import { getLeads, updateLead } from '../../../services/api';
 import LeadDetailsModal from '../../../components/LeadDetailsModal';
 
@@ -65,6 +65,47 @@ export default function AdminDashboard() {
         lead.leadInfo?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         lead.leadInfo?.email?.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const formatValuePrice = (priceObj) => {
+        if (!priceObj || priceObj.na) return null;
+        if (priceObj.fixed) return `₹${priceObj.fixed.toLocaleString()}`;
+        if (priceObj.min && priceObj.max) return `₹${priceObj.min.toLocaleString()} - ₹${priceObj.max.toLocaleString()}`;
+        return null;
+    };
+
+    const renderValueColumn = (lead) => {
+        if (lead.formType === 'estimate') {
+            const val = lead.quotation?.totalProjectValue || lead.quotation?.finalTotal;
+            return val ? `₹${val.toLocaleString()}` : '-';
+        }
+
+        if (lead.recommendation?.pricing) {
+            const p = lead.recommendation.pricing;
+            const setup = formatValuePrice(p.setupFee);
+            const handover = formatValuePrice(p.handover);
+            const monthly = formatValuePrice(p.monthly);
+            const annual = formatValuePrice(p.annual);
+            
+            const isHandover = lead.managementType === 'handover' || lead.recommendation?.paymentPlan === 'handover';
+
+            return (
+                <div className="flex flex-col gap-1.5 text-xs">
+                    {setup && <div><span className="font-semibold text-slate-200">{setup}</span> <span className="text-slate-500 text-[10px] uppercase ml-1">(One-time{p.setupFee.fixed ? ' Fixed' : ''})</span></div>}
+                    
+                    {isHandover ? (
+                        handover && <div><span className="font-semibold text-slate-200">{handover}</span> <span className="text-slate-500 text-[10px] uppercase ml-1">(Handover{p.handover.fixed ? ' Fixed' : ''})</span></div>
+                    ) : (
+                        <>
+                            {monthly && <div><span className="font-semibold text-slate-200">{monthly}</span> <span className="text-slate-500 text-[10px] uppercase ml-1">(/ mo{p.monthly.fixed ? ' Fixed' : ''})</span></div>}
+                            {annual && <div><span className="font-semibold text-slate-200">{annual}</span> <span className="text-slate-500 text-[10px] uppercase ml-1">(/ yr{p.annual.fixed ? ' Fixed' : ''})</span></div>}
+                        </>
+                    )}
+                </div>
+            );
+        }
+
+        return <span className="text-slate-500">-</span>;
+    };
 
     return (
         <div className="min-h-screen bg-slate-950 text-white font-sans">
@@ -190,11 +231,8 @@ export default function AdminDashboard() {
                                                     <div className="text-xs text-slate-400 mt-1 capitalize">{lead.selection.projectType.replace('_', ' ')}</div>
                                                 )}
                                             </td>
-                                            <td className="px-6 py-4 font-mono text-slate-300">
-                                                {lead.quotation?.totalProjectValue
-                                                    ? `₹${lead.quotation.totalProjectValue.toLocaleString()}`
-                                                    : (lead.quotation?.finalTotal ? `₹${lead.quotation.finalTotal.toLocaleString()}` : '-')
-                                                }
+                                            <td className="px-6 py-4 font-mono text-slate-300 align-top">
+                                                {renderValueColumn(lead)}
                                             </td>
                                             <td className="px-6 py-4 text-slate-400">
                                                 {new Date(lead.createdAt || Date.now()).toLocaleDateString()}
@@ -229,6 +267,13 @@ export default function AdminDashboard() {
                                                         onClick={() => setSelectedLead(lead)}
                                                         className="p-1.5 rounded-md bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition"
                                                         title="View Details"
+                                                    >
+                                                        <FileText className="w-4 h-4" />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => window.open(`/estimate?edit=${lead._id}`, '_blank')}
+                                                        className="p-1.5 rounded-md bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition"
+                                                        title="Edit in Planner"
                                                     >
                                                         <Eye className="w-4 h-4" />
                                                     </button>

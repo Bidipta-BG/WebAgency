@@ -117,33 +117,15 @@ export const fetchPricingConfig = async () => {
  * Submit Cost Estimate Lead
  * Replace with: await axios.post('/api/leads/estimate', data);
  */
-export const submitEstimate = async (data) => {
+export const submitEstimate = async (data, editId = null) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/axomitlab/leads`, {
-            method: 'POST',
+        const url = editId ? `${API_BASE_URL}/axomitlab/leads/${editId}` : `${API_BASE_URL}/axomitlab/leads`;
+        const method = editId ? 'PUT' : 'POST';
+        
+        const response = await fetch(url, {
+            method,
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                formType: 'estimate',
-                leadInfo: data.leadInfo,
-                selection: {
-                    projectType: data.projectType,
-                    complexity: data.complexity,
-                    addons: data.addons,
-                    deliveryMode: data.deliveryMode,
-                    tenureYears: data.tenureYears,
-                    payUpfront: data.payUpfront
-                },
-                quotation: {
-                    currency: "INR",
-                    totalProjectValue: data.quotation.totalProjectValue,
-                    upfrontFee: data.quotation.upfrontFee,
-                    monthlySubscription: data.quotation.monthlySubscription,
-                    subscriptionDuration: data.quotation.subscriptionDuration,
-                    deliveryTime: data.quotation.deliveryTime,
-                    includesMaintenance: true,
-                    maintenanceCost: data.quotation.maintenanceCost
-                }
-            }),
+            body: JSON.stringify(data),
         });
         return await response.json();
     } catch (error) {
@@ -178,6 +160,18 @@ export const getLeads = async () => {
         return json.data || [];
     } catch (error) {
         console.error("Error fetching leads:", error);
+        throw error;
+    }
+};
+
+export const getLead = async (id) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/axomitlab/leads/${id}`);
+        if (!response.ok) throw new Error('Failed to fetch lead');
+        const json = await response.json();
+        return json.data || null;
+    } catch (error) {
+        console.error("Error fetching lead:", error);
         throw error;
     }
 };

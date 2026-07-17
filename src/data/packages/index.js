@@ -1,0 +1,20 @@
+export { salonPackages } from './salon-packages';
+export { gymPackages } from './gym-packages';
+export { clinicPackages } from './clinic-packages';
+export { restaurantPackages } from './restaurant-packages';
+export { hotelPackages } from './hotel-packages';
+export { schoolPackages } from './school-packages';
+export { realestatePackages } from './realestate-packages';
+export { lawfirmPackages } from './lawfirm-packages';
+export { cafirmPackages } from './cafirm-packages';
+export { travelPackages } from './travel-packages';
+export { constructionPackages } from './construction-packages';
+export { interiorPackages } from './interior-packages';
+export { jewelleryPackages } from './jewellery-packages';
+export { retailPackages } from './retail-packages';
+export { electronicsPackages } from './electronics-packages';
+export { photographyPackages } from './photography-packages';
+export { eventsPackages } from './events-packages';
+export { manufacturingPackages } from './manufacturing-packages';
+export { ngoPackages } from './ngo-packages';
+// 'others' does not have predefined packages

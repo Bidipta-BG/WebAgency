@@ -5,7 +5,7 @@ import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Services from '../components/Services';
 import Process from '../components/Process';
-import CostCalculator from '../components/CostCalculator';
+import PlannerShell from '../components/planner/PlannerShell';
 import About from '../components/About';
 import Footer from '../components/Footer';
 import LegalModal from '../components/LegalModal';
@@ -29,7 +29,7 @@ export default function Home() {
         <Services />
         <About />
         <Process />
-        <CostCalculator onContact={() => setContactOpen(true)} />
+        <PlannerShell />
       </main>
       <Footer onOpenLegal={openLegal} onContact={() => setContactOpen(true)} />
       <LegalModal isOpen={legalOpen} onClose={() => setLegalOpen(false)} activeTab={legalTab} />

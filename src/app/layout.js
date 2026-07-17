@@ -150,6 +150,7 @@ export default function RootLayout({ children }) {
       </head>
       <body
         className={`${inter.variable} font-sans antialiased`}
+        suppressHydrationWarning
       >
         {children}
         <Analytics />

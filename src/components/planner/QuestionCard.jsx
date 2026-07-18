@@ -1,6 +1,6 @@
 import React from 'react';
 
-const QuestionCard = ({ question, answer, onAnswer }) => {
+const QuestionCard = ({ question, answer, onAnswer, isSalesMode }) => {
   const isMulti = question.inputType === 'multi-select';
   
   const handleOptionClick = (optionId) => {
@@ -36,6 +36,25 @@ const QuestionCard = ({ question, answer, onAnswer }) => {
             placeholder={question.options?.[0]?.label?.replace('Placeholder: e.g. ', '') || "Type your answer here..."}
             className="w-full h-32 px-4 py-3 rounded-lg border bg-surface-muted text-white placeholder-slate-500 border-white/10 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all resize-none"
           />
+        ) : question.inputType === 'number-input' ? (
+          <div className="flex items-center space-x-4">
+            <input
+              type="number"
+              min="0"
+              value={answer || ''}
+              onChange={(e) => onAnswer(question.id, e.target.value)}
+              placeholder="e.g. 5"
+              className="w-32 px-4 py-3 rounded-lg border bg-surface-muted text-white placeholder-slate-500 border-white/10 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all"
+            />
+            {question.options?.[0]?.label && (
+              <span className="text-slate-300">{question.options[0].label}</span>
+            )}
+            {isSalesMode && question.scoring?._perUnit?.complexityPoints !== undefined && (
+              <span className="ml-3 text-xs font-semibold px-2 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                +{question.scoring._perUnit.complexityPoints} Pts per unit
+              </span>
+            )}
+          </div>
         ) : (
           question.options?.map(option => (
             <div 
@@ -58,9 +77,16 @@ const QuestionCard = ({ question, answer, onAnswer }) => {
                   </svg>
                 )}
               </div>
-              <span className={`font-medium ${isSelected(option.id) ? 'text-white' : 'text-slate-300'}`}>
-                {option.label}
-              </span>
+              <div className="flex-1 flex justify-between items-center">
+                <span className={`font-medium ${isSelected(option.id) ? 'text-white' : 'text-slate-300'}`}>
+                  {option.label}
+                </span>
+                {isSalesMode && question.scoring?.[option.id]?.complexityPoints !== undefined && (
+                  <span className="ml-3 text-xs font-semibold px-2 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                    +{question.scoring[option.id].complexityPoints} Pts
+                  </span>
+                )}
+              </div>
             </div>
           ))
         )}

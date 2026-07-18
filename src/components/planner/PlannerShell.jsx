@@ -11,11 +11,13 @@ import { calculateScore } from '../../engines/scoringEngine';
 import { getPackage } from '../../engines/packageEngine';
 import { buildRecommendation } from '../../engines/recommendationEngine';
 import { submitEstimate, getLead } from '../../services/api';
+import { salesQuestions } from '../../data/sales-questions';
 
 const PlannerShell = () => {
   const [currentStep, setCurrentStep] = useState(-1);
   const [selectedIndustry, setSelectedIndustry] = useState('');
   const [answers, setAnswers] = useState({});
+  const [salesAnswers, setSalesAnswers] = useState({});
   const [contactInfo, setContactInfo] = useState({});
   const [recommendation, setRecommendation] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,6 +37,7 @@ const PlannerShell = () => {
           const leadData = await getLead(editLeadId);
           if (leadData) {
             setAnswers(leadData.answers || {});
+            if (leadData.salesAnswers) setSalesAnswers(leadData.salesAnswers);
             setSelectedIndustry(leadData.industry || '');
             setContactInfo({
               ownerName: leadData.leadInfo?.name || '',
@@ -92,28 +95,32 @@ const PlannerShell = () => {
   };
 
   const handleNext = () => {
-    if (currentStep < 4) {
+    if (currentStep === 3 && !editId) {
+      setCurrentStep(5);
+    } else if (currentStep < 7) {
       setCurrentStep(prev => prev + 1);
     }
   };
 
   const handleBack = () => {
-    if (currentStep > -1) {
+    if (currentStep === 5 && !editId) {
+      setCurrentStep(3);
+    } else if (currentStep > -1) {
       setCurrentStep(prev => prev - 1);
     }
   };
 
   const handleSubmitContact = async () => {
-    setCurrentStep(5); // Show loading screen
+    setCurrentStep(6); // Show loading screen
   };
 
   const handleLoadingComplete = async () => {
     try {
       // 1. Calculate final score
-      const score = calculateScore(answers, selectedIndustry);
+      const score = calculateScore(answers, selectedIndustry, salesAnswers);
       
       // 2. Get package pricing
-      const pkgResult = getPackage(score, answers, selectedIndustry);
+      const pkgResult = getPackage(score, answers, selectedIndustry, salesAnswers);
       
       let finalRec;
       if (pkgResult) {
@@ -126,11 +133,36 @@ const PlannerShell = () => {
           isCustom: false
         };
       } else {
-        // Fallback for "Others" industry
+        // Fallback for "Others" industry - map their budget answers to the pricing object
+        const setupMap = {
+          'budget-setup-5k': { min: 0, max: 5000 },
+          'budget-setup-10k': { min: 5000, max: 10000 },
+          'budget-setup-15k': { min: 10000, max: 15000 },
+          'budget-setup-20k': { min: 15000, max: 20000 },
+          'budget-setup-30k': { min: 20000, max: 30000 },
+          'budget-setup-30k-plus': { min: 30000, max: 50000 }
+        };
+        const monthlyMap = {
+          'budget-monthly-500': { min: 0, max: 500 },
+          'budget-monthly-1k': { min: 500, max: 1000 },
+          'budget-monthly-1500': { min: 1000, max: 1500 },
+          'budget-monthly-2k': { min: 1500, max: 2000 },
+          'budget-monthly-2500': { min: 2000, max: 2500 },
+          'budget-monthly-3k': { min: 2500, max: 3000 },
+          'budget-monthly-3k-plus': { min: 3000, max: 5000 }
+        };
+
+        const customPricing = (answers.Q4 && answers.Q5) ? {
+          setupFee: setupMap[answers.Q4] || { min: 0, max: 0 },
+          monthly: monthlyMap[answers.Q5] || { min: 0, max: 0 },
+          annual: { na: true },
+          handover: { na: true }
+        } : null;
+
         finalRec = {
           packageName: "Custom Build",
           score,
-          pricing: null,
+          pricing: customPricing,
           features: [],
           reasons: [],
           isCustom: true
@@ -155,6 +187,7 @@ const PlannerShell = () => {
             preferredCallTime: contactInfo.preferredCallTime
           },
           answers,
+          salesAnswers,
           readableAnswers: getReadableAnswers(answers, selectedIndustry),
           recommendation: {
             package: finalRec.packageName,
@@ -177,7 +210,7 @@ const PlannerShell = () => {
       console.error("Error submitting lead:", error);
       // Even if API fails, show user the result
     } finally {
-      setCurrentStep(6); // Show results
+      setCurrentStep(7); // Show results
     }
   };
 
@@ -218,6 +251,7 @@ const PlannerShell = () => {
           preferredCallTime: contactInfo.preferredCallTime
         },
         answers,
+        salesAnswers,
         readableAnswers: getReadableAnswers(answers, selectedIndustry),
         recommendation: {
           package: recommendation.packageName,
@@ -255,20 +289,22 @@ const PlannerShell = () => {
   const renderStep = () => {
     switch (currentStep) {
       case -1:
-        return <FoundationQuestions answers={answers} onAnswer={handleAnswer} onNext={handleNext} />;
+        return <FoundationQuestions answers={answers} onAnswer={handleAnswer} onNext={handleNext} isSalesMode={!!editId} />;
       case 0:
         return <IndustrySelector selectedIndustry={selectedIndustry} onSelect={setSelectedIndustry} onNext={handleNext} onBack={handleBack} />;
       case 1:
-        return <PlannerStep title="About Your Business" subtext="Help us understand your setup." questions={visibleQuestions} answers={answers} onAnswer={handleAnswer} onNext={handleNext} onBack={handleBack} isNextDisabled={!isCurrentStepValid()} />;
+        return <PlannerStep title="About Your Business" subtext="Help us understand your setup." questions={visibleQuestions} answers={answers} onAnswer={handleAnswer} onNext={handleNext} onBack={handleBack} isNextDisabled={!isCurrentStepValid()} isSalesMode={!!editId} />;
       case 2:
-        return <PlannerStep title="Your Goals" subtext="What do you want to achieve?" questions={visibleQuestions} answers={answers} onAnswer={handleAnswer} onNext={handleNext} onBack={handleBack} isNextDisabled={!isCurrentStepValid()} />;
+        return <PlannerStep title="Your Goals" subtext="What do you want to achieve?" questions={visibleQuestions} answers={answers} onAnswer={handleAnswer} onNext={handleNext} onBack={handleBack} isNextDisabled={!isCurrentStepValid()} isSalesMode={!!editId} />;
       case 3:
-        return <PlannerStep title="Current Situation" subtext="What assets do you already have?" questions={visibleQuestions} answers={answers} onAnswer={handleAnswer} onNext={handleNext} onBack={handleBack} isNextDisabled={!isCurrentStepValid()} />;
+        return <PlannerStep title="Current Situation" subtext="What assets do you already have?" questions={visibleQuestions} answers={answers} onAnswer={handleAnswer} onNext={handleNext} onBack={handleBack} isNextDisabled={!isCurrentStepValid()} isSalesMode={!!editId} />;
       case 4:
-        return <ContactStep contactInfo={contactInfo} setContactInfo={setContactInfo} onSubmit={handleSubmitContact} onBack={handleBack} isSubmitting={isSubmitting} />;
+        return <PlannerStep title="Internal Sales Refinement" subtext="Add-ons and modifiers (Customer will not see this)" questions={salesQuestions} answers={salesAnswers} onAnswer={(q, v) => setSalesAnswers(p => ({...p, [q]: v}))} onNext={handleNext} onBack={handleBack} isNextDisabled={false} isSalesMode={true} />;
       case 5:
-        return <LoadingScreen onComplete={handleLoadingComplete} isEditMode={!!editId} />;
+        return <ContactStep contactInfo={contactInfo} setContactInfo={setContactInfo} onSubmit={handleSubmitContact} onBack={handleBack} isSubmitting={isSubmitting} />;
       case 6:
+        return <LoadingScreen onComplete={handleLoadingComplete} isEditMode={!!editId} />;
+      case 7:
         return <RecommendationScreen 
           recommendation={recommendation} 
           managementType={answers.Q0B} 
@@ -278,6 +314,7 @@ const PlannerShell = () => {
           isEditMode={!!editId}
           onUpdateQuotation={handleUpdateLead}
           isUpdating={isSubmitting}
+          onBack={() => setCurrentStep(editId ? 4 : 3)}
         />;
       default:
         return null;

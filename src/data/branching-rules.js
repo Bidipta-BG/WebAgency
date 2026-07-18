@@ -99,6 +99,39 @@ export const branchingRules = [
   { industry: "construction", triggerQuestionId: "Q5", triggerOptionId: "view-a-gallery-of-co", action: "show", targetQuestionId: "Q6" },
   { industry: "construction", triggerQuestionId: "Q5", triggerOptionId: "see-your-ongoing-or-", action: "show", targetQuestionId: "Q7" },
 
+  // ─────────────────────────────────────────────────────────────────────────
+  // AUTOMOTIVE
+  { industry: "automotive", triggerQuestionId: "Q5", triggerOptionId: "browse-inventory", action: "show", targetQuestionId: "Q6" },
+  { industry: "automotive", triggerQuestionId: "Q5", triggerOptionId: "book-service", action: "show", targetQuestionId: "Q7" },
+
+  // TRADES & HOME SERVICES
+  { industry: "trades", triggerQuestionId: "Q5", triggerOptionId: "area-checker", action: "show", targetQuestionId: "Q6" },
+  { industry: "trades", triggerQuestionId: "Q5", triggerOptionId: "instant-quote", action: "show", targetQuestionId: "Q7" },
+
+  // COACHING
+  { industry: "coaching", triggerQuestionId: "Q5", triggerOptionId: "book-session", action: "show", targetQuestionId: "Q6" },
+  { industry: "coaching", triggerQuestionId: "Q5", triggerOptionId: "paywalled-course", action: "show", targetQuestionId: "Q7" },
+  { industry: "coaching", triggerQuestionId: "Q5", triggerOptionId: "membership-portal", action: "show", targetQuestionId: "Q7" },
+
+  // FINANCE
+  { industry: "finance", triggerQuestionId: "Q5", triggerOptionId: "calculator", action: "show", targetQuestionId: "Q6" },
+  { industry: "finance", triggerQuestionId: "Q5", triggerOptionId: "kyc-upload", action: "show", targetQuestionId: "Q7" },
+
+  // ARCHITECTURE
+  { industry: "architecture", triggerQuestionId: "Q5", triggerOptionId: "project-gallery", action: "show", targetQuestionId: "Q6" },
+  { industry: "architecture", triggerQuestionId: "Q5", triggerOptionId: "client-area", action: "show", targetQuestionId: "Q7" },
+
+  // SAAS
+  { industry: "saas", triggerQuestionId: "Q5", triggerOptionId: "pricing-tiers", action: "show", targetQuestionId: "Q6" },
+  { industry: "saas", triggerQuestionId: "Q5", triggerOptionId: "documentation", action: "show", targetQuestionId: "Q7" },
+
+  // MEDIA
+  { industry: "media", triggerQuestionId: "Q5", triggerOptionId: "embedded-player", action: "show", targetQuestionId: "Q6" },
+  { industry: "media", triggerQuestionId: "Q5", triggerOptionId: "ticket-sales", action: "show", targetQuestionId: "Q7" },
+
+  // LOGISTICS
+  { industry: "logistics", triggerQuestionId: "Q5", triggerOptionId: "track-shipment", action: "show", targetQuestionId: "Q6" },
+  { industry: "logistics", triggerQuestionId: "Q5", triggerOptionId: "instant-quote", action: "show", targetQuestionId: "Q7" }
 ];
 // NOTE: Interior, Jewellery, Retail, Electronics, Photography, Events,
 // Manufacturing, NGO — these industries have no conditional questions per the

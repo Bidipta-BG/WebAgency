@@ -23,6 +23,14 @@ const industryQuestionsMap = {
   manufacturing: allIndustries.manufacturingQuestions,
   ngo: allIndustries.ngoQuestions,
   others: allIndustries.othersQuestions,
+  automotive: allIndustries.automotiveQuestions,
+  trades: allIndustries.tradesQuestions,
+  coaching: allIndustries.coachingQuestions,
+  finance: allIndustries.financeQuestions,
+  architecture: allIndustries.architectureQuestions,
+  saas: allIndustries.saasQuestions,
+  media: allIndustries.mediaQuestions,
+  logistics: allIndustries.logisticsQuestions,
 };
 
 export const getVisibleQuestions = (answers, currentStep, industry) => {
@@ -32,7 +40,11 @@ export const getVisibleQuestions = (answers, currentStep, industry) => {
   if (currentStep === -1) {
     allQuestions = foundationQuestions;
   } else if (currentStep === 3) {
-    allQuestions = commonStep3Questions;
+    allQuestions = [...commonStep3Questions];
+    // Include any custom industry questions assigned to step 3
+    const industryQuestions = industryQuestionsMap[industry] || [];
+    const extraStep3Questions = industryQuestions.filter(q => q.step === 3);
+    allQuestions = [...allQuestions, ...extraStep3Questions];
   } else {
     // Step 1 and 2 are industry specific
     allQuestions = industryQuestionsMap[industry] || [];

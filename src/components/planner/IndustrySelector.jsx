@@ -20,7 +20,15 @@ const industriesList = [
   { id: 'events', name: 'Event Planner', emoji: '🎉' },
   { id: 'manufacturing', name: 'Manufacturing', emoji: '🏭' },
   { id: 'ngo', name: 'NGO / Non-Profit', emoji: '🤝' },
-  { id: 'others', name: 'Others', emoji: '🔧' }
+  { id: 'automotive', name: 'Automotive & Dealerships', emoji: '🚗' },
+  { id: 'trades', name: 'Trades & Home Services', emoji: '🛠️' },
+  { id: 'coaching', name: 'Consulting & Coaching', emoji: '🎯' },
+  { id: 'finance', name: 'Finance & Insurance', emoji: '💼' },
+  { id: 'architecture', name: 'Architecture & Engineering', emoji: '🏛️' },
+  { id: 'saas', name: 'Tech Startups & SaaS', emoji: '💻' },
+  { id: 'media', name: 'Entertainment & Media', emoji: '🎙️' },
+  { id: 'logistics', name: 'Transportation & Logistics', emoji: '🚚' },
+  { id: 'others', name: 'Others', emoji: '⚙️' }
 ];
 
 const IndustrySelector = ({ selectedIndustry, onSelect, onNext, onBack }) => {

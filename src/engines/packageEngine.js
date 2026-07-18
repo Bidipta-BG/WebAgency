@@ -1,4 +1,5 @@
 import * as allPackages from "../data/packages";
+import { salesQuestions } from "../data/sales-questions";
 
 const industryPackagesMap = {
   salon: allPackages.salonPackages,
@@ -20,10 +21,18 @@ const industryPackagesMap = {
   events: allPackages.eventsPackages,
   manufacturing: allPackages.manufacturingPackages,
   ngo: allPackages.ngoPackages,
+  automotive: allPackages.automotivePackages,
+  trades: allPackages.tradesPackages,
+  coaching: allPackages.coachingPackages,
+  finance: allPackages.financePackages,
+  architecture: allPackages.architecturePackages,
+  saas: allPackages.saasPackages,
+  media: allPackages.mediaPackages,
+  logistics: allPackages.logisticsPackages,
   // 'others' deliberately omitted as it has no standard packages
 };
 
-export const getPackage = (score, answers, industry) => {
+export const getPackage = (score, answers, industry, salesAnswers = {}) => {
   const packages = industryPackagesMap[industry];
   if (!packages) return null;
 
@@ -80,6 +89,77 @@ export const getPackage = (score, answers, industry) => {
     annual.max = Math.round(annual.max * 2.5);
     handover.min = Math.round(handover.min * 2.5);
     handover.max = Math.round(handover.max * 2.5);
+  }
+
+  // --- NEW: Apply Sales Answer Modifiers ---
+  if (salesAnswers) {
+    for (const [qId, ans] of Object.entries(salesAnswers)) {
+      if (ans === undefined || ans === null || ans === '') continue;
+      const question = salesQuestions.find(q => q.id === qId);
+      if (!question || !question.priceModifiers) continue;
+
+      if (question.inputType === 'number-input') {
+        if (question.priceModifiers._perUnit) {
+          let numValue = Number(ans) || 0;
+          if (numValue > 0) {
+            const mods = question.priceModifiers._perUnit;
+            if (mods.setupFee) {
+              if (mods.setupFee.addMin) setupFee.min += (mods.setupFee.addMin * numValue);
+              if (mods.setupFee.addMax) setupFee.max += (mods.setupFee.addMax * numValue);
+            }
+            if (mods.monthly) {
+              if (mods.monthly.addMin) monthly.min += (mods.monthly.addMin * numValue);
+              if (mods.monthly.addMax) monthly.max += (mods.monthly.addMax * numValue);
+            }
+            if (mods.annual) {
+              if (mods.annual.addMin) annual.min += (mods.annual.addMin * numValue);
+              if (mods.annual.addMax) annual.max += (mods.annual.addMax * numValue);
+            }
+            if (mods.handover) {
+              if (mods.handover.addMin) handover.min += (mods.handover.addMin * numValue);
+              if (mods.handover.addMax) handover.max += (mods.handover.addMax * numValue);
+            }
+          }
+        }
+      } else {
+        const answersArray = Array.isArray(ans) ? ans : [ans];
+        for (const optionId of answersArray) {
+          const mods = question.priceModifiers[optionId];
+          if (mods) {
+            let multiplier = 1;
+            
+            if (mods.setupFee && mods.setupFee.perUnitOf && salesAnswers[mods.setupFee.perUnitOf]) {
+               multiplier = Number(salesAnswers[mods.setupFee.perUnitOf]) || 1;
+            } else if (mods.monthly && mods.monthly.perUnitOf && salesAnswers[mods.monthly.perUnitOf]) {
+               multiplier = Number(salesAnswers[mods.monthly.perUnitOf]) || 1;
+            } else if (mods.annual && mods.annual.perUnitOf && salesAnswers[mods.annual.perUnitOf]) {
+               multiplier = Number(salesAnswers[mods.annual.perUnitOf]) || 1;
+            }
+
+            if (mods.setupFee) {
+              if (mods.setupFee.addMin) setupFee.min += (mods.setupFee.addMin * multiplier);
+              if (mods.setupFee.addMax) setupFee.max += (mods.setupFee.addMax * multiplier);
+              if (mods.setupFee.addMultiplier) {
+                 setupFee.min = Math.round(setupFee.min * mods.setupFee.addMultiplier);
+                 setupFee.max = Math.round(setupFee.max * mods.setupFee.addMultiplier);
+              }
+            }
+            if (mods.monthly) {
+              if (mods.monthly.addMin) monthly.min += (mods.monthly.addMin * multiplier);
+              if (mods.monthly.addMax) monthly.max += (mods.monthly.addMax * multiplier);
+            }
+            if (mods.annual) {
+              if (mods.annual.addMin) annual.min += (mods.annual.addMin * multiplier);
+              if (mods.annual.addMax) annual.max += (mods.annual.addMax * multiplier);
+            }
+            if (mods.handover) {
+              if (mods.handover.addMin) handover.min += (mods.handover.addMin * multiplier);
+              if (mods.handover.addMax) handover.max += (mods.handover.addMax * multiplier);
+            }
+          }
+        }
+      }
+    }
   }
 
   return {

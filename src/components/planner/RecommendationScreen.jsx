@@ -3,7 +3,7 @@ import { Download } from 'lucide-react';
 import { getReadableAnswers } from '../../engines/questionFlowController';
 import { generateQuotationPDF } from '../../utils/generateQuotationPDF';
 
-const RecommendationScreen = ({ recommendation, managementType, answers, selectedIndustry, contactInfo, isEditMode, onUpdateQuotation, isUpdating }) => {
+const RecommendationScreen = ({ recommendation, managementType, answers, selectedIndustry, contactInfo, isEditMode, onUpdateQuotation, isUpdating, onBack }) => {
   const [billingMode, setBillingMode] = useState('monthly'); // 'monthly' or 'annual'
   const [isGenerating, setIsGenerating] = useState(false);
   const [fixedPrices, setFixedPrices] = useState({
@@ -265,24 +265,36 @@ const RecommendationScreen = ({ recommendation, managementType, answers, selecte
             </button>
 
             {isEditMode && (
-              <button
-                onClick={() => onUpdateQuotation(fixedPrices)}
-                disabled={isUpdating || isGenerating}
-                className={`w-full py-4 mt-4 rounded-xl font-bold text-lg shadow-lg flex items-center justify-center transition-all border-2 border-amber-500/50 ${
-                  isUpdating || isGenerating
-                    ? 'bg-amber-900/50 text-amber-500/50 cursor-not-allowed'
-                    : 'bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 hover:scale-[1.02]'
-                }`}
-              >
-                {isUpdating ? (
-                  <>
-                    <div className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mr-3"></div>
-                    Updating Database...
-                  </>
-                ) : (
-                  'Update Customer Quotation'
-                )}
-              </button>
+              <>
+                <button
+                  onClick={() => onUpdateQuotation(fixedPrices)}
+                  disabled={isUpdating || isGenerating}
+                  className={`w-full py-4 mt-4 rounded-xl font-bold text-lg shadow-lg flex items-center justify-center transition-all border-2 border-amber-500/50 ${
+                    isUpdating || isGenerating
+                      ? 'bg-amber-900/50 text-amber-500/50 cursor-not-allowed'
+                      : 'bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 hover:scale-[1.02]'
+                  }`}
+                >
+                  {isUpdating ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mr-3"></div>
+                      Updating Database...
+                    </>
+                  ) : (
+                    'Update Customer Quotation'
+                  )}
+                </button>
+                
+                <button
+                  onClick={onBack}
+                  disabled={isUpdating || isGenerating}
+                  className={`w-full py-3 mt-3 rounded-xl font-medium text-base transition-all text-indigo-300 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10 ${
+                    (isUpdating || isGenerating) && 'opacity-50 cursor-not-allowed'
+                  }`}
+                >
+                  ← Go Back & Edit Answers
+                </button>
+              </>
             )}
 
             <div className="mt-6 text-center text-xs text-indigo-300/80">

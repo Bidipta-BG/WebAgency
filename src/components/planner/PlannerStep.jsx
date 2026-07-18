@@ -1,7 +1,7 @@
 import React from 'react';
 import QuestionCard from './QuestionCard';
 
-const PlannerStep = ({ title, subtext, questions, answers, onAnswer, onNext, onBack, isNextDisabled }) => {
+const PlannerStep = ({ title, subtext, questions, answers, onAnswer, onNext, onBack, isNextDisabled, isSalesMode }) => {
   return (
     <div className="max-w-3xl mx-auto w-full animate-fade-in-up">
       <div className="text-center mb-8">
@@ -16,6 +16,7 @@ const PlannerStep = ({ title, subtext, questions, answers, onAnswer, onNext, onB
             question={q} 
             answer={answers[q.id]} 
             onAnswer={onAnswer} 
+            isSalesMode={isSalesMode}
           />
         ))}
       </div>

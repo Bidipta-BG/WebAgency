@@ -17,4 +17,11 @@ export { photographyPackages } from './photography-packages';
 export { eventsPackages } from './events-packages';
 export { manufacturingPackages } from './manufacturing-packages';
 export { ngoPackages } from './ngo-packages';
-// 'others' does not have predefined packages
+export { automotivePackages } from './automotive-packages';
+export { tradesPackages } from './trades-packages';
+export { coachingPackages } from './coaching-packages';
+export { financePackages } from './finance-packages';
+export { architecturePackages } from './architecture-packages';
+export { saasPackages } from './saas-packages';
+export { mediaPackages } from './media-packages';
+export { logisticsPackages } from './logistics-packages';// 'others' does not have predefined packages

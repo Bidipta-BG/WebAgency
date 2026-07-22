@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, CheckCircle, Package, Layers, DollarSign, User, Mail, Phone, CreditCard, Clock, Download } from 'lucide-react';
+import { X, Calendar, CheckCircle, Package, Layers, DollarSign, User, Mail, Phone, CreditCard, Clock, Download, Target } from 'lucide-react';
 import { generateQuotationPDF } from '../utils/generateQuotationPDF';
 
 const LeadDetailsModal = ({ isOpen, onClose, lead }) => {
@@ -15,6 +15,7 @@ const LeadDetailsModal = ({ isOpen, onClose, lead }) => {
         setIsGeneratingPDF(true);
         try {
             await generateQuotationPDF({
+                leadId: lead.leadId,
                 readableAnswers: lead.readableAnswers,
                 contactInfo: {
                     ownerName: lead.leadInfo?.name,
@@ -65,10 +66,10 @@ const LeadDetailsModal = ({ isOpen, onClose, lead }) => {
                             <div className="sticky top-0 bg-slate-900/95 backdrop-blur border-b border-slate-800 p-6 flex items-center justify-between z-10">
                                 <div>
                                     <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                                        {lead.formType === 'estimate' || lead.formType === 'industry-planner' ? <DollarSign className="w-5 h-5 text-accent" /> : <Mail className="w-5 h-5 text-purple-400" />}
-                                        {lead.formType === 'estimate' || lead.formType === 'industry-planner' ? 'Project Estimate Details' : 'Contact Inquiry'}
+                                        {lead.formType === 'marketing-enquiry' ? <Target className="w-5 h-5 text-purple-400" /> : (lead.formType === 'estimate' || lead.formType === 'industry-planner' ? <DollarSign className="w-5 h-5 text-accent" /> : <Mail className="w-5 h-5 text-blue-400" />)}
+                                        {lead.formType === 'marketing-enquiry' ? 'Marketing Enquiry' : (lead.formType === 'estimate' || lead.formType === 'industry-planner' ? 'Project Estimate Details' : 'Contact Inquiry')}
                                     </h2>
-                                    <p className="text-slate-400 text-xs mt-1">ID: {lead._id} • {new Date(lead.createdAt).toLocaleString()}</p>
+                                    <p className="text-slate-400 text-xs mt-1">ID: <span className="font-bold text-white">{lead.leadId || lead._id}</span> &bull; {new Date(lead.createdAt).toLocaleString()}</p>
                                 </div>
                                 <div className="flex items-center gap-3">
                                     {lead.formType === 'industry-planner' && (
@@ -113,6 +114,18 @@ const LeadDetailsModal = ({ isOpen, onClose, lead }) => {
                                             <label className="text-xs text-slate-500 block">Phone</label>
                                             <a href={`tel:${lead.leadInfo?.phone}`} className="text-white hover:text-accent">{lead.leadInfo?.phone}</a>
                                         </div>
+                                        {lead.leadInfo?.businessName && (
+                                            <div>
+                                                <label className="text-xs text-slate-500 block">Business Name</label>
+                                                <div className="text-white font-medium">{lead.leadInfo.businessName}</div>
+                                            </div>
+                                        )}
+                                        {lead.leadInfo?.city && (
+                                            <div>
+                                                <label className="text-xs text-slate-500 block">City</label>
+                                                <div className="text-white font-medium">{lead.leadInfo.city}</div>
+                                            </div>
+                                        )}
                                         {lead.leadInfo?.preferredCallTime && (
                                             <div>
                                                 <label className="text-xs text-slate-500 block">Preferred Call Time</label>
@@ -142,6 +155,42 @@ const LeadDetailsModal = ({ isOpen, onClose, lead }) => {
                                         </div>
                                     </div>
                                 </div>
+
+                                {/* Marketing Details Section */}
+                                {lead.formType === 'marketing-enquiry' && lead.answers && (
+                                    <div className="md:col-span-2 space-y-6 mt-4">
+                                        <div className="bg-slate-950 rounded-xl border border-slate-800 overflow-hidden">
+                                            <div className="bg-slate-900/50 p-4 border-b border-slate-800 flex items-center gap-2">
+                                                <Layers className="w-4 h-4 text-purple-400" />
+                                                <h3 className="text-sm font-bold text-slate-400 uppercase">Marketing Profile</h3>
+                                            </div>
+                                            <div className="p-5 grid md:grid-cols-2 gap-6">
+                                                <div>
+                                                    <label className="text-xs text-slate-500 block mb-1">Industry</label>
+                                                    <div className="text-white capitalize font-medium">{lead.answers.industry?.replace('-', ' ') || 'Not specified'}</div>
+                                                </div>
+                                                <div>
+                                                    <label className="text-xs text-slate-500 block mb-1">Monthly Budget</label>
+                                                    <div className="text-white font-medium">{lead.answers.budget || 'Not specified'}</div>
+                                                </div>
+                                                <div className="md:col-span-2">
+                                                    <label className="text-xs text-slate-500 block mb-2">Current Online Presence</label>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {lead.answers.presence && lead.answers.presence.length > 0 ? (
+                                                            lead.answers.presence.map((p, i) => (
+                                                                <span key={i} className="bg-purple-500/10 text-purple-400 border border-purple-500/20 px-3 py-1 rounded-full text-xs capitalize">
+                                                                    {p.replace('-', ' ')}
+                                                                </span>
+                                                            ))
+                                                        ) : (
+                                                            <span className="text-slate-500 text-sm italic">None specified</span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
 
                                 {/* Detailed Quotation Section */}
                                 {((lead.formType === 'estimate' && lead.quotation) || (lead.formType === 'industry-planner' && lead.recommendation)) && (

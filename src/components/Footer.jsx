@@ -1,8 +1,24 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import LegalModal from './LegalModal';
 
-const Footer = ({ onOpenLegal = () => { } }) => {
+const Footer = () => {
+    const [legalOpen, setLegalOpen] = useState(false);
+    const [legalTab, setLegalTab] = useState('privacy');
+
+    const openLegal = (tab) => {
+        setLegalTab(tab);
+        setLegalOpen(true);
+    };
+
+    React.useEffect(() => {
+        const handleOpenLegal = (e) => {
+            if (e.detail) openLegal(e.detail);
+        };
+        window.addEventListener('open-legal', handleOpenLegal);
+        return () => window.removeEventListener('open-legal', handleOpenLegal);
+    }, []);
     return (
         <footer className="bg-surface-muted border-t border-surface-highlight py-12">
             <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
@@ -18,12 +34,14 @@ const Footer = ({ onOpenLegal = () => { } }) => {
                     © 2026 Axom IT Lab. All rights reserved.
                 </p>
 
-                <div className="flex gap-6">
-                    <button onClick={() => onOpenLegal('privacy')} className="text-slate-500 hover:text-white transition-colors text-sm">Privacy</button>
-                    <button onClick={() => onOpenLegal('terms')} className="text-slate-500 hover:text-white transition-colors text-sm text-center">Terms</button>
+                <div className="flex flex-wrap gap-6 items-center justify-center">
+                    <button onClick={() => openLegal('privacy')} className="text-slate-500 hover:text-white transition-colors text-sm">Privacy</button>
+                    <button onClick={() => openLegal('terms')} className="text-slate-500 hover:text-white transition-colors text-sm text-center">Terms</button>
                     <Link href="/contact" className="text-slate-500 hover:text-white transition-colors text-sm">Contact</Link>
                 </div>
             </div>
+
+            <LegalModal isOpen={legalOpen} onClose={() => setLegalOpen(false)} activeTab={legalTab} />
         </footer>
     );
 };

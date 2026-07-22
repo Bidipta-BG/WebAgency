@@ -40,7 +40,7 @@ const FoundationQuestions = ({ answers, onAnswer, onNext, isSalesMode }) => {
           onClick={onNext}
           className="px-10 py-4 bg-accent text-white rounded-xl font-bold text-lg hover:bg-accent-bright shadow-lg shadow-accent/25 transition-all transform hover:-translate-y-1"
         >
-          Talk to Our AI Consultant →
+          Generate My Estimate →
         </button>
       </div>
     </div>

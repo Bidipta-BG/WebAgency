@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import FoundationQuestions from './FoundationQuestions';
 import IndustrySelector from './IndustrySelector';
 import PlannerStep from './PlannerStep';
@@ -367,6 +368,19 @@ const PlannerShell = () => {
         )}
         
         {renderStep()}
+
+        {/* Not sure escape hatch — visible on all steps except loading & results */}
+        {currentStep !== 6 && currentStep !== 7 && (
+          <div className="flex justify-center mt-10">
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-2 text-slate-500 hover:text-slate-300 text-sm transition-colors"
+            >
+              <span>Not sure what you need?</span>
+              <span className="underline underline-offset-2 group-hover:text-accent transition-colors">Talk to us directly &rarr;</span>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

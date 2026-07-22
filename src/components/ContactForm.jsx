@@ -9,7 +9,7 @@ const ContactForm = () => {
         name: '',
         email: '',
         phone: '',
-        subject: 'Web Development',
+        subject: 'Website Development',
         message: ''
     });
     const [isSubmitted, setIsSubmitted] = useState(false);
@@ -51,7 +51,7 @@ const ContactForm = () => {
             };
             await submitContactForm(leadData);
             setIsSubmitted(true);
-            setFormData({ name: '', email: '', phone: '', subject: 'Web Development', message: '' });
+            setFormData({ name: '', email: '', phone: '', subject: 'Website Development', message: '' });
         } catch (error) {
             console.error("Submission failed", error);
             setErrors({ submit: "Failed to send message. Please try again later." });
@@ -136,8 +136,9 @@ const ContactForm = () => {
                             onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                             className="w-full bg-surface border border-surface-highlight rounded-xl px-4 py-3 text-white focus:border-accent outline-none transition-colors appearance-none"
                         >
-                            <option>Web Development</option>
+                            <option>Website Development</option>
                             <option>Mobile App Development</option>
+                            <option>Digital Marketing</option>
                             <option>AI Solutions</option>
                             <option>Other</option>
                         </select>

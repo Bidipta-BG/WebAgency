@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Download } from 'lucide-react';
+import { Download, TrendingUp } from 'lucide-react';
+import Link from 'next/link';
 import { getReadableAnswers } from '../../engines/questionFlowController';
 import { generateQuotationPDF } from '../../utils/generateQuotationPDF';
 
@@ -310,6 +311,24 @@ const RecommendationScreen = ({ recommendation, managementType, answers, selecte
           </div>
         </div>
       </div>
+
+      {/* Bridge Upsell Card */}
+      {!isEditMode && (
+        <div className="mt-12 text-center max-w-3xl mx-auto border border-indigo-500/20 bg-indigo-900/10 p-8 rounded-[2rem] shadow-2xl relative overflow-hidden group">
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent pointer-events-none"></div>
+          <TrendingUp className="w-10 h-10 text-indigo-400 mx-auto mb-4" />
+          <h3 className="text-2xl font-bold text-white mb-3">Your website is just the beginning.</h3>
+          <p className="text-indigo-200 mb-6 max-w-lg mx-auto">
+            Want to know how to get your first 100 customers online? Our AI marketing team can help you generate real leads and build your brand.
+          </p>
+          <Link 
+            href="/marketing"
+            className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition-all shadow-lg"
+          >
+            Generate Leads for My Business →
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

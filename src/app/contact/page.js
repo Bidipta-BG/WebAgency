@@ -37,6 +37,16 @@ const ContactPage = () => {
 
                             <div className="flex gap-6 group">
                                 <div className="w-14 h-14 rounded-2xl bg-surface-muted border border-surface-highlight flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all">
+                                    <Phone className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <div className="text-xs text-slate-500 uppercase font-bold tracking-widest mb-1">Call Us</div>
+                                    <a href="tel:+919606914772" className="text-xl text-white font-medium hover:text-accent transition-colors">+91 96069 14772</a>
+                                </div>
+                            </div>
+
+                            <div className="flex gap-6 group">
+                                <div className="w-14 h-14 rounded-2xl bg-surface-muted border border-surface-highlight flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all">
                                     <MapPin className="w-6 h-6" />
                                 </div>
                                 <div>

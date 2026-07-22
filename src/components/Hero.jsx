@@ -1,9 +1,11 @@
 "use client";
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2, Zap } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Zap, TrendingUp } from 'lucide-react';
+import Link from 'next/link';
+import GuaranteeBadge from './GuaranteeBadge';
 
-const Hero = () => {
+const Hero = ({ onOpenGuarantee }) => {
     return (
         <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
             {/* Background Decor */}
@@ -26,17 +28,17 @@ const Hero = () => {
                     </div>
 
                     <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1] mb-6">
-                        Build with AI. <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent-bright">Deliver Faster, Cost Less.</span>
+                        Build with AI. Market with AI.<br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent-bright">Deliver Faster.</span>
                     </h1>
 
                     <p className="text-lg text-slate-400 mb-8 max-w-xl leading-relaxed">
                         Our seasoned engineers transform your ideas into world-class software. By equipping our experts with
                         <span className="font-semibold text-white"> advanced AI tools</span>,
-                        we deliver enterprise-grade development with significantly reduced timelines and costs.
+                        we deliver enterprise-grade development with significantly reduced timelines and costs. And once you're live, our AI-powered marketing team helps you attract real customers.
                     </p>
 
-                    <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4 mb-4">
                         <a
                             href="#calculator"
                             className="inline-flex items-center justify-center gap-2 bg-accent text-white px-8 py-4 rounded-xl font-semibold hover:bg-accent-bright transition-all shadow-lg shadow-accent/25"
@@ -51,6 +53,17 @@ const Hero = () => {
                             How AI Works
                         </a>
                     </div>
+                    
+                    <div className="flex flex-col sm:flex-row gap-4">
+                        <Link
+                            href="/marketing"
+                            className="inline-flex items-center justify-center gap-2 text-slate-300 px-4 py-2 rounded-xl text-sm font-medium hover:text-white hover:bg-surface-highlight transition-all border border-transparent hover:border-white/10 w-fit"
+                        >
+                            <TrendingUp className="w-4 h-4 text-accent" />
+                            Already have a website? Generate Leads for My Business
+                            <ArrowRight className="w-4 h-4 opacity-70" />
+                        </Link>
+                    </div>
 
                     <div className="mt-10 flex gap-6 text-sm text-slate-500 flex-wrap">
                         <div className="flex items-center gap-2">
@@ -63,8 +76,13 @@ const Hero = () => {
                         </div>
                         <div className="flex items-center gap-2">
                             <CheckCircle2 className="w-5 h-5 text-accent" />
-                            <span>Advanced Tech Stack</span>
+                            <span>Full-Service: Build + Market</span>
                         </div>
+                    </div>
+                    
+                    <div className="mt-6 flex items-center gap-3">
+                        <GuaranteeBadge onOpen={onOpenGuarantee} text="Full refund if not satisfied" />
+                        <span className="text-slate-500 text-sm italic">✦ No hidden fees</span>
                     </div>
                 </motion.div>
 

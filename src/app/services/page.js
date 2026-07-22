@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-import { Laptop, Smartphone, BrainCircuit, Globe, Rocket, Terminal } from 'lucide-react';
+import { Laptop, Smartphone, BrainCircuit, Globe, Rocket, Terminal, TrendingUp, ShieldCheck } from 'lucide-react';
 
 export const metadata = {
     title: 'Expert Web & App Development Services | Axom IT Lab',
@@ -28,6 +28,13 @@ const ServicesPage = () => {
             icon: BrainCircuit,
             tech: ["OpenAI", "Gemini", "Claude", "LangChain", "Pinecone", "Python", "Automation", "LLMs", "Vector Databases", "HuggingFace", "TensorFlow"],
             desc: "Custom AI solutions to streamline your business. From intelligent chatbots and RAG-based systems to sophisticated data processing and automation workflows."
+        },
+        {
+            title: "AI-Powered Digital Marketing",
+            icon: TrendingUp,
+            tech: ["Google Business Profile", "Meta Ads", "Google Ads", "SEO", "Content Marketing", "Lead Generation", "Analytics"],
+            desc: "Once your product is live, we help you get customers. We use AI to optimize your online presence, manage social media, and run high-converting ad campaigns.",
+            isMarketing: true
         }
     ];
 
@@ -62,10 +69,17 @@ const ServicesPage = () => {
                                     ))}
                                 </div>
                             </div>
-                            <Link href="/contact" className="hidden lg:flex items-center gap-2 text-accent font-bold text-sm self-center hover:text-white transition-colors group/link">
-                                <span>Learn More</span>
-                                <Rocket className="w-4 h-4 translate-y-0.5 group-hover/link:-translate-y-1 transition-transform" />
-                            </Link>
+                            {s.isMarketing ? (
+                                <Link href="/marketing" className="hidden lg:flex items-center gap-2 text-accent font-bold text-sm self-center hover:text-white transition-colors group/link px-4 py-2 border border-accent/30 rounded-full hover:bg-accent hover:border-accent">
+                                    <span>Generate Leads for My Business</span>
+                                    <Rocket className="w-4 h-4 translate-y-0.5 group-hover/link:-translate-y-1 transition-transform" />
+                                </Link>
+                            ) : (
+                                <Link href="/contact" className="hidden lg:flex items-center gap-2 text-accent font-bold text-sm self-center hover:text-white transition-colors group/link">
+                                    <span>Learn More</span>
+                                    <Rocket className="w-4 h-4 translate-y-0.5 group-hover/link:-translate-y-1 transition-transform" />
+                                </Link>
+                            )}
                         </div>
                     ))}
                 </div>
@@ -80,6 +94,18 @@ const ServicesPage = () => {
                     </p>
                     <Link href="/contact" className="inline-block bg-white text-black px-10 py-4 rounded-full font-bold hover:scale-105 transition-transform">
                         Discuss Architecture
+                    </Link>
+                </div>
+            </section>
+
+            <section className="pb-20 px-6">
+                <div className="max-w-3xl mx-auto flex flex-col md:flex-row items-center justify-center gap-4 text-center p-6 rounded-2xl border border-surface-highlight bg-surface-muted">
+                    <ShieldCheck className="w-6 h-6 text-accent shrink-0" />
+                    <span className="text-slate-300 font-medium">
+                        <strong className="text-white">Satisfaction Guarantee:</strong> We stand behind every project we build with a transparent money-back policy.
+                    </span>
+                    <Link href="/?guarantee=true" className="text-sm font-bold text-accent hover:text-white transition-colors ml-2 flex items-center gap-1">
+                        Learn More <Rocket className="w-3 h-3" />
                     </Link>
                 </div>
             </section>

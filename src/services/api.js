@@ -152,6 +152,24 @@ export const submitContactForm = async (data) => {
     }
 };
 
+export const submitMarketingForm = async (data, answers) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/axomitlab/leads`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                formType: 'marketing-enquiry',
+                leadInfo: data,
+                answers: answers
+            }),
+        });
+        return await response.json();
+    } catch (error) {
+        console.error("Error submitting marketing form:", error);
+        throw error;
+    }
+};
+
 export const getLeads = async () => {
     try {
         const response = await fetch(`${API_BASE_URL}/axomitlab/leads`);

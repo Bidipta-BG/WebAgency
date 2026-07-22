@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LogOut, Users, Calculator, TrendingUp, Search, Calendar, Phone, CheckCircle, Clock, AlertCircle, Eye, FileText } from 'lucide-react';
+import { LogOut, Users, Calculator, TrendingUp, Search, Calendar, Phone, CheckCircle, Clock, AlertCircle, Eye, FileText, Target } from 'lucide-react';
 import { getLeads, updateLead } from '../../../services/api';
 import LeadDetailsModal from '../../../components/LeadDetailsModal';
 
@@ -11,6 +11,7 @@ export default function AdminDashboard() {
     const [leads, setLeads] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [filterTab, setFilterTab] = useState('all');
     const [selectedLead, setSelectedLead] = useState(null); // For detailed view modal management
 
     useEffect(() => {
@@ -43,7 +44,8 @@ export default function AdminDashboard() {
 
     // Derived Stats
     const totalLeads = leads.length;
-    const totalEstimates = leads.filter(l => l.formType === 'estimate').length;
+    const totalEstimates = leads.filter(l => l.formType === 'estimate' || l.formType === 'industry-planner').length;
+    const totalMarketing = leads.filter(l => l.formType === 'marketing-enquiry').length;
     const connectedLeads = leads.filter(l => l.isCustomerConnected).length;
     const conversionRate = totalLeads > 0 ? Math.round((connectedLeads / totalLeads) * 100) : 0;
 
@@ -61,10 +63,21 @@ export default function AdminDashboard() {
         }).length;
     };
 
-    const filteredLeads = leads.filter(lead =>
-        lead.leadInfo?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        lead.leadInfo?.email?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredLeads = leads.filter(lead => {
+        const matchesSearch = lead.leadInfo?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                              lead.leadInfo?.email?.toLowerCase().includes(searchTerm.toLowerCase());
+        
+        let matchesTab = true;
+        if (filterTab === 'development') {
+            matchesTab = lead.formType === 'estimate' || lead.formType === 'industry-planner';
+        } else if (filterTab === 'marketing') {
+            matchesTab = lead.formType === 'marketing-enquiry';
+        } else if (filterTab === 'contact') {
+            matchesTab = lead.formType === 'contact';
+        }
+
+        return matchesSearch && matchesTab;
+    });
 
     const formatValuePrice = (priceObj) => {
         if (!priceObj || priceObj.na) return null;
@@ -136,13 +149,26 @@ export default function AdminDashboard() {
                         <h1 className="text-3xl font-bold mb-2">Lead Overview</h1>
                         <p className="text-slate-400">Manage your inquiries and estimates.</p>
                     </div>
-                    <button onClick={loadLeads} className="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm transition-colors">
-                        Refresh Data
-                    </button>
+                    <div className="flex items-center gap-4">
+                        <div className="flex bg-slate-900 border border-slate-800 rounded-lg p-1">
+                            {['all', 'development', 'marketing', 'contact'].map(tab => (
+                                <button
+                                    key={tab}
+                                    onClick={() => setFilterTab(tab)}
+                                    className={`px-4 py-1.5 rounded-md text-sm font-medium capitalize transition-colors ${filterTab === tab ? 'bg-slate-800 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
+                                >
+                                    {tab}
+                                </button>
+                            ))}
+                        </div>
+                        <button onClick={loadLeads} className="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm transition-colors h-[34px]">
+                            Refresh Data
+                        </button>
+                    </div>
                 </div>
 
                 {/* Stats Grid */}
-                <div className="grid md:grid-cols-3 gap-6 mb-8">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
                     <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-lg shadow-accent/5">
                         <div className="flex items-center gap-3 text-emerald-400 mb-2">
                             <Users className="w-5 h-5" />
@@ -156,6 +182,13 @@ export default function AdminDashboard() {
                             <span className="font-semibold">Estimates</span>
                         </div>
                         <p className="text-3xl font-bold">{totalEstimates}</p>
+                    </div>
+                    <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-lg shadow-accent/5">
+                        <div className="flex items-center gap-3 text-purple-400 mb-2">
+                            <Target className="w-5 h-5" />
+                            <span className="font-semibold">Marketing</span>
+                        </div>
+                        <p className="text-3xl font-bold">{totalMarketing}</p>
                     </div>
                     <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-lg shadow-accent/5">
                         <div className="flex items-center gap-3 text-purple-400 mb-2">
@@ -200,8 +233,9 @@ export default function AdminDashboard() {
                                     filteredLeads.map((lead) => (
                                         <tr key={lead._id} className="hover:bg-slate-800/50 transition-colors">
                                             <td className="px-6 py-4">
+                                                <div className="text-xs text-accent font-mono mb-1 font-bold">{lead.leadId || `ID: ${lead._id.substring(0, 8)}`}</div>
                                                 <div className="font-medium text-white">{lead.leadInfo?.name || 'Unknown'}</div>
-                                                <div className="flex flex-col gap-0.5">
+                                                <div className="flex flex-col gap-0.5 mt-1">
                                                     <div className="flex items-center gap-1.5">
                                                         <span className="text-slate-500 text-xs">{lead.leadInfo?.email}</span>
                                                         {getDuplicateCount(lead.leadInfo?.email, 'email') > 1 && (
@@ -221,21 +255,34 @@ export default function AdminDashboard() {
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4">
-                                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${lead.formType === 'estimate'
-                                                    ? 'bg-blue-500/10 text-blue-400'
-                                                    : 'bg-purple-500/10 text-purple-400'
+                                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                                    lead.formType === 'estimate' || lead.formType === 'industry-planner'
+                                                        ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+                                                        : lead.formType === 'marketing-enquiry'
+                                                            ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
+                                                            : 'bg-slate-500/10 text-slate-400 border border-slate-500/20'
                                                     }`}>
-                                                    {lead.formType === 'estimate' ? 'Estimate' : 'Contact'}
+                                                    {lead.formType === 'estimate' || lead.formType === 'industry-planner' ? 'Development' : 
+                                                     lead.formType === 'marketing-enquiry' ? 'Marketing' : 'Contact'}
                                                 </span>
                                                 {lead.selection?.projectType && (
                                                     <div className="text-xs text-slate-400 mt-1 capitalize">{lead.selection.projectType.replace('_', ' ')}</div>
+                                                )}
+                                                {lead.industry && (
+                                                    <div className="text-xs text-slate-400 mt-1 capitalize">{lead.industry.replace('-', ' ')}</div>
+                                                )}
+                                                {lead.answers?.industry && (
+                                                    <div className="text-xs text-slate-400 mt-1 capitalize">{lead.answers.industry.replace('-', ' ')}</div>
                                                 )}
                                             </td>
                                             <td className="px-6 py-4 font-mono text-slate-300 align-top">
                                                 {renderValueColumn(lead)}
                                             </td>
                                             <td className="px-6 py-4 text-slate-400">
-                                                {new Date(lead.createdAt || Date.now()).toLocaleDateString()}
+                                                <div className="flex flex-col gap-0.5">
+                                                    <span className="text-sm">{new Date(lead.createdAt || Date.now()).toLocaleDateString()}</span>
+                                                    <span className="text-xs text-slate-500">{new Date(lead.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                </div>
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className={`inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-medium border ${lead.followupStatus === 'Contacted' ? 'bg-green-500/10 text-green-400 border-green-500/20' :

@@ -2,14 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Calculator, ChevronDown, Smartphone, ExternalLink } from 'lucide-react';
+import { Menu, X, Calculator, TrendingUp } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isProductDropdownOpen, setIsProductDropdownOpen] = useState(false);
     const pathname = usePathname();
 
     useEffect(() => {
@@ -22,21 +21,8 @@ const Navbar = () => {
 
     const navLinks = [
         { name: 'Home', href: '/' },
-        {
-            name: 'Our Products',
-            href: '/portfolio',
-            dropdown: [
-                {
-                    name: 'TemplatePro',
-                    desc: 'Premium Graphics Templates',
-                    href: 'https://play.google.com/store/apps/details?id=com.thevibecoder.greetify',
-                    icon: Smartphone,
-                    image: '/assets/images/templatePro.png'
-                }
-            ]
-        },
+        { name: 'Our Work', href: '/portfolio' },
         { name: 'Services', href: '/services' },
-        // { name: 'Portfolio', href: '/portfolio' },
         { name: 'About', href: '/about' },
         { name: 'Contact', href: '/contact' },
     ];
@@ -69,77 +55,34 @@ const Navbar = () => {
                             <li
                                 key={link.name}
                                 className="relative py-2"
-                                onMouseEnter={() => link.dropdown && setIsProductDropdownOpen(true)}
-                                onMouseLeave={() => link.dropdown && setIsProductDropdownOpen(false)}
                             >
-                                {link.dropdown ? (
-                                    <div className="flex items-center gap-1 cursor-pointer hover:text-white transition-colors py-2 font-medium text-sm">
-                                        <Link href={link.href} className={cn(isActive(link.href) && "text-accent")}>
-                                            {link.name}
-                                        </Link>
-                                        <ChevronDown className={cn("w-4 h-4 transition-transform", isProductDropdownOpen && "rotate-180")} />
-
-                                        {/* Dropdown Menu */}
-                                        <AnimatePresence>
-                                            {isProductDropdownOpen && (
-                                                <motion.div
-                                                    initial={{ opacity: 0, y: 15, scale: 0.95 }}
-                                                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                                                    exit={{ opacity: 0, y: 15, scale: 0.95 }}
-                                                    transition={{ duration: 0.2 }}
-                                                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-surface-muted border border-surface-highlight rounded-2xl shadow-2xl p-3 overflow-hidden"
-                                                >
-                                                    {link.dropdown.map((item) => (
-                                                        <a
-                                                            key={item.name}
-                                                            href={item.href}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-highlight transition-all group/item"
-                                                        >
-                                                            <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center border border-white/5 bg-white/5 group-hover/item:border-accent/40 transition-colors">
-                                                                {item.image ? (
-                                                                    <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                                                                ) : (
-                                                                    <div className="w-full h-full flex items-center justify-center text-accent group-hover/item:bg-accent group-hover/item:text-white transition-colors">
-                                                                        <item.icon className="w-5 h-5" />
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                            <div className="flex-1">
-                                                                <div className="text-sm font-bold text-white flex items-center gap-1">
-                                                                    {item.name}
-                                                                    <ExternalLink className="w-3 h-3 opacity-0 group-hover/item:opacity-100 transition-opacity" />
-                                                                </div>
-                                                                <div className="text-[11px] text-slate-500">{item.desc}</div>
-                                                            </div>
-                                                        </a>
-                                                    ))}
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-                                    </div>
-                                ) : (
-                                    <Link
-                                        href={link.href}
-                                        className={cn(
-                                            "text-sm font-medium hover:text-white transition-colors",
-                                            isActive(link.href) && "text-accent"
-                                        )}
-                                    >
-                                        {link.name}
-                                    </Link>
-                                )}
+                                <Link
+                                    href={link.href}
+                                    className={cn(
+                                        "text-sm font-medium hover:text-white transition-colors",
+                                        isActive(link.href) && "text-accent"
+                                    )}
+                                >
+                                    {link.name}
+                                </Link>
                             </li>
                         ))}
                     </ul>
-                    <Link
-                        href="/estimate"
-                        className="flex items-center gap-2 bg-accent text-white px-5 py-2.5 rounded-full font-medium text-sm hover:bg-accent-bright transition-colors shadow-lg shadow-accent/20"
-                    >
-                        <Calculator className="w-4 h-4" />
-                        <span>Get Estimate</span>
-                    </Link>
+                    <div className="flex items-center gap-3">
+                        <Link
+                            href="/marketing"
+                            className="hidden lg:flex items-center gap-2 bg-transparent border border-white/20 text-white px-5 py-2.5 rounded-full font-medium text-sm hover:border-accent hover:text-accent transition-colors"
+                        >
+                            <span>Generate Leads</span>
+                        </Link>
+                        <Link
+                            href="/estimate"
+                            className="flex items-center gap-2 bg-accent text-white px-5 py-2.5 rounded-full font-medium text-sm hover:bg-accent-bright transition-colors shadow-lg shadow-accent/20"
+                        >
+                            <Calculator className="w-4 h-4" />
+                            <span>Get Estimate</span>
+                        </Link>
+                    </div>
                 </div>
 
                 {/* Mobile Toggle */}
@@ -163,45 +106,16 @@ const Navbar = () => {
                         <ul className="flex flex-col p-6 gap-4">
                             {navLinks.map((link) => (
                                 <li key={link.name}>
-                                    {link.dropdown ? (
-                                        <div className="space-y-4">
-                                            <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">{link.name}</div>
-                                            <div className="grid gap-2 pl-2">
-                                                {link.dropdown.map((item) => (
-                                                    <a
-                                                        key={item.name}
-                                                        href={item.href}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="flex items-center gap-3 p-3 rounded-xl bg-surface-highlight/50 border border-surface-highlight hover:bg-surface-highlight transition-colors"
-                                                    >
-                                                        <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center border border-white/5 bg-white/5">
-                                                            {item.image ? (
-                                                                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                                                            ) : (
-                                                                <div className="w-full h-full flex items-center justify-center text-accent">
-                                                                    <item.icon className="w-4 h-4" />
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                        <span className="font-bold text-white text-sm">{item.name}</span>
-                                                        <ExternalLink className="w-3 h-3 text-slate-500 ml-auto" />
-                                                    </a>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <Link
-                                            href={link.href}
-                                            onClick={() => setIsMobileMenuOpen(false)}
-                                            className={cn(
-                                                "block text-lg font-medium text-slate-300 hover:text-white",
-                                                isActive(link.href) && "text-accent"
-                                            )}
-                                        >
-                                            {link.name}
-                                        </Link>
-                                    )}
+                                    <Link
+                                        href={link.href}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        className={cn(
+                                            "block text-lg font-medium text-slate-300 hover:text-white",
+                                            isActive(link.href) && "text-accent"
+                                        )}
+                                    >
+                                        {link.name}
+                                    </Link>
                                 </li>
                             ))}
                             <li>
@@ -212,6 +126,14 @@ const Navbar = () => {
                                 >
                                     <Calculator className="w-5 h-5" />
                                     Get Project Estimate
+                                </Link>
+                                <Link
+                                    href="/marketing"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="flex items-center gap-2 text-slate-300 font-bold mt-4"
+                                >
+                                    <TrendingUp className="w-5 h-5" />
+                                    Generate Leads
                                 </Link>
                             </li>
                         </ul>

@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
-import { Smartphone, Monitor, Palette, Server } from 'lucide-react';
+import { Smartphone, Monitor, Palette, Server, TrendingUp } from 'lucide-react';
+import Link from 'next/link';
 
 const services = [
     {
@@ -22,6 +23,12 @@ const services = [
         icon: Server,
         title: 'Backend & Cloud',
         description: 'Scalable backend architectures designed by cloud experts, utilizing AI to optimize APIs and minimize configuration time.'
+    },
+    {
+        icon: TrendingUp,
+        title: 'AI Digital Marketing',
+        description: 'We use AI to optimize Google profiles, manage social media, run high-converting ad campaigns, and generate real leads.',
+        link: '/marketing'
     }
 ];
 
@@ -36,21 +43,25 @@ const Services = () => {
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {services.map((service, index) => (
-                        <div
-                            key={index}
-                            className="p-8 rounded-2xl bg-surface-muted border border-surface-highlight hover:border-accent/40 hover:bg-surface-highlight transition-all group"
-                        >
-                            <div className="w-12 h-12 bg-surface-highlight rounded-xl shadow-inner border border-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                                <service.icon className="w-6 h-6 text-accent" />
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-3">{service.title}</h3>
-                            <p className="text-slate-400 leading-relaxed text-sm">
-                                {service.description}
-                            </p>
-                        </div>
-                    ))}
+                <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
+                    {services.map((service, index) => {
+                        const CardWrapper = service.link ? Link : 'div';
+                        return (
+                            <CardWrapper
+                                key={index}
+                                href={service.link}
+                                className="p-8 rounded-2xl bg-surface-muted border border-surface-highlight hover:border-accent/40 hover:bg-surface-highlight transition-all group relative"
+                            >
+                                <div className="w-12 h-12 bg-surface-highlight rounded-xl shadow-inner border border-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                                    <service.icon className="w-6 h-6 text-accent" />
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-3">{service.title}</h3>
+                                <p className="text-slate-400 leading-relaxed text-sm">
+                                    {service.description}
+                                </p>
+                            </CardWrapper>
+                        );
+                    })}
                 </div>
             </div>
         </section>

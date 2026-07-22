@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Shield, FileText } from 'lucide-react';
+import { X, Shield, FileText, IndianRupee } from 'lucide-react';
 
 const LegalModal = ({ isOpen, onClose, activeTab }) => {
     // Prevent background scroll when open
@@ -15,13 +15,26 @@ const LegalModal = ({ isOpen, onClose, activeTab }) => {
 
     if (!isOpen) return null;
 
+    const renderHeader = () => {
+        switch(activeTab) {
+            case 'privacy':
+                return <><Shield className="w-5 h-5 text-accent" /><h2 className="text-xl font-bold text-white">Privacy Policy</h2></>;
+            case 'terms':
+                return <><FileText className="w-5 h-5 text-accent" /><h2 className="text-xl font-bold text-white">Terms of Service</h2></>;
+            case 'refund':
+                return <><IndianRupee className="w-5 h-5 text-accent" /><h2 className="text-xl font-bold text-white">Refund Policy</h2></>;
+            default:
+                return null;
+        }
+    }
+
     return (
         <AnimatePresence>
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4"
+                className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4"
                 onClick={onClose}
             >
                 <motion.div
@@ -34,10 +47,7 @@ const LegalModal = ({ isOpen, onClose, activeTab }) => {
                     {/* Header */}
                     <div className="flex items-center justify-between p-6 border-b border-white/10">
                         <div className="flex items-center gap-2">
-                            {activeTab === 'privacy' ? <Shield className="w-5 h-5 text-accent" /> : <FileText className="w-5 h-5 text-accent" />}
-                            <h2 className="text-xl font-bold text-white">
-                                {activeTab === 'privacy' ? 'Privacy Policy' : 'Terms of Service'}
-                            </h2>
+                            {renderHeader()}
                         </div>
                         <button
                             onClick={onClose}
@@ -49,15 +59,15 @@ const LegalModal = ({ isOpen, onClose, activeTab }) => {
 
                     {/* Scrollable Content */}
                     <div className="p-6 overflow-y-auto leading-relaxed text-slate-400 space-y-4">
-                        {activeTab === 'privacy' ? (
+                        {activeTab === 'privacy' && (
                             <>
                                 <p><strong>Last Updated: January 2026</strong></p>
                                 <p>At Axom IT Lab, we take your privacy seriously. This policy outlines how we collect, use, and protect your personal information.</p>
 
-                                <h3 className="text-lg font-bold text-primary pt-4">1. Information We Collect</h3>
+                                <h3 className="text-lg font-bold text-white pt-4">1. Information We Collect</h3>
                                 <p>We collect information you provide directly to us, such as when you fill out our cost estimator form, request a consultation, or communicate with us via email. This may include your name, email address, phone number, and project details.</p>
 
-                                <h3 className="text-lg font-bold text-primary pt-4">2. How We Use Your Information</h3>
+                                <h3 className="text-lg font-bold text-white pt-4">2. How We Use Your Information</h3>
                                 <p>We use the information we collect to:</p>
                                 <ul className="list-disc pl-5 space-y-1">
                                     <li>Provide, maintain, and improve our services.</li>
@@ -65,28 +75,56 @@ const LegalModal = ({ isOpen, onClose, activeTab }) => {
                                     <li>Communicate with you about updates, promotions, and news.</li>
                                 </ul>
 
-                                <h3 className="text-lg font-bold text-primary pt-4">3. Data Security</h3>
+                                <h3 className="text-lg font-bold text-white pt-4">3. Data Security</h3>
                                 <p>We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction.</p>
 
-                                <h3 className="text-lg font-bold text-primary pt-4">4. Contact Us</h3>
+                                <h3 className="text-lg font-bold text-white pt-4">4. Contact Us</h3>
                                 <p>If you have any questions about this Privacy Policy, please contact us at <strong>support@axomitlab.com</strong>.</p>
                             </>
-                        ) : (
+                        )}
+                        
+                        {activeTab === 'terms' && (
                             <>
                                 <p><strong>Last Updated: January 2026</strong></p>
                                 <p>Welcome to Axom IT Lab. By accessing or using our websites and services, you agree to be bound by these Terms of Service.</p>
 
-                                <h3 className="text-lg font-bold text-primary pt-4">1. Scope of Services</h3>
-                                <p>Axom IT Lab provides software development, UI/UX design, and consulting services. The specific scope of work will be defined in individual project agreements.</p>
+                                <h3 className="text-lg font-bold text-white pt-4">1. Scope of Services</h3>
+                                <p>Axom IT Lab provides software development, UI/UX design, and marketing services. The specific scope of work will be defined in individual project agreements.</p>
 
-                                <h3 className="text-lg font-bold text-primary pt-4">2. Payments & EMI</h3>
-                                <p>We offer flexible payment terms, including EMI options. Failure to make payments on time may result in the suspension of services or project handover delays. Code ownership is transferred only upon full payment or completion of the agreed tenure.</p>
+                                <h3 className="text-lg font-bold text-white pt-4">2. Payments</h3>
+                                <p>We offer transparent pricing with a one-time setup fee followed by a monthly maintenance fee. Failure to make payments on time may result in the suspension of services or project handover delays.</p>
 
-                                <h3 className="text-lg font-bold text-primary pt-4">3. Intellectual Property</h3>
+                                <h3 className="text-lg font-bold text-white pt-4">3. Intellectual Property</h3>
                                 <p>Unless otherwise agreed, Axom IT Lab retains ownership of the underlying code frameworks until the final handover. Clients are granted a license to use the software during the development and maintenance period.</p>
 
-                                <h3 className="text-lg font-bold text-primary pt-4">4. Limitation of Liability</h3>
+                                <h3 className="text-lg font-bold text-white pt-4">4. Limitation of Liability</h3>
                                 <p>Axom IT Lab shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your access to or use of our services.</p>
+                            </>
+                        )}
+
+                        {activeTab === 'refund' && (
+                            <>
+                                <p><strong>Last Updated: July 2026</strong></p>
+                                <p>We stand behind the quality of our work. To provide you with peace of mind, we offer a structured, milestone-based money-back guarantee.</p>
+
+                                <h3 className="text-lg font-bold text-white pt-4">1. The Refund Window</h3>
+                                <p>Refunds are calculated proportionally based on your agreed-upon project delivery timeline, starting from the date the initial setup fee is paid:</p>
+                                <ul className="list-disc pl-5 space-y-2 mt-2">
+                                    <li><strong>Phase 1 (100% Refund):</strong> From the payment date until the 50% mark of the agreed delivery timeline.</li>
+                                    <li><strong>Phase 2 (50% Refund):</strong> From the 50% mark until the final delivery date.</li>
+                                    <li><strong>Phase 3 (25% Refund):</strong> Within 30 days after the project goes live (is deployed and accessible).</li>
+                                    <li><strong>Phase 4 (No Refund):</strong> After 30 days of the project being live, no further refunds will be issued.</li>
+                                </ul>
+
+                                <h3 className="text-lg font-bold text-white pt-4">2. Goods & Services Tax (GST)</h3>
+                                <p>Please note that GST is a government-mandated tax collected on your behalf. <strong>GST is strictly non-refundable in all scenarios.</strong> All refund percentages mentioned above apply exclusively to the base setup fee excluding GST.</p>
+
+                                <h3 className="text-lg font-bold text-white pt-4">3. Definitions & Conditions</h3>
+                                <p><strong>"Delivery Date"</strong> refers to the timeline agreed upon in the signed contract. <strong>"Going Live"</strong> refers to the date the project is deployed to a production environment (e.g., your domain) and is publicly accessible.</p>
+                                <p className="mt-2">Refunds may be voided if project delays are solely caused by the client (e.g., failure to provide necessary assets, content, or approvals within stipulated timeframes).</p>
+
+                                <h3 className="text-lg font-bold text-white pt-4">4. How to Request a Refund</h3>
+                                <p>To initiate a refund request, please email our support team at <strong>support@axomitlab.com</strong>. Approved refunds will be processed within 7-10 business days to the original payment method.</p>
                             </>
                         )}
                     </div>

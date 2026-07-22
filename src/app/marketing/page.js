@@ -120,7 +120,7 @@ export default function MarketingPage() {
                 <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-start">
                     
                     {/* Left Column: Hero Content */}
-                    <div className="sticky top-32">
+                    <div className="lg:sticky lg:top-32">
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold mb-6 border border-accent/20">
                             <Target className="w-4 h-4" />
                             AI-Powered Marketing

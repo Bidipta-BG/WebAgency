@@ -6,7 +6,7 @@ import { Mail, Phone, MapPin, Instagram, Twitter, Linkedin } from 'lucide-react'
 
 export const metadata = {
     title: 'Contact Axom IT Lab | Start Your Project Today',
-    description: 'Get in touch with Axom IT Lab. Located in Sivasagar, serving clients worldwide with premium software development and flexible EMI options.',
+    description: 'Get in touch with Axom IT Lab. Located in Bengaluru, serving clients worldwide with premium software development and flexible EMI options.',
 };
 
 const ContactPage = () => {

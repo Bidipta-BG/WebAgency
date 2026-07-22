@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { Laptop, Smartphone, BrainCircuit, Globe, Rocket, Terminal, TrendingUp, ShieldCheck } from 'lucide-react';
 
 export const metadata = {
-    title: 'Expert Web & App Development Services | Axom IT Lab',
-    description: 'Explore our high-performance development services. From Next.js web applications to React Native mobile apps and custom AI integrations.',
+    title: 'Expert Web, App & Marketing Services | Axom IT Lab',
+    description: 'Explore our high-performance development and digital marketing services. From Next.js web applications to React Native mobile apps and AI-driven marketing campaigns.',
 };
 
 const ServicesPage = () => {

@@ -8,8 +8,8 @@ const inter = Inter({
 });
 
 const siteUrl = "https://axomitlab.com";
-const siteTitle = "Axom IT Lab | Premium Web & App Development Agency";
-const siteDescription = "Axom IT Lab is an AI-powered web and mobile app development agency. We leverage advanced AI models and modern tech to deliver enterprise-grade solutions faster and at a fraction of the cost.";
+const siteTitle = "Axom IT Lab | Premium Web, App & Digital Marketing Agency";
+const siteDescription = "Axom IT Lab is an AI-powered software development and digital marketing agency. We leverage advanced AI models to deliver enterprise-grade solutions and data-driven marketing campaigns faster and at a fraction of the cost.";
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
@@ -21,16 +21,17 @@ export const metadata = {
   keywords: [
     "AI-powered development agency",
     "mobile app development company",
-    "AI software development india",
+    "digital marketing agency india",
     "AI web development",
     "fast software development with AI",
+    "AI-driven marketing campaigns",
     "cost-effective AI development",
     "AI-driven app development",
     "affordable web design for startups",
     "AxomITLab",
     "Axom IT Lab",
     "enterprise software development",
-    "reduce development cost with AI"
+    "lead generation services"
   ],
   authors: [{ name: "AxomITLab", url: siteUrl }],
   creator: "AxomITLab",
@@ -49,10 +50,10 @@ export const metadata = {
     siteName: "AxomITLab",
     images: [
       {
-        url: "/assets/images/mainLogo.png",
+        url: "/assets/images/axomITLab.jpg",
         width: 1200,
         height: 630,
-        alt: "AxomITLab - Premium Web & App Development",
+        alt: "AxomITLab - Premium Web, App & Digital Marketing Agency",
       },
     ],
   },
@@ -61,7 +62,7 @@ export const metadata = {
     title: siteTitle,
     description: siteDescription,
     creator: "@axomitlab",
-    images: ["/assets/images/mainLogo.png"],
+    images: ["/assets/images/axomITLab.jpg"],
   },
   alternates: {
     canonical: siteUrl,
@@ -94,7 +95,7 @@ const jsonLd = [
     ],
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+91-9876543210",
+      "telephone": "+91-9606914772",
       "contactType": "customer service",
       "areaServed": "IN",
       "availableLanguage": ["en", "hi", "as"]
@@ -108,19 +109,19 @@ const jsonLd = [
     "image": `${siteUrl}/assets/images/mainLogo.png`,
     "@id": siteUrl,
     "url": siteUrl,
-    "telephone": "+91-9876543210",
+    "telephone": "+91-9606914772",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Sivasagar",
-      "addressLocality": "Sivasagar",
-      "addressRegion": "AS",
-      "postalCode": "785640",
+      "streetAddress": "BTM Layout",
+      "addressLocality": "Bengaluru",
+      "addressRegion": "KA",
+      "postalCode": "560068",
       "addressCountry": "IN"
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": 26.9826,
-      "longitude": 94.6425
+      "latitude": 12.9165,
+      "longitude": 77.6101
     },
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",

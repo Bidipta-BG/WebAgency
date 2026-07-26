@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Menu, X, Calculator, TrendingUp } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import AnnouncementBar from './AnnouncementBar';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -30,10 +31,12 @@ const Navbar = () => {
     const isActive = (path) => pathname === path;
 
     return (
-        <nav
-            className={cn(
-                'fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b',
-                isScrolled
+        <div className="fixed top-0 left-0 right-0 z-50">
+            <AnnouncementBar />
+            <nav
+                className={cn(
+                    'transition-all duration-300 border-b w-full',
+                    isScrolled
                     ? 'bg-surface/80 backdrop-blur-md border-surface-highlight shadow-xl py-4'
                     : 'bg-transparent border-transparent py-6'
             )}
@@ -141,6 +144,7 @@ const Navbar = () => {
                 )}
             </AnimatePresence>
         </nav>
+        </div>
     );
 };
 

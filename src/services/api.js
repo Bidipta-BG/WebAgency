@@ -96,8 +96,8 @@ const PRICING_CONFIG = {
 // --- API Methods ---
 
 // Live API Endpoint
-const API_BASE_URL = 'https://api.thevibecoderagency.online/api';
-// const API_BASE_URL = 'http://localhost:3001/api';
+// const API_BASE_URL = 'https://api.thevibecoderagency.online/api';
+const API_BASE_URL = 'http://localhost:3001/api';
 
 /**
  * Fetch Pricing Configuration

@@ -3,6 +3,7 @@ import { Download, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { getReadableAnswers } from '../../engines/questionFlowController';
 import { generateQuotationPDF } from '../../utils/generateQuotationPDF';
+import { fetchPricingConfig } from '../../services/api';
 
 const RecommendationScreen = ({ recommendation, managementType, answers, selectedIndustry, contactInfo, isEditMode, onUpdateQuotation, isUpdating, onBack }) => {
   const [billingMode, setBillingMode] = useState('monthly'); // 'monthly' or 'annual'
@@ -13,16 +14,44 @@ const RecommendationScreen = ({ recommendation, managementType, answers, selecte
     annual: '',
     handover: ''
   });
+  const [discountConfig, setDiscountConfig] = useState(null);
+
+  React.useEffect(() => {
+    const loadConfig = async () => {
+      const config = await fetchPricingConfig();
+      if (config?.discount?.enabled) {
+        setDiscountConfig(config.discount);
+      }
+    };
+    loadConfig();
+  }, []);
+
   const { packageName, pricing, features, reasons, isCustom } = recommendation;
   
   const isHandover = managementType === 'handover';
   const formatPrice = (price) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(price);
   const calcGst = (price) => Math.round(price * 1.18);
 
-  const renderPrice = (priceObj) => {
+  const applyDiscount = (price) => {
+    if (!discountConfig) return price;
+    return Math.round(price * (1 - discountConfig.percentage / 100));
+  };
+
+  const renderPrice = (priceObj, isOriginal = false) => {
     if (priceObj?.na) return 'N/A';
-    if (priceObj?.fixed) return formatPrice(priceObj.fixed);
-    return `${formatPrice(calcGst(priceObj.min))} – ${formatPrice(calcGst(priceObj.max))}`;
+    
+    let fixed = priceObj?.fixed;
+    let min = priceObj?.min;
+    let max = priceObj?.max;
+
+    if (!isOriginal && discountConfig) {
+      if (fixed) fixed = applyDiscount(fixed);
+      if (min) min = applyDiscount(min);
+      if (max) max = applyDiscount(max);
+    }
+
+    if (fixed) return formatPrice(fixed);
+    return `${formatPrice(calcGst(min))} – ${formatPrice(calcGst(max))}`;
   };
 
   const renderBase = (priceObj) => {
@@ -82,6 +111,12 @@ const RecommendationScreen = ({ recommendation, managementType, answers, selecte
           The {packageName} Package
         </h2>
         <p className="text-xl text-slate-400 mt-3">Tailored perfectly for your business goals.</p>
+        
+        {discountConfig && (
+          <div className="mt-6 inline-block bg-accent/10 border border-accent/20 rounded-xl px-6 py-3 shadow-lg shadow-accent/5">
+             <span className="text-accent font-bold text-lg">{discountConfig.message}</span>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -128,9 +163,21 @@ const RecommendationScreen = ({ recommendation, managementType, answers, selecte
             {/* Setup Fee */}
             <div className="mb-8 border-b border-indigo-700 pb-6">
               <p className="text-indigo-200 text-sm font-medium mb-1">One-time Setup Fee</p>
-              <div className="text-3xl font-bold">
+              
+              {discountConfig && !pricing.setupFee?.na && (
+                <div className="text-lg font-bold text-slate-400 line-through mb-1">
+                  {renderPrice(pricing.setupFee, true)}
+                </div>
+              )}
+              <div className="text-3xl font-bold text-white flex items-center gap-3">
                 {renderPrice(pricing.setupFee)}
+                {discountConfig && !pricing.setupFee?.na && (
+                  <span className="bg-accent text-white text-xs px-2 py-1 rounded-md uppercase font-bold shadow-lg animate-pulse">
+                    {discountConfig.percentage}% OFF
+                  </span>
+                )}
               </div>
+              
               <div className="mt-3">
                 <span className="text-indigo-100 text-sm font-semibold bg-indigo-950/60 px-3 py-1.5 rounded-md border border-indigo-400/30 inline-block">
                   {renderBase(pricing.setupFee)}
@@ -143,9 +190,21 @@ const RecommendationScreen = ({ recommendation, managementType, answers, selecte
             {isHandover ? (
               <div className="mb-8">
                 <p className="text-indigo-200 text-sm font-medium mb-1">Source Code Handover Fee</p>
-                <div className="text-3xl font-bold text-green-400">
+                
+                {discountConfig && !pricing.handover?.na && (
+                  <div className="text-lg font-bold text-slate-400 line-through mb-1">
+                    {renderPrice(pricing.handover, true)}
+                  </div>
+                )}
+                <div className="text-3xl font-bold text-green-400 flex items-center gap-3">
                   {renderPrice(pricing.handover)}
+                  {discountConfig && !pricing.handover?.na && (
+                    <span className="bg-accent text-white text-xs px-2 py-1 rounded-md uppercase font-bold shadow-lg animate-pulse">
+                      {discountConfig.percentage}% OFF
+                    </span>
+                  )}
                 </div>
+
                 <div className="mt-3">
                   <span className="text-indigo-100 text-sm font-semibold bg-indigo-950/60 px-3 py-1.5 rounded-md border border-indigo-400/30 inline-block">
                     {renderBase(pricing.handover)}
@@ -173,10 +232,25 @@ const RecommendationScreen = ({ recommendation, managementType, answers, selecte
                 <p className="text-indigo-200 text-sm font-medium mb-1">
                   {billingMode === 'monthly' ? 'Monthly Management Fee' : 'Annual Management Fee'}
                 </p>
-                <div className="text-3xl font-bold text-green-400">
-                  {billingMode === 'monthly' ? renderPrice(pricing.monthly) : renderPrice(pricing.annual)}
-                  <span className="text-lg text-indigo-300 font-normal"> / {billingMode === 'monthly' ? 'mo' : 'yr'}</span>
+
+                {discountConfig && ((billingMode === 'monthly' && !pricing.monthly?.na) || (billingMode === 'annual' && !pricing.annual?.na)) && (
+                  <div className="text-lg font-bold text-slate-400 line-through mb-1">
+                    {billingMode === 'monthly' ? renderPrice(pricing.monthly, true) : renderPrice(pricing.annual, true)}
+                  </div>
+                )}
+
+                <div className="text-3xl font-bold text-green-400 flex items-center gap-3 flex-wrap">
+                  <div>
+                    {billingMode === 'monthly' ? renderPrice(pricing.monthly) : renderPrice(pricing.annual)}
+                    <span className="text-lg text-indigo-300 font-normal"> / {billingMode === 'monthly' ? 'mo' : 'yr'}</span>
+                  </div>
+                  {discountConfig && ((billingMode === 'monthly' && !pricing.monthly?.na) || (billingMode === 'annual' && !pricing.annual?.na)) && (
+                    <span className="bg-accent text-white text-xs px-2 py-1 rounded-md uppercase font-bold shadow-lg animate-pulse">
+                      {discountConfig.percentage}% OFF
+                    </span>
+                  )}
                 </div>
+
                 {((billingMode === 'monthly' && !pricing.monthly?.na) || (billingMode === 'annual' && !pricing.annual?.na)) && (
                   <div className="mt-3">
                     <span className="text-indigo-100 text-sm font-semibold bg-indigo-950/60 px-3 py-1.5 rounded-md border border-indigo-400/30 inline-block">

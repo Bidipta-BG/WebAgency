@@ -31,8 +31,9 @@ const Navbar = () => {
     const isActive = (path) => pathname === path;
 
     return (
-        <div className="fixed top-0 left-0 right-0 z-50">
-            <AnnouncementBar />
+        <>
+            <div className="fixed top-0 left-0 right-0 z-50">
+                <AnnouncementBar />
             <nav
                 className={cn(
                     'transition-all duration-300 border-b w-full',
@@ -145,6 +146,9 @@ const Navbar = () => {
             </AnimatePresence>
         </nav>
         </div>
+        {/* Transparent spacer that pushes page content down by exactly the banner's height */}
+        <div style={{ height: 'var(--announcement-height, 0px)' }} className="w-full transition-all duration-300" aria-hidden="true" />
+        </>
     );
 };
 

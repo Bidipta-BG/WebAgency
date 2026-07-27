@@ -16,6 +16,7 @@ const DEFAULT_DISCOUNT = {
 export default function AnnouncementBar() {
     const pathname = usePathname();
     const [discount, setDiscount] = useState(DEFAULT_DISCOUNT);
+    const barRef = React.useRef(null);
 
     useEffect(() => {
         const loadConfig = async () => {
@@ -39,13 +40,36 @@ export default function AnnouncementBar() {
 
     // Hide on admin / internal routes
     const hiddenRoutes = ['/leads', '/apps', '/mantras', '/verses', '/login'];
-    if (hiddenRoutes.some(r => pathname?.includes(r))) return null;
+    const isHiddenRoute = hiddenRoutes.some(r => pathname?.includes(r));
+    const isHidden = isHiddenRoute || !discount?.enabled;
 
-    // Hide if discount is explicitly disabled in the DB
-    if (!discount?.enabled) return null;
+    useEffect(() => {
+        if (isHidden) {
+            document.documentElement.style.setProperty('--announcement-height', '0px');
+            return;
+        }
+
+        const resizeObserver = new ResizeObserver((entries) => {
+            for (let entry of entries) {
+                const height = entry.borderBoxSize?.[0]?.blockSize || entry.contentRect.height;
+                document.documentElement.style.setProperty('--announcement-height', `${height}px`);
+            }
+        });
+
+        if (barRef.current) {
+            resizeObserver.observe(barRef.current);
+        }
+
+        return () => {
+            resizeObserver.disconnect();
+            document.documentElement.style.setProperty('--announcement-height', '0px');
+        };
+    }, [isHidden, pathname, discount?.enabled]);
+
+    if (isHidden) return null;
 
     return (
-        <div style={{ background: 'linear-gradient(to right, #6366f1, #8b5cf6)' }}
+        <div ref={barRef} style={{ background: 'linear-gradient(to right, #6366f1, #8b5cf6)' }}
             className="w-full text-white py-2 px-4 text-center text-sm font-semibold">
             {discount.badgeText} &mdash;{' '}
             <span className="font-bold">{discount.percentage}% OFF</span> for our early clients!{' '}

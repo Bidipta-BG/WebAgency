@@ -2,7 +2,8 @@ import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-import { ExternalLink, Lock, Scissors, Coffee, HardHat, GraduationCap, Scale, PlaySquare } from 'lucide-react';
+import Image from 'next/image';
+import { ExternalLink, Lock, PlaySquare } from 'lucide-react';
 
 export const metadata = {
     title: 'Our Work | Client Portfolio | Axom IT Lab',
@@ -12,59 +13,49 @@ export const metadata = {
 const PortfolioPage = () => {
     const projects = [
         {
-            title: "Serene Salon & Spa",
-            location: "Mumbai, India",
-            category: "Salon & Spa",
-            desc: "A complete digital overhaul including a custom responsive website, integrated booking system for appointments, and optimized Google Business profile to capture local search traffic.",
-            tech: ["Next.js", "Booking API", "Local SEO"],
-            link: "#",
-            icon: Scissors,
-            color: "from-pink-500/20 to-rose-500/5",
-            iconColor: "text-pink-400"
+            title: "5 Star Rating AI",
+            location: "Online Platform",
+            category: "AI Reputation Management",
+            desc: "An AI-powered SaaS platform helping local Indian businesses automate Google reviews collection, display social proof widgets, and analyze customer sentiment.",
+            tech: ["SaaS", "AI Integration", "Analytics"],
+            link: "https://www.5starrating.in/",
+            image: "/5star-rating.jpg"
         },
         {
-            title: "GreenBite Café",
+            title: "Online Mandi",
+            location: "Karnataka, India",
+            category: "Agricultural Marketplace",
+            desc: "A digital agricultural marketplace connecting farmers directly with buyers and vendors to secure better crop prices and transparent trading.",
+            tech: ["Next.js", "Marketplace", "Localization"],
+            link: "https://onlinemandi.in/",
+            image: "/online-mandi.jpg"
+        },
+        {
+            title: "RedCat Logistics",
             location: "Bangalore, India",
-            category: "Restaurant & Café",
-            desc: "Developed a modern restaurant website featuring a dynamic digital menu, online ordering capabilities, and live Instagram feed integration to showcase daily specials.",
-            tech: ["React", "Insta API", "E-commerce"],
-            link: "#",
-            icon: Coffee,
-            color: "from-emerald-500/20 to-teal-500/5",
-            iconColor: "text-emerald-400"
+            category: "Transport & Logistics",
+            desc: "A comprehensive house shifting and transport services website designed to facilitate seamless packing and moving for households and businesses.",
+            tech: ["Web Design", "UI/UX", "Logistics SEO"],
+            link: "https://www.redcatlogistics.com/",
+            image: "/redcat-logistic.jpg"
         },
         {
-            title: "BuildRight Constructions",
-            location: "Delhi, India",
-            category: "Construction",
-            desc: "Built a professional corporate portfolio website to showcase completed infrastructure projects, featuring client testimonials and a robust lead capture system for new contracts.",
-            tech: ["Next.js", "CRM Integration", "CMS"],
-            link: "#",
-            icon: HardHat,
-            color: "from-amber-500/20 to-orange-500/5",
-            iconColor: "text-amber-400"
+            title: "TemplatePro",
+            location: "Google Play Store",
+            category: "Mobile Application",
+            desc: "A feature-rich Android mobile application designed and developed to provide an engaging and seamless experience for mobile users.",
+            tech: ["Android", "Mobile UI", "App Dev"],
+            link: "https://play.google.com/store/apps/details?id=com.thevibecoder.greetify",
+            image: "/template-pro.jpg"
         },
         {
-            title: "BrightMinds Academy",
-            location: "Pune, India",
-            category: "School & Coaching",
-            desc: "Created a high-converting admission landing page equipped with detailed course information, an automated enquiry form, and direct WhatsApp chat integration for instant student support.",
-            tech: ["React", "WhatsApp API", "Lead Gen"],
-            link: "#",
-            icon: GraduationCap,
-            color: "from-blue-500/20 to-indigo-500/5",
-            iconColor: "text-blue-400"
-        },
-        {
-            title: "LexPro Advocates",
-            location: "Hyderabad, India",
-            category: "Law Firm",
-            desc: "Designed and developed a distinguished, authoritative law firm website detailing practice areas, attorney profiles, and a secure contact portal for client consultations.",
-            tech: ["Next.js", "TailwindCSS", "Security"],
-            link: "#",
-            icon: Scale,
-            color: "from-slate-500/20 to-gray-500/5",
-            iconColor: "text-slate-400"
+            title: "Coursly",
+            location: "Online Platform",
+            category: "EdTech Platform",
+            desc: "An AI mastery educational platform offering personalized learning plans, daily challenges, and professional certifications for leading AI tools.",
+            tech: ["Next.js", "EdTech UI", "Platform Dev"],
+            link: "https://www.coursly.in/",
+            image: "/coursly.jpg"
         }
     ];
 
@@ -97,9 +88,15 @@ const PortfolioPage = () => {
                         <div key={i} className={`flex flex-col lg:flex-row gap-8 lg:gap-16 items-center group ${i % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}>
                             {/* Visual Block */}
                             <div className="w-full lg:w-5/12">
-                                <div className={`aspect-[4/3] rounded-[2.5rem] bg-gradient-to-br ${p.color} border border-surface-highlight overflow-hidden flex flex-col items-center justify-center relative p-8 shadow-2xl transition-transform duration-700 group-hover:scale-[1.02]`}>
-                                    <p.icon className={`w-28 h-28 ${p.iconColor} opacity-50 group-hover:scale-110 group-hover:opacity-80 transition-all duration-500`} />
-                                    <div className="absolute top-6 right-6 px-4 py-1.5 rounded-full bg-surface-muted/80 backdrop-blur-md border border-white/10 text-[10px] uppercase font-bold text-white tracking-widest shadow-lg">
+                                <div className="aspect-video rounded-[2rem] border border-surface-highlight overflow-hidden flex flex-col items-center justify-center relative shadow-2xl transition-transform duration-700 group-hover:scale-[1.02] bg-surface-muted">
+                                    <Image 
+                                        src={p.image} 
+                                        alt={p.title} 
+                                        fill 
+                                        className="object-cover object-top opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-surface/80 via-transparent to-transparent opacity-60 pointer-events-none"></div>
+                                    <div className="absolute top-6 right-6 px-4 py-1.5 rounded-full bg-surface-muted/80 backdrop-blur-md border border-white/10 text-[10px] uppercase font-bold text-white tracking-widest shadow-lg z-10 pointer-events-none">
                                         {p.category}
                                     </div>
                                 </div>

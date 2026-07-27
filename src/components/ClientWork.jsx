@@ -1,35 +1,30 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Scissors, Coffee, HardHat } from 'lucide-react';
+import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
 
 const teaserProjects = [
     {
-        title: "Serene Salon & Spa",
-        category: "Salon & Spa",
-        desc: "Full website with booking integration & Google Business setup.",
-        tech: ["Next.js", "Booking API"],
-        icon: Scissors,
-        color: "from-pink-500/20 to-rose-500/5",
-        iconColor: "text-pink-400"
+        title: "RedCat Logistics",
+        category: "Transport & Logistics",
+        desc: "Comprehensive house shifting and transport services website.",
+        tech: ["Web Design", "UI/UX", "Logistics SEO"],
+        image: "/redcat-logistic.jpg"
     },
     {
-        title: "GreenBite Café",
-        category: "Restaurant & Café",
-        desc: "Restaurant website with menu, online orders, and Instagram integration.",
-        tech: ["React", "Insta API"],
-        icon: Coffee,
-        color: "from-emerald-500/20 to-teal-500/5",
-        iconColor: "text-emerald-400"
+        title: "5 Star Rating AI",
+        category: "AI Reputation Management",
+        desc: "AI-powered SaaS platform for automating Google reviews and reputation management.",
+        tech: ["SaaS", "AI Integration", "Analytics"],
+        image: "/5star-rating.jpg"
     },
     {
-        title: "BuildRight Constructions",
-        category: "Construction",
-        desc: "Portfolio website showcasing projects, testimonials, and lead capture.",
-        tech: ["Next.js", "CRM Integration"],
-        icon: HardHat,
-        color: "from-amber-500/20 to-orange-500/5",
-        iconColor: "text-amber-400"
+        title: "TemplatePro",
+        category: "Mobile Application",
+        desc: "A feature-rich Android mobile application for an engaging user experience.",
+        tech: ["Android", "Mobile UI", "App Dev"],
+        image: "/template-pro.jpg"
     }
 ];
 
@@ -50,10 +45,16 @@ const ClientWork = () => {
                 <div className="grid md:grid-cols-3 gap-8 mb-12">
                     {teaserProjects.map((p, i) => (
                         <div key={i} className="flex flex-col rounded-3xl bg-surface border border-surface-highlight overflow-hidden hover:border-accent/40 transition-all group">
-                            {/* Dummy Image Placeholder */}
-                            <div className={`aspect-video bg-gradient-to-br ${p.color} flex items-center justify-center relative`}>
-                                <p.icon className={`w-16 h-16 ${p.iconColor} opacity-50 group-hover:scale-110 transition-transform duration-500`} />
-                                <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-surface/80 backdrop-blur-md border border-white/5 text-[10px] uppercase font-bold text-slate-300 tracking-wider">
+                            {/* Visual Block */}
+                            <div className="aspect-video relative overflow-hidden bg-surface-muted">
+                                <Image
+                                    src={p.image}
+                                    alt={p.title}
+                                    fill
+                                    className="object-cover object-top opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-surface/80 via-transparent to-transparent opacity-60 pointer-events-none"></div>
+                                <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-surface-muted/80 backdrop-blur-md border border-white/10 text-[10px] uppercase font-bold text-white tracking-wider z-10 pointer-events-none">
                                     {p.category}
                                 </div>
                             </div>

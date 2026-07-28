@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Download, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { getReadableAnswers } from '../../engines/questionFlowController';
 import { generateQuotationPDF } from '../../utils/generateQuotationPDF';
 import { fetchPricingConfig } from '../../services/api';
@@ -29,7 +30,32 @@ const RecommendationScreen = ({ recommendation, managementType, answers, selecte
   const { packageName, pricing, features, reasons, isCustom } = recommendation;
   
   const isHandover = managementType === 'handover';
-  const formatPrice = (price) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(price);
+
+  const getCurrencyInfo = () => {
+    let isUSD = false;
+    if (contactInfo?.mobile) {
+      try {
+        const phoneStr = contactInfo.mobile.startsWith('+') ? contactInfo.mobile : '+' + contactInfo.mobile;
+        const parsed = parsePhoneNumberFromString(phoneStr);
+        if (parsed && parsed.country && parsed.country !== 'IN') {
+          isUSD = true;
+        }
+      } catch (e) {}
+    }
+    return isUSD;
+  };
+
+  const isUSD = getCurrencyInfo();
+  const exchangeRate = 83;
+
+  const formatPrice = (price) => {
+    if (isUSD) {
+      const convertedPrice = Math.round(price / exchangeRate);
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(convertedPrice);
+    }
+    return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(price);
+  };
+  
   const calcGst = (price) => Math.round(price * 1.18);
 
   const applyDiscount = (price) => {
@@ -57,7 +83,8 @@ const RecommendationScreen = ({ recommendation, managementType, answers, selecte
   const renderBase = (priceObj) => {
     if (priceObj?.na) return '';
     if (priceObj?.fixed) return `(Base price: ${formatPrice(Math.round(priceObj.fixed / 1.18))})`;
-    return `(Includes 18% GST. Base price: ${formatPrice(priceObj.min)} – ${formatPrice(priceObj.max)})`;
+    const gstText = isUSD ? "Includes applicable taxes." : "Includes 18% GST.";
+    return `(${gstText} Base price: ${formatPrice(priceObj.min)} – ${formatPrice(priceObj.max)})`;
   };
 
   const handleDownload = async () => {
@@ -158,7 +185,14 @@ const RecommendationScreen = ({ recommendation, managementType, answers, selecte
         {/* Right Column: Pricing */}
         <div>
           <div className="bg-gradient-to-br from-indigo-900 to-indigo-800 rounded-2xl shadow-xl p-8 text-white sticky top-8">
-            <h3 className="text-2xl font-bold mb-6">Investment Summary</h3>
+            <h3 className={`text-2xl font-bold ${isUSD ? 'mb-2' : 'mb-6'}`}>Investment Summary</h3>
+            {isUSD && (
+              <div className="mb-6">
+                <span className="text-[11px] text-accent font-medium bg-accent/10 inline-block px-2 py-1 rounded">
+                  * Note: International pricing is shown in USD.
+                </span>
+              </div>
+            )}
             
             {/* Setup Fee */}
             <div className="mb-8 border-b border-indigo-700 pb-6">
@@ -373,7 +407,7 @@ const RecommendationScreen = ({ recommendation, managementType, answers, selecte
             )}
 
             <div className="mt-6 text-center text-xs text-indigo-300/80">
-              <p>Prices are estimates and include 18% GST.</p>
+              <p>Prices are estimates and include {isUSD ? 'applicable taxes' : '18% GST'}.</p>
               <details className="mt-2 cursor-pointer">
                 <summary className="hover:text-indigo-200 transition-colors focus:outline-none">View Refund Policy</summary>
                 <p className="mt-2 text-left bg-indigo-950/50 p-3 rounded text-[11px] leading-relaxed">

@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Check, Loader2 } from 'lucide-react';
 import { submitContactForm } from '../services/api';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const ContactModal = ({ isOpen, onClose }) => {
     const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
@@ -30,10 +32,10 @@ const ContactModal = ({ isOpen, onClose }) => {
             newErrors.email = "Please enter a valid email address";
         }
 
-        if (!formData.phone.trim()) {
+        if (!formData.phone) {
             newErrors.phone = "Phone number is required";
-        } else if (!/^\d{10}$/.test(formData.phone)) {
-            newErrors.phone = "Enter a valid 10-digit number";
+        } else if (formData.phone.length < 7) {
+            newErrors.phone = "Enter a valid phone number";
         }
 
         return newErrors;
@@ -142,17 +144,21 @@ const ContactModal = ({ isOpen, onClose }) => {
                                 </div>
                                 <div>
                                     <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wide">Phone</label>
-                                    <input
-                                        type="tel"
-                                        className={`w-full px-4 py-3 rounded-xl border bg-surface-muted text-white text-sm focus:outline-none focus:ring-1 transition-all placeholder:text-slate-600 ${errors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-white/10 focus:border-accent focus:ring-accent'}`}
-                                        placeholder="10-digit number"
+                                    <PhoneInput
+                                        country={'in'}
                                         value={formData.phone}
-                                        onChange={e => {
-                                            const val = e.target.value.replace(/\D/g, '').slice(0, 10);
-                                            setFormData({ ...formData, phone: val });
+                                        onChange={(phone) => {
+                                            setFormData({ ...formData, phone });
                                             if (errors.phone) setErrors({ ...errors, phone: null });
                                         }}
-                                        maxLength={10}
+                                        enableSearch={true}
+                                        disableSearchIcon={true}
+                                        containerClass="w-full relative"
+                                        inputClass={`!w-full !bg-surface-muted !border ${errors.phone ? '!border-red-500' : '!border-white/10'} !rounded-xl !text-white !outline-none !transition-colors !h-[46px] !pl-14 !text-sm`}
+                                        buttonClass="!bg-transparent !border-none !left-2 hover:!bg-white/5 !rounded-lg !transition-colors"
+                                        dropdownClass="!bg-surface !text-slate-200 !border-white/10 !rounded-xl !shadow-2xl !mt-2 custom-phone-dropdown"
+                                        searchClass="!bg-surface-muted !text-white !border-white/10 !rounded-lg !p-2 !w-[90%] !mx-2 !my-2"
+                                        searchStyle={{margin: '0', width: '90%'}}
                                     />
                                     {errors.phone && <p className="text-red-400 text-xs mt-1 ml-1">{errors.phone}</p>}
                                 </div>

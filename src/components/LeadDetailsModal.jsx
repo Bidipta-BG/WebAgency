@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, CheckCircle, Package, Layers, DollarSign, User, Mail, Phone, CreditCard, Clock, Download, Target } from 'lucide-react';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { generateQuotationPDF } from '../utils/generateQuotationPDF';
 
 const LeadDetailsModal = ({ isOpen, onClose, lead }) => {
@@ -112,7 +113,27 @@ const LeadDetailsModal = ({ isOpen, onClose, lead }) => {
                                         </div>
                                         <div>
                                             <label className="text-xs text-slate-500 block">Phone</label>
-                                            <a href={`tel:${lead.leadInfo?.phone}`} className="text-white hover:text-accent">{lead.leadInfo?.phone}</a>
+                                            <a href={`tel:${lead.leadInfo?.phone}`} className="text-white hover:text-accent flex items-center gap-2 mt-0.5">
+                                                {(() => {
+                                                    const phoneStr = lead.leadInfo?.phone;
+                                                    if (!phoneStr) return 'N/A';
+                                                    try {
+                                                        const parsed = parsePhoneNumberFromString(phoneStr.startsWith('+') ? phoneStr : '+' + phoneStr);
+                                                        if (parsed && parsed.country) {
+                                                            const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+                                                            return (
+                                                                <>
+                                                                    <img src={`https://flagcdn.com/w20/${parsed.country.toLowerCase()}.png`} width="18" alt={parsed.country} className="rounded-sm shadow-sm" title={regionNames.of(parsed.country)} />
+                                                                    <span>{parsed.formatInternational()}</span>
+                                                                </>
+                                                            );
+                                                        }
+                                                        return <span>+{phoneStr.replace(/\D/g, '')}</span>;
+                                                    } catch(e) {
+                                                        return <span>{phoneStr}</span>;
+                                                    }
+                                                })()}
+                                            </a>
                                         </div>
                                         {lead.leadInfo?.businessName && (
                                             <div>
@@ -132,6 +153,24 @@ const LeadDetailsModal = ({ isOpen, onClose, lead }) => {
                                                 <div className="text-amber-400 font-medium">{lead.leadInfo.preferredCallTime}</div>
                                             </div>
                                         )}
+                                        {(() => {
+                                            const subject = lead.leadInfo?.subject || lead.readableAnswers?.find(a => a.question === 'Subject')?.answer;
+                                            return subject ? (
+                                                <div>
+                                                    <label className="text-xs text-slate-500 block">Subject</label>
+                                                    <div className="text-white font-medium">{subject}</div>
+                                                </div>
+                                            ) : null;
+                                        })()}
+                                        {(() => {
+                                            const message = lead.leadInfo?.message || lead.readableAnswers?.find(a => a.question === 'Message')?.answer;
+                                            return message ? (
+                                                <div>
+                                                    <label className="text-xs text-slate-500 block">Message</label>
+                                                    <div className="text-slate-300 text-sm mt-1 whitespace-pre-wrap p-3 bg-slate-900 rounded-lg border border-slate-800">{message}</div>
+                                                </div>
+                                            ) : null;
+                                        })()}
                                     </div>
                                 </div>
 

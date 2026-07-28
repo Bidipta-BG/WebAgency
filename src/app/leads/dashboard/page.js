@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LogOut, Users, Calculator, TrendingUp, Search, Calendar, Phone, CheckCircle, Clock, AlertCircle, Eye, FileText, Target } from 'lucide-react';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { getLeads, updateLead } from '../../../services/api';
 import LeadDetailsModal from '../../../components/LeadDetailsModal';
 
@@ -61,6 +62,34 @@ export default function AdminDashboard() {
                 : (l.leadInfo?.email || '').toLowerCase();
             return current === target;
         }).length;
+    };
+
+    const formatPhoneDisplay = (phoneStr) => {
+        if (!phoneStr) return <span className="text-slate-500 text-xs">N/A</span>;
+        try {
+            const rawStr = phoneStr.startsWith('+') ? phoneStr : '+' + phoneStr;
+            const parsed = parsePhoneNumberFromString(rawStr);
+            if (parsed) {
+                const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+                const countryName = parsed.country ? regionNames.of(parsed.country) : '';
+                return (
+                    <div className="flex items-center gap-1.5" title={countryName}>
+                        {parsed.country && (
+                            <img 
+                                src={`https://flagcdn.com/w20/${parsed.country.toLowerCase()}.png`} 
+                                width="16" 
+                                alt={parsed.country} 
+                                className="rounded-[2px] opacity-90 shadow-sm"
+                            />
+                        )}
+                        <span className="text-slate-400 text-xs font-medium tracking-wide">{parsed.formatInternational()}</span>
+                    </div>
+                );
+            }
+            return <span className="text-slate-500 text-xs tracking-wide">+{phoneStr.replace(/\D/g, '')}</span>;
+        } catch (error) {
+            return <span className="text-slate-500 text-xs">{phoneStr}</span>;
+        }
     };
 
     const filteredLeads = leads.filter(lead => {
@@ -244,10 +273,10 @@ export default function AdminDashboard() {
                                                             </span>
                                                         )}
                                                     </div>
-                                                    <div className="flex items-center gap-1.5">
-                                                        <span className="text-slate-500 text-xs">{lead.leadInfo?.phone}</span>
+                                                    <div className="flex items-center gap-1.5 mt-0.5">
+                                                        {formatPhoneDisplay(lead.leadInfo?.phone)}
                                                         {getDuplicateCount(lead.leadInfo?.phone, 'phone') > 1 && (
-                                                            <span className="text-[10px] text-orange-400 bg-orange-400/10 px-1.5 py-0.5 rounded border border-orange-400/20 font-bold">
+                                                            <span className="text-[10px] text-orange-400 bg-orange-400/10 px-1.5 py-0.5 rounded border border-orange-400/20 font-bold ml-1">
                                                                 {getDuplicateCount(lead.leadInfo?.phone, 'phone')} Shared Number
                                                             </span>
                                                         )}

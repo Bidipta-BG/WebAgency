@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { Send, Check, Loader2 } from 'lucide-react';
 import { submitContactForm } from '../services/api';
 import { motion, AnimatePresence } from 'framer-motion';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const ContactForm = () => {
     const [formData, setFormData] = useState({
@@ -24,10 +26,10 @@ const ContactForm = () => {
         } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
             newErrors.email = "Invalid email format";
         }
-        if (!formData.phone.trim()) {
+        if (!formData.phone) {
             newErrors.phone = "Phone number is required";
-        } else if (!/^\d{10}$/.test(formData.phone)) {
-            newErrors.phone = "Enter a valid 10-digit number";
+        } else if (formData.phone.length < 7) {
+            newErrors.phone = "Enter a valid phone number";
         }
         return newErrors;
     };
@@ -112,37 +114,40 @@ const ContactForm = () => {
                     </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                        <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Phone Number</label>
-                        <input
-                            type="tel"
-                            value={formData.phone}
-                            onChange={(e) => {
-                                const val = e.target.value.replace(/\D/g, '').slice(0, 10);
-                                setFormData({ ...formData, phone: val });
-                                if (errors.phone) setErrors({ ...errors, phone: null });
-                            }}
-                            maxLength={10}
-                            className={`w-full bg-surface border ${errors.phone ? 'border-red-500' : 'border-surface-highlight'} rounded-xl px-4 py-3 text-white focus:border-accent outline-none transition-colors`}
-                            placeholder="10-digit number"
-                        />
-                        {errors.phone && <p className="text-red-500 text-[10px] mt-1 uppercase font-bold">{errors.phone}</p>}
-                    </div>
-                    <div className="space-y-2">
-                        <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Subject</label>
-                        <select
-                            value={formData.subject}
-                            onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                            className="w-full bg-surface border border-surface-highlight rounded-xl px-4 py-3 text-white focus:border-accent outline-none transition-colors appearance-none"
-                        >
-                            <option>Website Development</option>
-                            <option>Mobile App Development</option>
-                            <option>Digital Marketing</option>
-                            <option>AI Solutions</option>
-                            <option>Other</option>
-                        </select>
-                    </div>
+                <div className="space-y-2">
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Phone Number</label>
+                    <PhoneInput
+                        country={'in'}
+                        value={formData.phone}
+                        onChange={(phone) => {
+                            setFormData({ ...formData, phone });
+                            if (errors.phone) setErrors({ ...errors, phone: null });
+                        }}
+                        enableSearch={true}
+                        disableSearchIcon={true}
+                        containerClass="w-full relative"
+                        inputClass={`!w-full !bg-surface !border ${errors.phone ? '!border-red-500' : '!border-surface-highlight'} !rounded-xl !text-white !outline-none !transition-colors !h-[50px] !pl-14 !text-base`}
+                        buttonClass="!bg-transparent !border-none !left-2 hover:!bg-surface-highlight !rounded-lg !transition-colors"
+                        dropdownClass="!bg-surface-muted !text-slate-200 !border-surface-highlight !rounded-xl !shadow-2xl !mt-2 custom-phone-dropdown"
+                        searchClass="!bg-surface !text-white !border-surface-highlight !rounded-lg !p-2 !w-[90%] !mx-2 !my-2"
+                        searchStyle={{margin: '0', width: '90%'}}
+                    />
+                    {errors.phone && <p className="text-red-500 text-[10px] mt-1 uppercase font-bold">{errors.phone}</p>}
+                </div>
+
+                <div className="space-y-2">
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Subject</label>
+                    <select
+                        value={formData.subject}
+                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                        className="w-full bg-surface border border-surface-highlight rounded-xl px-4 py-3 text-white focus:border-accent outline-none transition-colors appearance-none"
+                    >
+                        <option>Website Development</option>
+                        <option>Mobile App Development</option>
+                        <option>Digital Marketing</option>
+                        <option>AI Solutions</option>
+                        <option>Other</option>
+                    </select>
                 </div>
 
                 <div className="space-y-2">

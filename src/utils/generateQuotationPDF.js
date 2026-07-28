@@ -1,5 +1,6 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 export const generateQuotationPDF = async ({
   readableAnswers,
@@ -13,6 +14,23 @@ export const generateQuotationPDF = async ({
     if (typeof str !== 'string') return str;
     return str.replace(/[^\x20-\x7E]/g, ' ').replace(/\s+/g, ' ').trim();
   };
+
+  const getCurrencyInfo = () => {
+    let isUSD = false;
+    if (contactInfo?.mobile) {
+      try {
+        const phoneStr = contactInfo.mobile.startsWith('+') ? contactInfo.mobile : '+' + contactInfo.mobile;
+        const parsed = parsePhoneNumberFromString(phoneStr);
+        if (parsed && parsed.country && parsed.country !== 'IN') {
+          isUSD = true;
+        }
+      } catch (e) {}
+    }
+    return isUSD;
+  };
+
+  const isUSD = getCurrencyInfo();
+  const exchangeRate = 83;
 
   // Helper to load and compress image for PDF to keep file size small
   const loadLogo = () => new Promise((resolve) => {
@@ -91,8 +109,8 @@ export const generateQuotationPDF = async ({
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(100, 100, 100);
-  doc.text("Email: example@axomitlab.com", marginLeft, currentY + 6);
-  doc.text("Phone: +91 9876543210", marginLeft, currentY + 11);
+  doc.text("Email Us: support@axomitlab.com", marginLeft, currentY + 6);
+  doc.text("Call Us: +91 96069 14772", marginLeft, currentY + 11);
   
   const now = new Date();
   const dateStr = now.toLocaleDateString('en-IN');
@@ -195,7 +213,12 @@ export const generateQuotationPDF = async ({
   doc.setTextColor(33, 33, 33);
   doc.text("3. Investment Summary", marginLeft, currentY);
 
-  const formatPrice = (price) => 'Rs. ' + price.toLocaleString('en-IN');
+  const formatPrice = (price) => {
+    if (isUSD) {
+      return '$' + Math.round(price / exchangeRate).toLocaleString('en-US');
+    }
+    return 'Rs. ' + price.toLocaleString('en-IN');
+  };
   const calcGst = (price) => Math.round(price * 1.18);
 
   const getPriceString = (priceObj, suffix = '') => {
@@ -234,7 +257,7 @@ export const generateQuotationPDF = async ({
 
   doc.autoTable({
     startY: currentY + 5,
-    head: [['Description', 'Estimated Cost (Incl. 18% GST)']],
+    head: [['Description', isUSD ? 'Estimated Cost (Incl. applicable taxes)' : 'Estimated Cost (Incl. 18% GST)']],
     body: pricingBody,
     theme: 'grid',
     headStyles: { fillColor: [31, 41, 55], textColor: [255, 255, 255] },
@@ -257,7 +280,7 @@ export const generateQuotationPDF = async ({
   const detailedNotes = [
     ["1. VALIDITY OF QUOTATION:", "This quotation is valid for 10 days from the date of issue. Upon expiry, a new estimate may be required."],
     ["2. REQUIREMENT CHANGES:", "The pricing outlined above is strictly based on the requirements provided in the questionnaire. Any changes, additions, or modifications to the scope of work during detailed discussions will result in a revised quotation."],
-    ["3. TAXES & GST:", "All prices mentioned above are exclusive of 18% GST. The final invoice will include the addition of 18% GST as per government regulations."],
+    ["3. TAXES & GST:", isUSD ? "All prices mentioned above include applicable taxes. International transactions may be subject to additional bank fees." : "All prices mentioned above are exclusive of 18% GST. The final invoice will include the addition of 18% GST as per government regulations."],
     ["4. REFUND POLICY:", "• Setup Fee: A full refund of the setup fee is provided if the project is cancelled before any work begins.\n• Partial Refund: If cancellation is requested within the first half of the agreed delivery window, a partial refund (setup fee minus work completed) will be issued.\n• No Refund: No refunds will be provided after the first half of the delivery window.\n• Management Fees: Monthly or annual management and hosting fees are strictly non-refundable."]
   ];
 

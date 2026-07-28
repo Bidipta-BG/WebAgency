@@ -98,7 +98,7 @@ export const commonStep3Questions = [
 export const contactFields = [
   { id: "businessName", label: "Business Name", type: "text", required: true },
   { id: "ownerName", label: "Your Name", type: "text", required: true },
-  { id: "mobile", label: "Mobile Number", type: "tel", required: true },
+  { id: "mobile", label: "Mobile/WhatsApp Number", type: "tel", required: true },
   { id: "email", label: "Email Address", type: "email", required: false },
   { id: "city", label: "City", type: "text", required: true }
 ];

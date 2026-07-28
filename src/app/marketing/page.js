@@ -4,6 +4,8 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Target, CheckCircle2, TrendingUp, Loader2 } from 'lucide-react';
 import { submitMarketingForm } from '@/services/api';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const industriesList = [
     { id: 'salon', name: 'Salon & Spa' },
@@ -47,17 +49,30 @@ const checkListItems = [
     { id: 'none', label: 'None of the above — starting from scratch' }
 ];
 
-const budgetOptions = [
-    "Under ₹5,000/month",
-    "₹5,000 – ₹15,000/month",
-    "₹15,000 – ₹30,000/month",
-    "₹30,000+/month",
-    "I'm not sure yet"
-];
+const getBudgetOptions = (countryCode) => {
+    if (countryCode === 'in') {
+        return [
+            "Under ₹5,000/month",
+            "₹5,000 – ₹15,000/month",
+            "₹15,000 – ₹30,000/month",
+            "₹30,000+/month",
+            "I'm not sure yet"
+        ];
+    }
+    return [
+        "Under $100/month",
+        "$100 – $300/month",
+        "$300 – $600/month",
+        "$600+/month",
+        "I'm not sure yet"
+    ];
+};
 
 export default function MarketingPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [countryCode, setCountryCode] = useState('in');
+    const [errors, setErrors] = useState({});
 
     const [formData, setFormData] = useState({
         name: '',
@@ -87,6 +102,13 @@ export default function MarketingPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!formData.phone || formData.phone.length < 7) {
+            setErrors({ phone: "Please enter a valid phone number" });
+            return;
+        }
+        setErrors({});
+
         setIsSubmitting(true);
         try {
             const leadInfo = {
@@ -179,7 +201,34 @@ export default function MarketingPage() {
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-slate-400 mb-2">Phone Number *</label>
-                                            <input required type="tel" className="w-full bg-surface-highlight border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
+                                            <PhoneInput
+                                                country={'in'}
+                                                value={formData.phone}
+                                                onChange={(phone, countryData) => {
+                                                    setFormData({ ...formData, phone });
+                                                    if (errors.phone) setErrors({});
+                                                    if (countryData && countryData.countryCode) {
+                                                        const newCode = countryData.countryCode;
+                                                        if (newCode !== countryCode) {
+                                                            const wasINR = countryCode === 'in';
+                                                            const isINR = newCode === 'in';
+                                                            if (wasINR !== isINR) {
+                                                                setFormData(prev => ({ ...prev, budget: '' }));
+                                                            }
+                                                            setCountryCode(newCode);
+                                                        }
+                                                    }
+                                                }}
+                                                enableSearch={true}
+                                                disableSearchIcon={true}
+                                                containerClass="w-full relative"
+                                                inputClass={`!w-full !bg-surface-highlight !border ${errors.phone ? '!border-red-500' : '!border-white/10 focus:!border-accent'} !rounded-xl !text-white !outline-none !transition-colors !h-[48px] !pl-14 !text-base`}
+                                                buttonClass="!bg-transparent !border-none !left-2 hover:!bg-surface !rounded-lg !transition-colors"
+                                                dropdownClass="!bg-surface-muted !text-slate-200 !border-surface-highlight !rounded-xl !shadow-2xl !mt-2 custom-phone-dropdown"
+                                                searchClass="!bg-surface !text-white !border-surface-highlight !rounded-lg !p-2 !w-[90%] !mx-2 !my-2"
+                                                searchStyle={{margin: '0', width: '90%'}}
+                                            />
+                                            {errors.phone && <p className="text-red-500 text-[10px] mt-1 uppercase font-bold">{errors.phone}</p>}
                                         </div>
                                     </div>
                                     <div>
@@ -232,10 +281,15 @@ export default function MarketingPage() {
                                     <label className="block text-sm font-medium text-slate-400 mb-2">Expected Monthly Marketing Budget</label>
                                     <select required className="w-full bg-surface-highlight border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent appearance-none" value={formData.budget} onChange={e => setFormData({...formData, budget: e.target.value})}>
                                         <option value="">Select budget range...</option>
-                                        {budgetOptions.map(opt => (
+                                        {getBudgetOptions(countryCode).map(opt => (
                                             <option key={opt} value={opt}>{opt}</option>
                                         ))}
                                     </select>
+                                    {countryCode !== 'in' && (
+                                        <p className="text-[11px] text-accent mt-2 font-medium bg-accent/5 inline-block px-2 py-1 rounded">
+                                            * Note: International pricing is shown in USD.
+                                        </p>
+                                    )}
                                 </div>
 
                                 <button

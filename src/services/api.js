@@ -137,12 +137,18 @@ export const submitEstimate = async (data, editId = null) => {
 
 export const submitContactForm = async (data) => {
     try {
+        const { subject, message, ...restLeadInfo } = data;
+        const readableAnswers = [];
+        if (subject) readableAnswers.push({ question: "Subject", answer: subject });
+        if (message) readableAnswers.push({ question: "Message", answer: message });
+
         const response = await fetch(`${API_BASE_URL}/axomitlab/leads`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 formType: 'contact',
-                leadInfo: data
+                leadInfo: restLeadInfo,
+                readableAnswers: readableAnswers
             }),
         });
         return await response.json();

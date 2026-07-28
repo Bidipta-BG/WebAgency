@@ -8,22 +8,22 @@ const teaserProjects = [
     {
         title: "RedCat Logistics",
         category: "Transport & Logistics",
-        desc: "Comprehensive house shifting and transport services website.",
-        tech: ["Web Design", "UI/UX", "Logistics SEO"],
+        desc: "A Bangalore logistics company that now gets inquiries from all over the city — 24/7, even when the office is closed.",
+        tech: ["Web Design", "Local SEO", "Brand Identity"],
         image: "/redcat-logistic.jpg"
     },
     {
         title: "5 Star Rating AI",
         category: "AI Reputation Management",
-        desc: "AI-powered SaaS platform for automating Google reviews and reputation management.",
-        tech: ["SaaS", "AI Integration", "Analytics"],
+        desc: "An AI-powered tool that helps local businesses get more 5-star Google reviews automatically — boosting their online credibility.",
+        tech: ["SaaS Product", "AI Integration", "Google Reviews"],
         image: "/5star-rating.jpg"
     },
     {
         title: "TemplatePro",
         category: "Mobile Application",
-        desc: "A feature-rich Android mobile application for an engaging user experience.",
-        tech: ["Android", "Mobile UI", "App Dev"],
+        desc: "A mobile app now used by thousands of users on the Google Play Store — built and launched in just a few weeks.",
+        tech: ["Android App", "Play Store", "Mobile UI"],
         image: "/template-pro.jpg"
     }
 ];
@@ -33,12 +33,12 @@ const ClientWork = () => {
         <section id="work" className="py-24 bg-surface-muted border-y border-surface-highlight">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="text-center mb-16">
-                    <span className="text-accent font-semibold tracking-wider text-sm uppercase mb-2 block">Our Work</span>
+                    <span className="text-accent font-semibold tracking-wider text-sm uppercase mb-2 block">Success Stories</span>
                     <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6">
-                        Trusted by Ambitious Brands Nationwide
+                        Businesses We Helped Go Online & Grow
                     </h2>
                     <p className="text-slate-400 max-w-2xl mx-auto text-lg">
-                        Real products, built for real clients. Here's a glimpse of what we've delivered.
+                        Real local businesses that trusted us — and got real results.
                     </p>
                 </div>
 
@@ -58,11 +58,11 @@ const ClientWork = () => {
                                     {p.category}
                                 </div>
                             </div>
-                            
+
                             <div className="p-6 flex-1 flex flex-col">
                                 <h3 className="text-xl font-bold text-white mb-3 group-hover:text-accent transition-colors">{p.title}</h3>
                                 <p className="text-slate-400 text-sm mb-6 leading-relaxed flex-1">{p.desc}</p>
-                                
+
                                 <div className="flex flex-wrap gap-2">
                                     {p.tech.map(t => (
                                         <span key={t} className="text-[10px] font-bold text-slate-500 bg-surface-highlight/30 px-2.5 py-1 rounded-md border border-surface-highlight">
@@ -76,11 +76,11 @@ const ClientWork = () => {
                 </div>
 
                 <div className="text-center">
-                    <Link 
+                    <Link
                         href="/portfolio"
                         className="inline-flex items-center justify-center gap-2 bg-surface text-white border border-surface-highlight px-8 py-4 rounded-xl font-semibold hover:border-accent hover:text-accent transition-all"
                     >
-                        View All Client Work
+                        See All Success Stories
                         <ArrowRight className="w-5 h-5" />
                     </Link>
                 </div>

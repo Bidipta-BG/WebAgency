@@ -2,40 +2,40 @@ import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-import { Target, ShieldCheck, Zap, Users, Code2, TrendingUp, ArrowRight } from 'lucide-react';
+import { HeartHandshake, ShieldCheck, Clock3, BadgeCheck, TrendingUp, ArrowRight, Users } from 'lucide-react';
 
 export const metadata = {
-    title: 'About Axom IT Lab | AI-Powered Tech & Growth Partner',
-    description: 'Axom IT Lab is an AI-powered agency that builds world-class websites, apps, and mobile experiences — and then helps you get customers through AI-driven digital marketing.',
+    title: 'About Axom IT Lab | We Help Businesses Go Online & Grow',
+    description: 'Axom IT Lab helps local and offline businesses build their entire digital presence — logo, website, social media, and marketing. Your business-to-brand partner.',
 };
 
 const AboutPage = () => {
     const values = [
         {
-            icon: ShieldCheck,
-            title: "Trust First",
-            desc: "We prioritize transparency in every line of code and every invoice."
+            icon: HeartHandshake,
+            title: "We Handle Everything",
+            desc: "From your first logo to running your social media — one team, one place. You never have to manage multiple vendors."
         },
         {
-            icon: Zap,
-            title: "Performance",
-            desc: "Speed is our religion. We build web apps that load in the blink of an eye."
+            icon: BadgeCheck,
+            title: "We Speak Your Language",
+            desc: "No jargon. Plain talk. We take time to understand your business and your customers before we do anything."
         },
         {
-            icon: Target,
-            title: "Purposeful Design",
-            desc: "We don't just build apps; we solve business problems with elegant UI/UX."
-        },
-        {
-            icon: TrendingUp,
-            title: "Growth-Driven",
-            desc: "A great product needs an audience. We pair every build with AI marketing strategies."
+            icon: Clock3,
+            title: "Ready in Weeks",
+            desc: "Your business is online and looking professional in weeks — not months. We move fast without cutting corners."
         },
         {
             icon: ShieldCheck,
             title: "Risk-Free Promise",
-            desc: "We stand behind every project we build with a transparent, proportional money-back guarantee.",
+            desc: "We stand behind every project we build with a transparent, proportional money-back guarantee. No risk to you.",
             isGuarantee: true
+        },
+        {
+            icon: Users,
+            title: "Budget-Friendly",
+            desc: "Transparent pricing designed for local and growing businesses. Know exactly what you pay before you say yes."
         }
     ];
 
@@ -46,12 +46,15 @@ const AboutPage = () => {
             {/* Hero Section */}
             <section className="pt-32 pb-20 px-6">
                 <div className="max-w-4xl mx-auto text-center mb-16">
+                    <span className="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-accent font-bold text-sm tracking-widest uppercase mb-6 border border-accent/20">
+                        Who We Are
+                    </span>
                     <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                        We Don't Just Build Your Product.<br/>
-                        <span className="text-accent">We Help You Grow It.</span>
+                        We Help Businesses Like Yours{' '}
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent-bright">Succeed Online.</span>
                     </h1>
                     <p className="text-lg text-slate-400 leading-relaxed max-w-2xl mx-auto">
-                        Axom IT Lab is an AI-powered agency combining cutting-edge development with data-driven marketing. We launch your ideas and then work alongside you to scale your customer base.
+                        From the first logo to the first online customer — Axom IT Lab is your complete digital partner. We've helped shops, clinics, restaurants, coaches, and service businesses across India establish their online presence and grow.
                     </p>
                 </div>
 
@@ -74,30 +77,30 @@ const AboutPage = () => {
                 </div>
             </section>
 
-            {/* Full-Cycle Story Section (New) */}
+            {/* Story Section */}
             <section className="py-20 px-6">
                 <div className="max-w-7xl mx-auto">
                     <div className="bg-gradient-to-br from-surface-muted to-surface border border-surface-highlight rounded-[3rem] p-8 md:p-16 text-center max-w-5xl mx-auto">
                         <div className="flex justify-center items-center gap-4 mb-8">
-                            <div className="w-16 h-16 rounded-2xl bg-surface-highlight flex items-center justify-center text-white border border-white/10">
-                                <Code2 className="w-8 h-8" />
-                            </div>
-                            <div className="w-8 h-[2px] bg-gradient-to-r from-transparent via-accent to-transparent"></div>
-                            <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center text-accent border border-accent/20">
-                                <TrendingUp className="w-8 h-8" />
-                            </div>
+                            <div className="text-4xl">🏪</div>
+                            <div className="w-12 h-[2px] bg-gradient-to-r from-transparent via-accent to-transparent"></div>
+                            <div className="text-4xl">🌐</div>
+                            <div className="w-12 h-[2px] bg-gradient-to-r from-transparent via-accent to-transparent"></div>
+                            <div className="text-4xl">📈</div>
                         </div>
                         <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-                            From "We Need a Website" to "We're Getting Customers"
+                            From "I Have a Business" to "I Have a Brand"
                         </h2>
                         <p className="text-lg text-slate-400 leading-relaxed max-w-3xl mx-auto">
-                            After working with dozens of clients, we noticed a pattern. Within weeks of launching their website, every founder asked the same question: <strong>"Now how do we get customers?"</strong> That question is why we built our AI Marketing service. We don't just hand you a finished product — we stay alongside you for the growth phase too.
+                            We've worked with hundreds of local business owners who had something great to offer — but no one online knew about them.
+                            That's the gap we close. We don't just deliver a website and disappear. We stick with you, help you get found on Google,
+                            build your social presence, and keep growing your customer base month after month.
                         </p>
                     </div>
                 </div>
             </section>
 
-            {/* Pricing Philosophy Section (Replacing EMI Revolution) */}
+            {/* Pricing Philosophy Section */}
             <section className="py-20 px-6 bg-surface-muted/50 border-y border-surface-highlight">
                 <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
                     <div>
@@ -107,7 +110,7 @@ const AboutPage = () => {
                             We charge a transparent, <strong>one-time setup fee</strong> — so you know exactly what you're paying to launch.
                         </p>
                         <p className="text-slate-400 mb-8 leading-relaxed">
-                            After that, a <strong>low, fixed monthly maintenance fee</strong> keeps your website live, fast, and fully supported. You own the code, you know the price, and you never have to worry about surprise hosting or maintenance bills.
+                            After that, a <strong>low, fixed monthly maintenance fee</strong> keeps your website live, fast, and fully supported. You own the code, you know the price, and you never have to worry about surprise bills.
                         </p>
                         <div className="grid grid-cols-2 gap-6">
                             <div className="p-5 rounded-2xl bg-surface border border-surface-highlight shadow-sm">
@@ -126,7 +129,7 @@ const AboutPage = () => {
                             <div className="relative z-10 text-center">
                                 <Users className="w-16 h-16 text-accent mx-auto mb-6" />
                                 <div className="text-3xl font-bold text-white mb-3">50+ Businesses Launched</div>
-                                <p className="text-slate-400 text-sm max-w-xs mx-auto leading-relaxed">From local shops to funded startups — we've helped businesses across India launch their digital presence and generate leads.</p>
+                                <p className="text-slate-400 text-sm max-w-xs mx-auto leading-relaxed">From local shops to growing startups — we've helped businesses across India build their digital presence and generate customers.</p>
                             </div>
                         </div>
                     </div>
@@ -136,27 +139,27 @@ const AboutPage = () => {
             {/* Bottom CTA Section */}
             <section className="py-32 px-6 relative overflow-hidden">
                 <div className="absolute inset-0 bg-accent/5 pointer-events-none"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/20 rounded-full blur-[120px] pointer-events-none"></div>
-                
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/15 rounded-full blur-[120px] pointer-events-none"></div>
+
                 <div className="max-w-4xl mx-auto text-center relative z-10">
-                    <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">Ready to Build. Ready to Grow.</h2>
+                    <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">Ready to Take Your Business Online?</h2>
                     <p className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto">
-                        Whether you're starting from scratch or looking to scale, we have a service tailored for every stage of your business.
+                        Whether you're starting from zero or looking to grow further — we have a plan tailored for your business.
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                        <Link 
+                        <Link
                             href="/estimate"
                             className="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-accent text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-accent-bright transition-all shadow-lg shadow-accent/25 hover:scale-105"
                         >
-                            Start My Project
+                            Take My Business Online
                             <ArrowRight className="w-5 h-5" />
                         </Link>
-                        <Link 
+                        <Link
                             href="/marketing"
                             className="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-surface text-white border border-surface-highlight px-8 py-4 rounded-full font-bold text-lg hover:border-white/30 hover:bg-white/5 transition-all"
                         >
                             <TrendingUp className="w-5 h-5 text-accent" />
-                            Generate Leads
+                            Grow My Revenue
                         </Link>
                     </div>
                 </div>

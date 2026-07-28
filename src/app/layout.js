@@ -8,8 +8,8 @@ const inter = Inter({
 });
 
 const siteUrl = "https://axomitlab.com";
-const siteTitle = "Axom IT Lab | Premium Web, App & Digital Marketing Agency";
-const siteDescription = "Axom IT Lab is an AI-powered software development and digital marketing agency. We leverage advanced AI models to deliver enterprise-grade solutions and data-driven marketing campaigns faster and at a fraction of the cost.";
+const siteTitle = "Axom IT Lab | Take Your Business Online — Brand, Website & Marketing";
+const siteDescription = "Axom IT Lab helps local and offline businesses go online and grow into a brand. We create your logo, build your website, manage your social media, and bring you real customers — all in one place.";
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
@@ -19,19 +19,24 @@ export const metadata = {
   },
   description: siteDescription,
   keywords: [
-    "AI-powered development agency",
-    "mobile app development company",
+    "take offline business online",
+    "local business website India",
+    "business to brand agency",
+    "get my shop online",
+    "small business digital presence",
+    "website for small business India",
+    "business branding agency India",
+    "local business digital marketing",
+    "how to get customers online",
+    "affordable website design India",
+    "social media management for business",
+    "logo design India",
     "digital marketing agency india",
     "AI web development",
-    "fast software development with AI",
-    "AI-driven marketing campaigns",
-    "cost-effective AI development",
-    "AI-driven app development",
-    "affordable web design for startups",
     "AxomITLab",
     "Axom IT Lab",
-    "enterprise software development",
-    "lead generation services"
+    "lead generation services",
+    "e-commerce website India"
   ],
   authors: [{ name: "AxomITLab", url: siteUrl }],
   creator: "AxomITLab",

@@ -21,6 +21,17 @@ export default function EstimatePage() {
             <Navbar />
 
             <div className="pt-20">
+                <div className="max-w-4xl mx-auto px-6 pt-12 pb-4 text-center">
+                    <span className="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-accent font-bold text-sm tracking-widest uppercase mb-4 border border-accent/20">
+                        Transparent Pricing
+                    </span>
+                    <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
+                        What Does Taking Your Business Online Cost?
+                    </h1>
+                    <p className="text-slate-400 text-lg max-w-xl mx-auto">
+                        Use our instant calculator to get a transparent estimate — no hidden fees, no surprises. Just tell us what you need.
+                    </p>
+                </div>
                 <PlannerShell />
             </div>
 

@@ -1,16 +1,24 @@
 "use client";
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2, Zap, TrendingUp } from 'lucide-react';
+import { ArrowRight, CheckCircle2, TrendingUp, Palette, Globe, BarChart3, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import GuaranteeBadge from './GuaranteeBadge';
+
+const journeySteps = [
+    { icon: Palette,  label: 'Logo & Brand Identity',  color: 'from-amber-500/20 to-orange-500/20',  dot: 'bg-amber-400' },
+    { icon: Globe,    label: 'Website Goes Live',       color: 'from-orange-500/20 to-amber-400/20',  dot: 'bg-orange-400' },
+    { icon: BarChart3,label: 'Social Media & Ads',      color: 'from-amber-400/20 to-orange-400/20',  dot: 'bg-amber-500' },
+    { icon: TrendingUp,label: 'Customers Start Coming', color: 'from-orange-400/20 to-amber-500/20',  dot: 'bg-green-400' },
+];
 
 const Hero = ({ onOpenGuarantee }) => {
     return (
         <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
             {/* Background Decor */}
-            <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-gradient-to-l from-slate-100 to-transparent opacity-60 pointer-events-none" />
+            <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-gradient-to-l from-amber-950/20 to-transparent opacity-60 pointer-events-none" />
             <div className="absolute top-20 right-20 -z-10 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 -z-10 w-64 h-64 bg-orange-900/10 rounded-full blur-3xl" />
 
             <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
                 {/* Text Content */}
@@ -19,23 +27,24 @@ const Hero = ({ onOpenGuarantee }) => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                 >
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold mb-6 border border-accent/20">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold mb-6 border border-accent/20 text-sm">
                         <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
                         </span>
-                        AI-Powered Agency
+                        Your Complete Digital Presence Partner
                     </div>
 
                     <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1] mb-6">
-                        Build with AI. Market with AI.<br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent-bright">Deliver Faster.</span>
+                        From Business to Brand,{' '}
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent-bright">We Handle Everything.</span>
                     </h1>
 
                     <p className="text-lg text-slate-400 mb-8 max-w-xl leading-relaxed">
-                        Our seasoned engineers transform your ideas into world-class software. By equipping our experts with
-                        <span className="font-semibold text-white"> advanced AI tools</span>,
-                        we deliver enterprise-grade development with significantly reduced timelines and costs. And once you're live, our AI-powered marketing team helps you attract real customers.
+                        Whether you're <span className="font-semibold text-white">starting fresh</span>, already have a website but{' '}
+                        <span className="font-semibold text-white">aren't growing</span>, or want to{' '}
+                        <span className="font-semibold text-white">completely rebrand</span> — we handle everything.
+                        Logo, website, social media, and marketing. One team, end to end.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 mb-4">
@@ -43,24 +52,24 @@ const Hero = ({ onOpenGuarantee }) => {
                             href="#calculator"
                             className="inline-flex items-center justify-center gap-2 bg-accent text-white px-8 py-4 rounded-xl font-semibold hover:bg-accent-bright transition-all shadow-lg shadow-accent/25"
                         >
-                            Get an Estimate
+                            Build My Brand Online
                             <ArrowRight className="w-5 h-5" />
                         </a>
                         <a
                             href="#process"
                             className="inline-flex items-center justify-center gap-2 bg-surface-highlight text-white border border-white/10 px-8 py-4 rounded-xl font-semibold hover:bg-white/10 transition-all"
                         >
-                            How AI Works
+                            See How It Works
                         </a>
                     </div>
-                    
+
                     <div className="flex flex-col sm:flex-row gap-4">
                         <Link
                             href="/marketing"
                             className="inline-flex items-center justify-center gap-2 text-slate-300 px-4 py-2 rounded-xl text-sm font-medium hover:text-white hover:bg-surface-highlight transition-all border border-transparent hover:border-white/10 w-fit"
                         >
                             <TrendingUp className="w-4 h-4 text-accent" />
-                            Already have a website? Generate Leads for My Business
+                            Already online? Let us grow your revenue
                             <ArrowRight className="w-4 h-4 opacity-70" />
                         </Link>
                     </div>
@@ -68,122 +77,118 @@ const Hero = ({ onOpenGuarantee }) => {
                     <div className="mt-10 flex gap-6 text-sm text-slate-500 flex-wrap">
                         <div className="flex items-center gap-2">
                             <CheckCircle2 className="w-5 h-5 text-accent" />
-                            <span>Expert Developers</span>
+                            <span>Logo & Brand Identity</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <CheckCircle2 className="w-5 h-5 text-accent" />
-                            <span>AI-Driven Cost Savings</span>
+                            <span>Website & Online Store</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <CheckCircle2 className="w-5 h-5 text-accent" />
-                            <span>Full-Service: Build + Market</span>
+                            <span>Social Media & Marketing</span>
                         </div>
                     </div>
-                    
+
                     <div className="mt-6 flex items-center gap-3">
                         <GuaranteeBadge onOpen={onOpenGuarantee} text="Full refund if not satisfied" />
                         <span className="text-slate-500 text-sm italic">✦ No hidden fees</span>
                     </div>
                 </motion.div>
 
-                {/* Hero Visual */}
+                {/* Hero Visual — Offline → Online Transformation Journey */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
                     className="relative"
                 >
-                    <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 aspect-[4/3] bg-surface-muted group">
-                        {/* Abstract UI Mockup */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-surface-highlight to-surface p-8 flex flex-col">
-                            <div className="w-full flex gap-2 mb-4">
-                                <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-                                <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
-                                <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+                    <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-surface-muted p-6">
+                        {/* Header */}
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="flex gap-1.5">
+                                <div className="w-3 h-3 rounded-full bg-red-500/70"></div>
+                                <div className="w-3 h-3 rounded-full bg-amber-500/70"></div>
+                                <div className="w-3 h-3 rounded-full bg-green-500/70"></div>
                             </div>
-
-                            <div className="flex-1 flex gap-6 p-6">
-                                {/* Sidebar Mockup */}
-                                <div className="w-16 h-full bg-surface-highlight/30 rounded-xl hidden sm:flex flex-col items-center py-4 gap-4 border border-white/5">
-                                    <div className="w-8 h-8 rounded-full bg-accent text-[10px] grid place-items-center font-bold text-white mb-2">A</div>
-                                    {[1, 2, 3, 4].map(i => (
-                                        <div key={i} className={`w-8 h-8 rounded-lg ${i === 1 ? 'bg-white/10 text-white' : 'text-slate-500'} grid place-items-center`}>
-                                            <div className="w-4 h-4 bg-current rounded-sm opacity-50" />
-                                        </div>
-                                    ))}
-                                </div>
-
-                                {/* Main Dashboard Area */}
-                                <div className="flex-1 flex flex-col gap-4">
-                                    {/* Top Stats Row */}
-                                    <div className="flex gap-4">
-                                        <div className="flex-1 p-4 rounded-xl bg-surface-highlight/40 border border-white/5 relative overflow-hidden">
-                                            <div className="absolute top-0 right-0 p-3 opacity-20"><div className="w-12 h-12 bg-accent rounded-full blur-xl"></div></div>
-                                            <p className="text-xs text-slate-400 mb-1">Fastest Delivery Time</p>
-                                            <p className="text-xl font-bold text-white">3 Weeks <span className="text-xs font-normal text-emerald-400">Idea to Live</span></p>
-                                        </div>
-                                        <div className="flex-1 p-4 rounded-xl bg-surface-highlight/40 border border-white/5 relative overflow-hidden">
-                                            <div className="absolute top-0 right-0 p-3 opacity-20"><div className="w-12 h-12 bg-purple-500 rounded-full blur-xl"></div></div>
-                                            <p className="text-xs text-slate-400 mb-1">Projects Delivered</p>
-                                            <p className="text-xl font-bold text-white">50+ <span className="text-xs font-normal text-emerald-400">Success</span></p>
-                                        </div>
-                                    </div>
-
-                                    {/* Chart Area */}
-                                    <div className="flex-1 bg-surface-highlight/40 rounded-xl border border-white/5 p-4 relative overflow-hidden">
-                                        <div className="flex justify-between items-center mb-4">
-                                            <div className="h-4 w-24 bg-white/10 rounded-full"></div>
-                                            <div className="h-3 w-16 bg-white/5 rounded-full"></div>
-                                        </div>
-
-                                        {/* CSS Graph Representation */}
-                                        <div className="flex items-end justify-between h-24 gap-2 px-2 pb-2">
-                                            {[30, 45, 35, 60, 50, 70, 55, 80, 65].map((h, i) => (
-                                                <div key={i} className="w-full bg-accent/20 rounded-t-sm relative group overflow-hidden" style={{ height: `${h}%` }}>
-                                                    <div className="absolute bottom-0 w-full bg-accent/40 h-0 transition-all duration-500 group-hover:h-full"></div>
-                                                    <div className="absolute top-0 w-full h-[2px] bg-accent/60"></div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {/* Bottom List Mockup */}
-                                    <div className="h-16 bg-surface-highlight/40 rounded-xl border border-white/5 p-3 flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-surface-highlight border border-white/5"></div>
-                                        <div className="flex-1 space-y-2">
-                                            <div className="w-2/3 h-2 bg-white/10 rounded-full"></div>
-                                            <div className="w-1/2 h-2 bg-white/5 rounded-full"></div>
-                                        </div>
-                                        <div className="w-16 h-6 bg-emerald-500/10 rounded-full border border-emerald-500/20"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Floating Badge */}
-                            <motion.div
-                                initial={{ y: 20, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                transition={{ delay: 1 }}
-                                className="absolute bottom-8 right-8 bg-surface-muted p-4 rounded-xl shadow-2xl border border-surface-highlight max-w-xs z-20"
-                            >
-                                <div className="flex items-center gap-3 mb-2">
-                                    <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent">
-                                        <Zap className="w-5 h-5" />
-                                    </div>
-                                    <div>
-                                        <p className="text-xs text-slate-400">Time Saved with AI</p>
-                                        <p className="font-bold text-white">50%<span className="text-xs font-normal text-slate-500"> Faster</span></p>
-                                    </div>
-                                </div>
-                                <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
-                                    <div className="w-3/4 h-full bg-accent rounded-full"></div>
-                                </div>
-                            </motion.div>
+                            <span className="text-xs text-slate-500 font-medium tracking-wider uppercase">Your Business Transformation</span>
                         </div>
+
+                        {/* Start Card */}
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.4 }}
+                            className="flex items-center gap-4 p-4 rounded-xl bg-surface-highlight/60 border border-white/5 mb-4"
+                        >
+                            <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-2xl flex-shrink-0">🏪</div>
+                            <div>
+                                <p className="font-bold text-white text-sm">Your Local Business</p>
+                                <p className="text-xs text-slate-500 mt-0.5">Great products. Great service. But no one online knows you yet.</p>
+                            </div>
+                            <div className="ml-auto px-2 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-[10px] font-bold">OFFLINE</div>
+                        </motion.div>
+
+                        {/* Arrow */}
+                        <div className="flex justify-center my-1">
+                            <div className="w-0.5 h-6 bg-gradient-to-b from-accent/40 to-accent/80"></div>
+                        </div>
+
+                        {/* Journey Steps */}
+                        <div className="space-y-2">
+                            {journeySteps.map((step, i) => (
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.6 + i * 0.15 }}
+                                    className={`flex items-center gap-3 p-3.5 rounded-xl bg-gradient-to-r ${step.color} border border-white/5`}
+                                >
+                                    <div className="w-8 h-8 rounded-lg bg-surface-highlight flex items-center justify-center flex-shrink-0">
+                                        <step.icon className="w-4 h-4 text-accent" />
+                                    </div>
+                                    <span className="text-white text-sm font-medium">{step.label}</span>
+                                    <div className={`ml-auto w-2 h-2 rounded-full ${step.dot} ${i === journeySteps.length - 1 ? 'animate-pulse' : ''}`}></div>
+                                </motion.div>
+                            ))}
+                        </div>
+
+                        {/* Connector */}
+                        <div className="flex justify-center my-1">
+                            <div className="w-0.5 h-6 bg-gradient-to-b from-accent/80 to-green-400/80"></div>
+                        </div>
+
+                        {/* Result Card */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 1.3 }}
+                            className="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20"
+                        >
+                            <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center text-2xl flex-shrink-0">📈</div>
+                            <div>
+                                <p className="font-bold text-white text-sm">Your Brand, Online & Growing</p>
+                                <p className="text-xs text-slate-400 mt-0.5">Customers find you, trust you, and buy from you — 24/7.</p>
+                            </div>
+                            <div className="ml-auto px-2 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-[10px] font-bold">LIVE</div>
+                        </motion.div>
+
+                        {/* Floating Badge */}
+                        <motion.div
+                            initial={{ y: 10, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 1.5 }}
+                            className="mt-4 flex items-center justify-between p-3 rounded-xl bg-surface-highlight/50 border border-accent/20"
+                        >
+                            <div className="flex items-center gap-2">
+                                <Sparkles className="w-4 h-4 text-accent" />
+                                <span className="text-xs text-slate-300 font-medium">Average time to go live</span>
+                            </div>
+                            <span className="text-accent font-bold text-sm">2–3 Weeks</span>
+                        </motion.div>
                     </div>
                 </motion.div>
-            </div >
-        </section >
+            </div>
+        </section>
     );
 };
 

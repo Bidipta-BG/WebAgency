@@ -145,14 +145,14 @@ export default function MarketingPage() {
                     <div className="lg:sticky lg:top-32">
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold mb-6 border border-accent/20">
                             <Target className="w-4 h-4" />
-                            AI-Powered Marketing
+                            Grow Your Business Online
                         </div>
                         <h1 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
-                            Your website is ready! <br/>
-                            <span className="text-accent">Now let's get customers.</span>
+                            Already have a business online?{' '}<br/>
+                            <span className="text-accent">Let's get you more customers.</span>
                         </h1>
                         <p className="text-lg text-slate-400 mb-8 leading-relaxed max-w-xl">
-                            We use advanced AI tools to speed up content creation, optimize your Google Business profile, and run high-converting ad campaigns. Tell us where you currently stand, and we'll craft a custom growth strategy.
+                            We use Google, Instagram, Facebook, and AI-powered strategies to bring real customers to your business every single day. Tell us where you stand — and we'll build a custom growth plan just for you.
                         </p>
                         
                         <div className="space-y-4">
@@ -162,11 +162,11 @@ export default function MarketingPage() {
                             </div>
                             <div className="flex items-center gap-3 text-slate-300">
                                 <CheckCircle2 className="w-5 h-5 text-accent" />
-                                <span>Social Media Content Management</span>
+                                <span>Social Media Content & Management</span>
                             </div>
                             <div className="flex items-center gap-3 text-slate-300">
                                 <CheckCircle2 className="w-5 h-5 text-accent" />
-                                <span>Targeted Paid Ad Campaigns</span>
+                                <span>Targeted Google & Meta Ad Campaigns</span>
                             </div>
                             <div className="flex items-center gap-3 text-slate-300">
                                 <CheckCircle2 className="w-5 h-5 text-accent" />
@@ -182,15 +182,15 @@ export default function MarketingPage() {
                                 <div className="w-20 h-20 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
                                     <TrendingUp className="w-10 h-10" />
                                 </div>
-                                <h3 className="text-3xl font-bold text-white mb-4">Request Received!</h3>
+                                <h3 className="text-3xl font-bold text-white mb-4">We'll Be in Touch!</h3>
                                 <p className="text-slate-400 text-lg max-w-sm mx-auto">
-                                    Thank you! Our marketing experts will review your online presence and call you within 24 hours.
+                                    Thank you! Our team will review your business details and call you within 24 hours with a custom growth plan.
                                 </p>
                             </div>
                         ) : (
                             <form onSubmit={handleSubmit} className="space-y-8">
-                                <h3 className="text-2xl font-bold text-white mb-2">Get a Free Marketing Assessment</h3>
-                                <p className="text-slate-400 text-sm mb-8">Fill out this quick form so we understand your business.</p>
+                                <h3 className="text-2xl font-bold text-white mb-2">Tell Us About Your Business</h3>
+                                <p className="text-slate-400 text-sm mb-8">Fill out this quick form and we'll call you with a custom growth plan.</p>
 
                                 {/* Section A: About You */}
                                 <div className="space-y-4">

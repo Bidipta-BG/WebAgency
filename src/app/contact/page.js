@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ContactForm from '@/components/ContactForm';
-import { Mail, Phone, MapPin, Instagram, Linkedin, Facebook } from 'lucide-react';
+import { Mail, Phone, MapPin, Instagram, Facebook, CheckCircle2 } from 'lucide-react';
 
 const XIcon = ({ className }) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -11,8 +11,8 @@ const XIcon = ({ className }) => (
 );
 
 export const metadata = {
-    title: 'Contact Axom IT Lab | Start Your Project Today',
-    description: 'Get in touch with Axom IT Lab. Located in Bengaluru, serving clients worldwide with premium software development and flexible EMI options.',
+    title: 'Contact Axom IT Lab | Let\'s Take Your Business Online',
+    description: 'Get in touch with Axom IT Lab. Free consultation for local businesses looking to build their website, logo, social media presence, and start growing online.',
 };
 
 const ContactPage = () => {
@@ -25,12 +25,28 @@ const ContactPage = () => {
                     <ContactForm />
 
                     <div>
-                        <h1 className="text-4xl md:text-6xl font-bold text-white mb-8">
-                            Let's <span className="text-accent underline underline-offset-8">Talk</span>.
+                        <span className="text-accent font-semibold tracking-wider text-sm uppercase mb-4 block">Free Consultation</span>
+                        <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+                            Let's Get Your Business{' '}
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent-bright">Online.</span>
                         </h1>
-                        <p className="text-lg text-slate-400 mb-12 max-w-md">
-                            Have a vision? We have the team. Reach out for a free consultation and project estimate.
+                        <p className="text-lg text-slate-400 mb-8 max-w-md">
+                            Tell us about your business and we'll tell you exactly how we can help — free consultation, no commitments, no jargon.
                         </p>
+
+                        {/* Trust chips */}
+                        <div className="flex flex-wrap gap-3 mb-12">
+                            {[
+                                'Free Consultation',
+                                'Response within 24 hours',
+                                'No jargon, just plain talk',
+                            ].map(chip => (
+                                <div key={chip} className="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-muted border border-surface-highlight text-sm text-slate-300">
+                                    <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0" />
+                                    {chip}
+                                </div>
+                            ))}
+                        </div>
 
                         <div className="space-y-8">
                             <div className="flex gap-6 group">
@@ -72,14 +88,6 @@ const ContactPage = () => {
                                 <a href="https://www.instagram.com/axomitlab?igsh=YTA3YmFpaWRhd3Q0" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-12 h-12 rounded-full bg-surface-muted flex items-center justify-center text-slate-400 hover:text-white hover:bg-accent transition-all">
                                     <Instagram className="w-5 h-5" />
                                 </a>
-                                {/*
-                                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="w-12 h-12 rounded-full bg-surface-muted flex items-center justify-center text-slate-400 hover:text-white hover:bg-accent transition-all">
-                                    <Linkedin className="w-5 h-5" />
-                                </a>
-                                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="X (formerly Twitter)" className="w-12 h-12 rounded-full bg-surface-muted flex items-center justify-center text-slate-400 hover:text-white hover:bg-accent transition-all">
-                                    <XIcon className="w-4 h-4" />
-                                </a>
-                                */}
                             </div>
                         </div>
                     </div>

@@ -1,28 +1,30 @@
 @import "tailwindcss";
 
 :root {
-  --background: #020617;
-  --foreground: #F8FAFC;
+  --background: #0a0908;
+  --foreground: #F8F4EE;
 
   /* Custom Colors */
-  --color-primary: #F8FAFC;
-  --color-primary-light: #94A3B8;
-  --color-primary-dark: #020617;
+  --color-primary: #F8F4EE;
+  --color-primary-light: #a89f94;
+  --color-primary-dark: #0a0908;
 
-  --color-accent: #6366f1;
-  --color-accent-bright: #8b5cf6;
-  --color-accent-glow: rgba(99, 102, 241, 0.5);
+  /* Warm Amber Accent — energy, trust, approachability */
+  --color-accent: #f59e0b;
+  --color-accent-bright: #fb923c;
+  --color-accent-glow: rgba(245, 158, 11, 0.45);
 
-  --color-surface: #020617;
-  --color-surface-muted: #0F172A;
-  --color-surface-highlight: #1E293B;
+  /* Warm dark surfaces — cozy premium dark */
+  --color-surface: #0a0908;
+  --color-surface-muted: #13110e;
+  --color-surface-highlight: #1f1b16;
 
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
+  --color-success: #22c55e;
+  --color-warning: #ef4444;
 
   /* Gradients */
-  --image-midnight-gradient: linear-gradient(to bottom right, #020617, #0F172A);
-  --image-accent-gradient: linear-gradient(to right, #6366f1, #8b5cf6);
+  --image-midnight-gradient: linear-gradient(to bottom right, #0a0908, #13110e);
+  --image-accent-gradient: linear-gradient(to right, #f59e0b, #fb923c);
 }
 
 @theme inline {

@@ -77,14 +77,14 @@ const Navbar = () => {
                             href="/marketing"
                             className="hidden lg:flex items-center gap-2 bg-transparent border border-white/20 text-white px-5 py-2.5 rounded-full font-medium text-sm hover:border-accent hover:text-accent transition-colors"
                         >
-                            <span>Generate Leads</span>
+                            <span>Grow My Business</span>
                         </Link>
                         <Link
                             href="/estimate"
                             className="flex items-center gap-2 bg-accent text-white px-5 py-2.5 rounded-full font-medium text-sm hover:bg-accent-bright transition-colors shadow-lg shadow-accent/20"
                         >
                             <Calculator className="w-4 h-4" />
-                            <span>Get Estimate</span>
+                            <span>Start Free →</span>
                         </Link>
                     </div>
                 </div>
@@ -129,7 +129,7 @@ const Navbar = () => {
                                     className="flex items-center gap-2 text-accent font-bold mt-2 pt-4 border-t border-surface-highlight"
                                 >
                                     <Calculator className="w-5 h-5" />
-                                    Get Project Estimate
+                                    Start Free — Get Estimate
                                 </Link>
                                 <Link
                                     href="/marketing"
@@ -137,7 +137,7 @@ const Navbar = () => {
                                     className="flex items-center gap-2 text-slate-300 font-bold mt-4"
                                 >
                                     <TrendingUp className="w-5 h-5" />
-                                    Generate Leads
+                                    Grow My Business
                                 </Link>
                             </li>
                         </ul>

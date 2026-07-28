@@ -10,7 +10,7 @@ const DEFAULT_DISCOUNT = {
     percentage: 50,
     label: 'Early Bird Offer',
     message: "You're eligible for our 50% Early Bird Discount!",
-    badgeText: '🎉 Huge Savings for Lucky Clients!'
+    badgeText: '🎉 Limited Offer — Take Your Business Online'
 };
 
 export default function AnnouncementBar() {
@@ -69,13 +69,13 @@ export default function AnnouncementBar() {
     if (isHidden) return null;
 
     return (
-        <div ref={barRef} style={{ background: 'linear-gradient(to right, #6366f1, #8b5cf6)' }}
+        <div ref={barRef} style={{ background: 'linear-gradient(to right, #f59e0b, #fb923c)' }}
             className="w-full text-white py-2 px-4 text-center text-sm font-semibold">
             {discount.badgeText} &mdash;{' '}
-            <span className="font-bold">{discount.percentage}% OFF</span> for our early clients!{' '}
+            <span className="font-bold">{discount.percentage}% OFF</span> for early clients!{' '}
             <Link href="/estimate"
                 className="underline font-bold ml-2 hover:opacity-80 transition-opacity whitespace-nowrap">
-                Grab Your Estimate →
+                Book Free Consultation →
             </Link>
         </div>
     );

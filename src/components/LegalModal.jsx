@@ -62,7 +62,7 @@ const LegalModal = ({ isOpen, onClose, activeTab }) => {
                         {activeTab === 'privacy' && (
                             <>
                                 <p><strong>Last Updated: January 2026</strong></p>
-                                <p>At Axom IT Lab, we take your privacy seriously. This policy outlines how we collect, use, and protect your personal information.</p>
+                                <p>At XOM Digital, we take your privacy seriously. This policy outlines how we collect, use, and protect your personal information.</p>
 
                                 <h3 className="text-lg font-bold text-white pt-4">1. Information We Collect</h3>
                                 <p>We collect information you provide directly to us, such as when you fill out our cost estimator form, request a consultation, or communicate with us via email. This may include your name, email address, phone number, and project details.</p>
@@ -86,19 +86,19 @@ const LegalModal = ({ isOpen, onClose, activeTab }) => {
                         {activeTab === 'terms' && (
                             <>
                                 <p><strong>Last Updated: January 2026</strong></p>
-                                <p>Welcome to Axom IT Lab. By accessing or using our websites and services, you agree to be bound by these Terms of Service.</p>
+                                <p>Welcome to XOM Digital. By accessing or using our websites and services, you agree to be bound by these Terms of Service.</p>
 
                                 <h3 className="text-lg font-bold text-white pt-4">1. Scope of Services</h3>
-                                <p>Axom IT Lab provides software development, UI/UX design, and marketing services. The specific scope of work will be defined in individual project agreements.</p>
+                                <p>XOM Digital provides software development, UI/UX design, and marketing services. The specific scope of work will be defined in individual project agreements.</p>
 
                                 <h3 className="text-lg font-bold text-white pt-4">2. Payments</h3>
                                 <p>We offer transparent pricing with a one-time setup fee followed by a monthly maintenance fee. Failure to make payments on time may result in the suspension of services or project handover delays.</p>
 
                                 <h3 className="text-lg font-bold text-white pt-4">3. Intellectual Property</h3>
-                                <p>Unless otherwise agreed, Axom IT Lab retains ownership of the underlying code frameworks until the final handover. Clients are granted a license to use the software during the development and maintenance period.</p>
+                                <p>Unless otherwise agreed, XOM Digital retains ownership of the underlying code frameworks until the final handover. Clients are granted a license to use the software during the development and maintenance period.</p>
 
                                 <h3 className="text-lg font-bold text-white pt-4">4. Limitation of Liability</h3>
-                                <p>Axom IT Lab shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your access to or use of our services.</p>
+                                <p>XOM Digital shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your access to or use of our services.</p>
                             </>
                         )}
 

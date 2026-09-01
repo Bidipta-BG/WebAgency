@@ -21,7 +21,7 @@ const PrivacyPolicyPage = () => {
                 <div className="space-y-8 leading-relaxed">
                     <section>
                         <p>
-                            <strong>Axom IT Lab</strong> ("we", "us", or "our") operates the <strong>Sri Krishna Puja</strong> mobile application (the "Service").
+                            <strong>XOM Digital</strong> ("we", "us", or "our") operates the <strong>Sri Krishna Puja</strong> mobile application (the "Service").
                         </p>
                         <p className="mt-4">
                             This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data.
@@ -84,7 +84,7 @@ const PrivacyPolicyPage = () => {
                     </section>
 
                     <footer className="pt-12 mt-12 border-t border-slate-100 text-slate-400 text-sm">
-                        <p>© 2026 Axom IT Lab | All Rights Reserved.</p>
+                        <p>© 2026 XOM Digital | All Rights Reserved.</p>
                     </footer>
                 </div>
             </div>

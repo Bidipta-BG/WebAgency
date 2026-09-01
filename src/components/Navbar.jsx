@@ -47,7 +47,7 @@ const Navbar = () => {
                 <Link href="/" className="flex items-center gap-2 group">
                     <img
                         src="/assets/images/mainLogo.png"
-                        alt="Axom IT Lab Logo"
+                        alt="XOM Digital Logo"
                         className="h-16 w-auto object-contain transition-transform group-hover:scale-105"
                     />
                 </Link>

@@ -21,7 +21,7 @@ const About = () => {
                         </h2>
 
                         <p className="text-slate-400 text-lg leading-relaxed mb-6">
-                            At Axom IT Lab, we started with one mission — helping local business owners who have built something great finally reach the customers they deserve online. We've worked with shop owners, restaurant owners, coaches, manufacturers, and service providers across India.
+                            At XOM Digital, we started with one mission — helping local business owners who have built something great finally reach the customers they deserve online. We've worked with shop owners, restaurant owners, coaches, manufacturers, and service providers across India.
                         </p>
                         <p className="text-slate-400 text-lg leading-relaxed mb-8">
                             We handle everything — from designing your logo to launching your website to running your social media. Our team uses the latest AI tools to do this <strong>faster</strong> and at a <strong>fraction of what traditional agencies charge</strong>.

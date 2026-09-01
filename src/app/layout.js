@@ -8,14 +8,14 @@ const inter = Inter({
 });
 
 const siteUrl = "https://axomitlab.com";
-const siteTitle = "Axom IT Lab | Take Your Business Online — Brand, Website & Marketing";
-const siteDescription = "Axom IT Lab helps local and offline businesses go online and grow into a brand. We create your logo, build your website, manage your social media, and bring you real customers — all in one place.";
+const siteTitle = "XOM Digital | Take Your Business Online — Brand, Website & Marketing";
+const siteDescription = "XOM Digital helps local and offline businesses go online and grow into a brand. We create your logo, build your website, manage your social media, and bring you real customers — all in one place.";
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: siteTitle,
-    template: "%s | AxomITLab",
+    template: "%s | XOM Digital",
   },
   description: siteDescription,
   keywords: [
@@ -33,14 +33,13 @@ export const metadata = {
     "logo design India",
     "digital marketing agency india",
     "AI web development",
-    "AxomITLab",
-    "Axom IT Lab",
+    "XOM Digital",
     "lead generation services",
     "e-commerce website India"
   ],
-  authors: [{ name: "AxomITLab", url: siteUrl }],
-  creator: "AxomITLab",
-  publisher: "AxomITLab",
+  authors: [{ name: "XOM Digital", url: siteUrl }],
+  creator: "XOM Digital",
+  publisher: "XOM Digital",
   formatDetection: {
     email: false,
     address: false,
@@ -52,13 +51,13 @@ export const metadata = {
     url: siteUrl,
     title: siteTitle,
     description: siteDescription,
-    siteName: "AxomITLab",
+    siteName: "XOM Digital",
     images: [
       {
         url: "/assets/images/axomITLab.jpg",
         width: 1200,
         height: 630,
-        alt: "AxomITLab - Premium Web, App & Digital Marketing Agency",
+        alt: "XOM Digital - Premium Web, App & Digital Marketing Agency",
       },
     ],
   },
@@ -89,8 +88,8 @@ const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Axom IT Lab",
-    "alternateName": ["AxomITLab", "Axom Tech Lab"],
+    "name": "XOM Digital",
+    "alternateName": ["XOMDigital", "XOM Digital Agency"],
     "url": siteUrl,
     "logo": `${siteUrl}/assets/images/mainLogo.png`,
     "sameAs": [
@@ -110,7 +109,7 @@ const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    "name": "Axom IT Lab",
+    "name": "XOM Digital",
     "image": `${siteUrl}/assets/images/mainLogo.png`,
     "@id": siteUrl,
     "url": siteUrl,

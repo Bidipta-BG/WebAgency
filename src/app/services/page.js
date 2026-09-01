@@ -6,8 +6,8 @@ import { Store, Smartphone, BrainCircuit, Globe, Rocket, TrendingUp, ShieldCheck
 import AIToolsShowcase from '@/components/AIToolsShowcase';
 
 export const metadata = {
-    title: 'Everything We Do For Your Business | Axom IT Lab',
-    description: 'From your first logo to your first online customer — Axom IT Lab handles your entire digital presence. Website, branding, app, social media, and marketing.',
+    title: 'Everything We Do For Your Business | XOM Digital',
+    description: 'From your first logo to your first online customer — XOM Digital handles your entire digital presence. Website, branding, app, social media, and marketing.',
 };
 
 const ServicesPage = () => {

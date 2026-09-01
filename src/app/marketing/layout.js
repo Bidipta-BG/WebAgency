@@ -1,5 +1,5 @@
 export const metadata = {
-    title: 'AI-Driven Digital Marketing Services | Axom IT Lab',
+    title: 'AI-Driven Digital Marketing Services | XOM Digital',
     description: 'Skyrocket your business with our AI-driven digital marketing. From targeted lead generation to SEO and social media campaigns, we deliver real growth.',
     keywords: [
         "AI digital marketing",
@@ -7,7 +7,7 @@ export const metadata = {
         "SEO agency",
         "social media marketing",
         "performance marketing",
-        "Axom IT Lab marketing",
+        "XOM Digital marketing",
         "data-driven marketing campaigns"
     ]
 };

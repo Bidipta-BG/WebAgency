@@ -11,8 +11,8 @@ const XIcon = ({ className }) => (
 );
 
 export const metadata = {
-    title: 'Contact Axom IT Lab | Let\'s Take Your Business Online',
-    description: 'Get in touch with Axom IT Lab. Free consultation for local businesses looking to build their website, logo, social media presence, and start growing online.',
+    title: 'Contact XOM Digital | Let\'s Take Your Business Online',
+    description: 'Get in touch with XOM Digital. Free consultation for local businesses looking to build their website, logo, social media presence, and start growing online.',
 };
 
 const ContactPage = () => {

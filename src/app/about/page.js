@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { HeartHandshake, ShieldCheck, Clock3, BadgeCheck, TrendingUp, ArrowRight, Users } from 'lucide-react';
 
 export const metadata = {
-    title: 'About Axom IT Lab | We Help Businesses Go Online & Grow',
-    description: 'Axom IT Lab helps local and offline businesses build their entire digital presence — logo, website, social media, and marketing. Your business-to-brand partner.',
+    title: 'About XOM Digital | We Help Businesses Go Online & Grow',
+    description: 'XOM Digital helps local and offline businesses build their entire digital presence — logo, website, social media, and marketing. Your business-to-brand partner.',
 };
 
 const AboutPage = () => {
@@ -54,7 +54,7 @@ const AboutPage = () => {
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent-bright">Succeed Online.</span>
                     </h1>
                     <p className="text-lg text-slate-400 leading-relaxed max-w-2xl mx-auto">
-                        From the first logo to the first online customer — Axom IT Lab is your complete digital partner. We've helped shops, clinics, restaurants, coaches, and service businesses across India establish their online presence and grow.
+                        From the first logo to the first online customer — XOM Digital is your complete digital partner. We've helped shops, clinics, restaurants, coaches, and service businesses across India establish their online presence and grow.
                     </p>
                 </div>
 

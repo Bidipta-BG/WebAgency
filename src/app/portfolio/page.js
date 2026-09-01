@@ -6,8 +6,8 @@ import Image from 'next/image';
 import { ExternalLink, Lock, PlaySquare } from 'lucide-react';
 
 export const metadata = {
-    title: 'Our Work | Real Businesses We Helped Go Online | Axom IT Lab',
-    description: 'See the real businesses Axom IT Lab has helped go online and grow — from local logistics to an agricultural marketplace to a mobile app with thousands of users.',
+    title: 'Our Work | Real Businesses We Helped Go Online | XOM Digital',
+    description: 'See the real businesses XOM Digital has helped go online and grow — from local logistics to an agricultural marketplace to a mobile app with thousands of users.',
 };
 
 const PortfolioPage = () => {

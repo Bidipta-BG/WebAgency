@@ -140,7 +140,7 @@ const AIToolsShowcase = () => {
                         {/* Axom IT Lab */}
                         <div className="p-8 flex flex-col items-center text-center">
                             <div className="text-3xl mb-3">🚀</div>
-                            <p className="text-xs font-bold uppercase tracking-widest text-accent mb-4">Axom IT Lab</p>
+                            <p className="text-xs font-bold uppercase tracking-widest text-accent mb-4">XOM Digital</p>
                             <div className="space-y-2 w-full">
                                 <div className="flex justify-between items-center text-sm py-2 border-b border-surface-highlight">
                                     <span className="text-slate-400">Timeline</span>

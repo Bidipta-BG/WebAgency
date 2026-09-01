@@ -67,7 +67,7 @@ export const generateQuotationPDF = async ({
     // Draw dense tiled pattern diagonally
     for (let y = -h; y < h * 2; y += 80) {
       for (let x = -w; x < w * 2; x += 110) {
-        doc.text("AXOMITLAB", x, y, { angle: 45 });
+        doc.text("XOMDIGITAL", x, y, { angle: 45 });
       }
     }
     
@@ -102,7 +102,7 @@ export const generateQuotationPDF = async ({
     doc.setFontSize(22);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(33, 33, 33);
-    doc.text("Axomitlab", marginLeft, currentY);
+    doc.text("XOM Digital", marginLeft, currentY);
     currentY += 2;
   }
   
@@ -303,5 +303,5 @@ export const generateQuotationPDF = async ({
 
   // Save the PDF
   const safeName = (contactInfo.businessName || contactInfo.ownerName || "Client").replace(/[^a-z0-9]/gi, '_');
-  doc.save(`Axomitlab_Quotation_${safeName}.pdf`);
+  doc.save(`XOMDigital_Quotation_${safeName}.pdf`);
 };

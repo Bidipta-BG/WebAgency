@@ -25,13 +25,13 @@ const Footer = () => {
                 <Link href="/" className="flex items-center gap-2">
                     <img
                         src="/assets/images/mainLogo.png"
-                        alt="Axom IT Lab Logo"
+                        alt="XOM Digital Logo"
                         className="h-16 w-auto object-contain"
                     />
                 </Link>
 
                 <p className="text-slate-500 text-sm">
-                    © 2026 Axom IT Lab. All rights reserved.
+                    © 2026 XOM Digital. All rights reserved.
                 </p>
 
                 <div className="flex flex-wrap gap-6 items-center justify-center">
